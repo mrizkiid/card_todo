@@ -10,9 +10,11 @@ import 'package:card_todo/testfolder/testfile.dart';
 import 'package:flutter/material.dart';
 import './AUTH/bloc/auth_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
   Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
@@ -33,10 +35,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SingInPage(),
+      // home: SingInPage(),
       // home: PageSignUp(),
       // home: TestGridCardPage(),
-      // home: TestDrag(),
+      home: TestPageFolder(),
       // home: MainMenuPage(),
     );
   }
