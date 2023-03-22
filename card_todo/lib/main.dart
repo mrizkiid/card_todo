@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:card_todo/AUTH/pages/page_sign_in.dart';
 import 'package:card_todo/AUTH/pages/page_sign_up.dart';
 import 'package:card_todo/TODO/MAIN_MENU/page_main_menu.dart';
+import 'package:card_todo/TODO/TASK_LIST/page_task.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
 import 'package:card_todo/general_bloc_observer.dart';
 import 'package:card_todo/testfolder/testfile.dart';
@@ -12,9 +13,9 @@ import './AUTH/bloc/auth_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+  // await Hive.initFlutter();
   Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
@@ -35,11 +36,13 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       // home: SingInPage(),
       // home: PageSignUp(),
       // home: TestGridCardPage(),
-      home: TestPageFolder(),
+      // home: TestPageFolder(),
       // home: MainMenuPage(),
+      home: TaskPage(),
     );
   }
 }
