@@ -1,5 +1,7 @@
 import 'package:card_todo/TODO/MAIN_MENU/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/TODO/TASK_LIST/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/TODO/buttonbloc/button_animation_bloc.dart';
+import 'package:card_todo/UTILS/static/enum_todo.dart';
 import './widget_button_animation_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +23,8 @@ class LinearFlowWidget extends StatefulWidget {
 class _LinearFlowWidgetState extends State<LinearFlowWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
-
-  // bool isClicked
+  MainMenuBloc? mainMenuBloc;
+  TaskMenuBloc? taskMenuBloc;
 
   @override
   void initState() {
@@ -41,8 +43,44 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
     context.read<ButtonAnimationBloc>().add(ActionEvent());
   }
 
+  void onPressedReorder(
+      {required ButtonAnimationBloc buttonAnimationBloc,
+      required MainMenuBloc? mainMenuBloc,
+      required TaskMenuBloc? taskMenuBloc}) {
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
+        mainMenuBloc != null) {
+      mainMenuBloc.add(MainActionReorderButton(true));
+    }
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
+        taskMenuBloc != null) {
+      // taskMenuBloc.add();
+    }
+  }
+
+  void onPressedDelete(
+      {required ButtonAnimationBloc buttonAnimationBloc,
+      required MainMenuBloc? mainMenuBloc,
+      required TaskMenuBloc? taskMenuBloc}) {
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
+        mainMenuBloc != null) {
+      mainMenuBloc.add(MainActionDeleteButton(true));
+    }
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
+        taskMenuBloc != null) {
+      // taskMenuBloc.add();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
+      mainMenuBloc = context.read<MainMenuBloc>();
+    }
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu) {
+      taskMenuBloc = context.read<TaskMenuBloc>();
+    }
+
     return Flow(delegate: FlowMenuDelegate(controller: controller), children: [
       BuildItemUtama(
           title1: 'Action',
@@ -66,23 +104,29 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           title: 'Add',
           onPressed: () {
             controller.reset();
-            context.read<ButtonAnimationBloc>().add(ActionAdd());
+            buttonAnimationBloc.add(ActionAdd());
           }),
       BuildItem(
           icon: TodoAppIcon.convert,
           title: 'Reorder',
           onPressed: () {
             controller.reset();
-            context.read<ButtonAnimationBloc>().add(ActionReorder());
-            context.read<MainMenuBloc>().add(MainActionReorderButton(true));
+            buttonAnimationBloc.add(ActionReorder());
+            onPressedReorder(
+                buttonAnimationBloc: buttonAnimationBloc,
+                mainMenuBloc: mainMenuBloc,
+                taskMenuBloc: taskMenuBloc);
           }),
       BuildItem(
           icon: TodoAppIcon.delete,
           title: 'Delete',
           onPressed: () {
             controller.reset();
-            context.read<ButtonAnimationBloc>().add(ActionDelete());
-            context.read<MainMenuBloc>().add(MainActionDeleteButton(true));
+            buttonAnimationBloc.add(ActionDelete());
+            onPressedDelete(
+                buttonAnimationBloc: buttonAnimationBloc,
+                mainMenuBloc: mainMenuBloc,
+                taskMenuBloc: taskMenuBloc);
           }),
     ]);
   }

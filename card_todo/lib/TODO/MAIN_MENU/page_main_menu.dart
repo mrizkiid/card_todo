@@ -6,6 +6,7 @@ import 'package:card_todo/TODO/utils/widget/widget_main_menu.dart';
 // import 'package:card_todo/UTILS/icon/my_flutter_app_icons.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
 import 'package:card_todo/UTILS/static/color_class.dart';
+import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,9 +24,9 @@ class MainMenuPageState extends State<MainMenuPage> {
   TodoData todoData = TodoData();
   bool? isDelete = false;
   bool? isDone = false;
+  Sizing sizing = Sizing();
   @override
   Widget build(BuildContext context) {
-    Sizing sizing = Sizing();
     sizing.init(context);
     double heightAppBar = sizing.heightCalc(percent: 22.3, min: 120);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
@@ -35,7 +36,8 @@ class MainMenuPageState extends State<MainMenuPage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ButtonAnimationBloc(),
+          create: (context) =>
+              ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.mainMenu),
         ),
         BlocProvider(
           create: (context) =>

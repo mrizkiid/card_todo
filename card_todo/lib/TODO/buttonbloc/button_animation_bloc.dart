@@ -1,19 +1,17 @@
 import 'package:bloc/bloc.dart';
-import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
+// import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
+import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:equatable/equatable.dart';
 
 part 'button_animation_event.dart';
 part 'button_animation_state.dart';
 
-enum WhichBloc {
-  tittleTask,
-}
-
 class ButtonAnimationBloc
     extends Bloc<ButtonAnimationEvent, ButtonAnimationState> {
   late ActionEnum actionEnum;
+  late WhichTodoBloc whichTodoBloc;
 
-  ButtonAnimationBloc()
+  ButtonAnimationBloc({required this.whichTodoBloc})
       : super(const ButtonAnimationInitial(
             isActionPressed: false,
             isShowPressed: false,

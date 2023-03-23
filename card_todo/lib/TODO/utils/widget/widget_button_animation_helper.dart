@@ -1,10 +1,10 @@
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/MAIN_MENU/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/TODO/TASK_LIST/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/TODO/buttonbloc/button_animation_bloc.dart';
+import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-enum ActionEnum { reorder, delete, add, action }
 
 class BuildItem extends StatelessWidget {
   const BuildItem({
@@ -144,7 +144,32 @@ class DoneButton extends StatelessWidget {
   final ActionEnum actionEnum;
   final TodoData todoData;
   late ButtonAnimationBloc buttonAnimationBloc;
-  late MainMenuBloc mainMenuBloc;
+  late MainMenuBloc? mainMenuBloc;
+  late TaskMenuBloc? taskMenuBloc;
+
+  void onPressedDelete(
+      {required WhichTodoBloc whichTodoBloc,
+      required MainMenuBloc? mainMenuBloc,
+      required TaskMenuBloc? taskMenuBloc}) {
+    if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
+      mainMenuBloc.add(MainActionDeleteButton(false));
+    }
+    if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
+      // taskMenuBloc.add();
+    }
+  }
+
+  void onPressedReorder(
+      {required WhichTodoBloc whichTodoBloc,
+      required MainMenuBloc? mainMenuBloc,
+      required TaskMenuBloc? taskMenuBloc}) {
+    if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
+      mainMenuBloc.add(MainActionReorderButton(false));
+    }
+    if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
+      // taskMenuBloc.add();
+    }
+  }
 
   void showDialogMehtod(
     BuildContext context, {
@@ -171,11 +196,20 @@ class DoneButton extends StatelessWidget {
               child: Text(button),
               onPressed: () {
                 if (mainMenuBloc != null) {
+                  ////
                   if (actionEnum == ActionEnum.delete) {
-                    mainMenuBloc.add(MainActionDeleteButton(false));
+                    ////
+                    onPressedDelete(
+                        whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+                        mainMenuBloc: mainMenuBloc,
+                        taskMenuBloc: taskMenuBloc);
+                    ////
                   }
                   if (actionEnum == ActionEnum.reorder) {
-                    mainMenuBloc.add(MainActionReorderButton(false));
+                    onPressedReorder(
+                        whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+                        mainMenuBloc: mainMenuBloc,
+                        taskMenuBloc: taskMenuBloc);
                   }
                 }
                 buttonAnimationBloc.add(const DoneEvent(isSave: true));
@@ -190,14 +224,21 @@ class DoneButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    buttonAnimationBloc = context.read<ButtonAnimationBloc>();
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
+      mainMenuBloc = context.read<MainMenuBloc>();
+    }
+
+    if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu) {
+      mainMenuBloc = context.read<MainMenuBloc>();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // done button
         InkWell(
           onTap: () {
-            buttonAnimationBloc = context.read<ButtonAnimationBloc>();
-            mainMenuBloc = context.read<MainMenuBloc>();
             if (actionEnum == ActionEnum.delete) {
               showDialogMehtod(context,
                   buttonAnimationBloc: buttonAnimationBloc,
@@ -246,14 +287,21 @@ class DoneButton extends StatelessWidget {
         //cancel button
         InkWell(
           onTap: () {
-            mainMenuBloc = context.read<MainMenuBloc>();
             if (actionEnum == ActionEnum.delete) {
               mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
-              mainMenuBloc.add(MainActionDeleteButton(false));
+              onPressedDelete(
+                  whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+                  mainMenuBloc: mainMenuBloc,
+                  taskMenuBloc: taskMenuBloc);
+              // mainMenuBloc.add(MainActionDeleteButton(false));
             }
             if (actionEnum == ActionEnum.reorder) {
               mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
-              mainMenuBloc.add(MainActionReorderButton(false));
+              onPressedReorder(
+                  whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+                  mainMenuBloc: mainMenuBloc,
+                  taskMenuBloc: taskMenuBloc);
+              // mainMenuBloc.add(MainActionReorderButton(false));
             }
             context.read<ButtonAnimationBloc>().add(CancelEvent());
           },

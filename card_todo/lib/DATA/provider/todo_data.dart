@@ -26,4 +26,25 @@ class TodoData {
     'PROJECT6',
     'PROJECT7',
   ];
+
+  List<TaskList> tasklist = [
+    TaskList(isChecked: false, title: 'Pertama'),
+    TaskList(isChecked: true, title: 'Kedua'),
+    TaskList(isChecked: false, title: 'Ketiga'),
+    TaskList(isChecked: false, title: 'Keempat'),
+    TaskList(isChecked: true, title: 'Kelima'),
+    TaskList(isChecked: true, title: 'Keenam'),
+    TaskList(isChecked: false, title: 'Ketujuh'),
+  ];
+
+  void orderList() {}
+}
+
+class TaskList {
+  bool isChecked;
+  String title;
+  TaskList({
+    required this.isChecked,
+    required this.title,
+  });
 }

@@ -8,5 +8,5 @@ class RepoData {
     var box = await Hive.openBox('testBox');
   }
 
-  List<
+  // List<
 }
