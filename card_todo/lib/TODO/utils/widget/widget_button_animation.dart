@@ -1,6 +1,6 @@
-import 'package:card_todo/TODO/MAIN_MENU/main_menu_bloc/mainmenu_bloc.dart';
-import 'package:card_todo/TODO/TASK_LIST/bloc_task/task_menu_bloc.dart';
-import 'package:card_todo/TODO/buttonbloc/button_animation_bloc.dart';
+import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
+import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:card_todo/UTILS/static/enum_todo.dart';
 import './widget_button_animation_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +40,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
   }
 
   void onPressedBuildUtama(BuildContext context) {
-    context.read<ButtonAnimationBloc>().add(ActionEvent());
+    context.read<ButtonAnimationBloc>().add(ButtonActionEvent());
   }
 
   void onPressedReorder(
@@ -104,14 +104,14 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           title: 'Add',
           onPressed: () {
             controller.reset();
-            buttonAnimationBloc.add(ActionAdd());
+            buttonAnimationBloc.add(ButtonActionAdd());
           }),
       BuildItem(
           icon: TodoAppIcon.convert,
           title: 'Reorder',
           onPressed: () {
             controller.reset();
-            buttonAnimationBloc.add(ActionReorder());
+            buttonAnimationBloc.add(ButtonActionReorder());
             onPressedReorder(
                 buttonAnimationBloc: buttonAnimationBloc,
                 mainMenuBloc: mainMenuBloc,
@@ -122,7 +122,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           title: 'Delete',
           onPressed: () {
             controller.reset();
-            buttonAnimationBloc.add(ActionDelete());
+            buttonAnimationBloc.add(ButtonActionDelete());
             onPressedDelete(
                 buttonAnimationBloc: buttonAnimationBloc,
                 mainMenuBloc: mainMenuBloc,

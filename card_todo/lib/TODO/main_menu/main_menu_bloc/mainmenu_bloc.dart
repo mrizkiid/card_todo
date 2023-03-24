@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:equatable/equatable.dart';
 
 part 'mainmenu_event.dart';
@@ -6,7 +7,8 @@ part 'mainmenu_state.dart';
 
 class MainMenuBloc extends Bloc<MainmenuEvent, MainMenuState> {
   List<String> listTitle = [];
-  MainMenuBloc() : super(const MainmenuInitial([])) {
+  MainMenuBloc({required TodoData todoData})
+      : super(const MainmenuInitial([])) {
     on<InitialList>((event, emit) {
       listTitle = [...event.listTitle];
       emit(MainmenuInitial(listTitle));
@@ -39,7 +41,7 @@ class MainMenuBloc extends Bloc<MainmenuEvent, MainMenuState> {
     });
 
     on<SaveEvent>((event, emit) {
-      event.listTitle = [...state.listTitle];
+      todoData.listTitle = [...state.listTitle];
       emit(SaveState(listTitle));
     });
   }

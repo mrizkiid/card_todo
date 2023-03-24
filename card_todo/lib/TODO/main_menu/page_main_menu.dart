@@ -1,5 +1,5 @@
 import 'package:card_todo/DATA/provider/todo_data.dart';
-import 'package:card_todo/TODO/MAIN_MENU/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
 import 'package:card_todo/TODO/utils/widget/widget_main_menu.dart';
@@ -10,7 +10,7 @@ import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:card_todo/TODO/buttonbloc/button_animation_bloc.dart';
+import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:reorderables/reorderables.dart';
 
 class MainMenuPage extends StatefulWidget {
@@ -21,12 +21,12 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class MainMenuPageState extends State<MainMenuPage> {
-  TodoData todoData = TodoData();
   bool? isDelete = false;
   bool? isDone = false;
   Sizing sizing = Sizing();
   @override
   Widget build(BuildContext context) {
+    TodoData todoData = RepositoryProvider.of<TodoData>(context);
     sizing.init(context);
     double heightAppBar = sizing.heightCalc(percent: 22.3, min: 120);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
@@ -40,8 +40,8 @@ class MainMenuPageState extends State<MainMenuPage> {
               ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.mainMenu),
         ),
         BlocProvider(
-          create: (context) =>
-              MainMenuBloc()..add(InitialList(listTitle: todoData.listTitle)),
+          create: (context) => MainMenuBloc(todoData: todoData)
+            ..add(InitialList(listTitle: todoData.listTitle)),
         ),
       ],
       child: Scaffold(
@@ -49,7 +49,7 @@ class MainMenuPageState extends State<MainMenuPage> {
             ? const SizedBox()
             : BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
                 builder: (context, state) {
-                  if (state.isShowPressed == false) {
+                  if (state.actionEnum == ActionEnum.action) {
                     return const LinearFlowWidget();
                   }
                   return Padding(
@@ -105,7 +105,7 @@ class MainMenuPageState extends State<MainMenuPage> {
                       ),
                       BlocListener<ButtonAnimationBloc, ButtonAnimationState>(
                         listener: (context, state) {
-                          if (state is DoneState) {
+                          if (state is ButtonDoneState) {
                             isDone = state.isSave ?? false;
                           }
                         },

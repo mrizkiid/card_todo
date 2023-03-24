@@ -23,4 +23,11 @@ class TaskEvent extends TaskMenuEvent {
   const TaskEvent(this.isChecked, this.title, this.index);
 }
 
+class TaskDelete extends TaskMenuEvent {
+  final bool isDelete;
+
+  const TaskDelete(this.isDelete);
+  // final
+}
+
 // class TaskCh

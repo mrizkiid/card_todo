@@ -1,10 +1,12 @@
-import 'package:card_todo/DATA/provider/todo_data.dart';
-import 'package:card_todo/TODO/MAIN_MENU/main_menu_bloc/mainmenu_bloc.dart';
-import 'package:card_todo/TODO/TASK_LIST/bloc_task/task_menu_bloc.dart';
-import 'package:card_todo/TODO/buttonbloc/button_animation_bloc.dart';
-import 'package:card_todo/UTILS/static/enum_todo.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
+import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
+import 'package:card_todo/UTILS/static/enum_todo.dart';
 
 class BuildItem extends StatelessWidget {
   const BuildItem({
@@ -139,7 +141,11 @@ class BuildItemUtama extends StatelessWidget {
 }
 
 class DoneButton extends StatelessWidget {
-  DoneButton({super.key, required this.actionEnum, required this.todoData});
+  DoneButton({
+    Key? key,
+    required this.actionEnum,
+    required this.todoData,
+  }) : super(key: key);
 
   final ActionEnum actionEnum;
   final TodoData todoData;
@@ -212,7 +218,7 @@ class DoneButton extends StatelessWidget {
                         taskMenuBloc: taskMenuBloc);
                   }
                 }
-                buttonAnimationBloc.add(const DoneEvent(isSave: true));
+                buttonAnimationBloc.add(const ButtonDoneEvent(isSave: true));
                 Navigator.of(context).pop();
               },
             ),
@@ -230,7 +236,7 @@ class DoneButton extends StatelessWidget {
     }
 
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu) {
-      mainMenuBloc = context.read<MainMenuBloc>();
+      taskMenuBloc = context.read<TaskMenuBloc>();
     }
 
     return Row(
@@ -287,8 +293,11 @@ class DoneButton extends StatelessWidget {
         //cancel button
         InkWell(
           onTap: () {
+            if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
+                mainMenuBloc != null) {
+              mainMenuBloc!.add(InitialList(listTitle: todoData.listTitle));
+            }
             if (actionEnum == ActionEnum.delete) {
-              mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
               onPressedDelete(
                   whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
                   mainMenuBloc: mainMenuBloc,
@@ -296,14 +305,14 @@ class DoneButton extends StatelessWidget {
               // mainMenuBloc.add(MainActionDeleteButton(false));
             }
             if (actionEnum == ActionEnum.reorder) {
-              mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
+              // mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
               onPressedReorder(
                   whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
                   mainMenuBloc: mainMenuBloc,
                   taskMenuBloc: taskMenuBloc);
               // mainMenuBloc.add(MainActionReorderButton(false));
             }
-            context.read<ButtonAnimationBloc>().add(CancelEvent());
+            context.read<ButtonAnimationBloc>().add(ButtonCancelEvent());
           },
           child: Container(
             height: 40,

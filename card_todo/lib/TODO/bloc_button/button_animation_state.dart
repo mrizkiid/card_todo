@@ -20,36 +20,36 @@ class ButtonAnimationInitial extends ButtonAnimationState {
       required super.actionEnum});
 }
 
-class MainmenuInitial extends ButtonAnimationState {
-  const MainmenuInitial(
+class ButtonMainmenuInitial extends ButtonAnimationState {
+  const ButtonMainmenuInitial(
       {required super.actionEnum,
       required super.isActionPressed,
       required super.isShowPressed});
 }
 
-class ActionState extends ButtonAnimationState {
-  const ActionState(
+class ButtonActionState extends ButtonAnimationState {
+  const ButtonActionState(
       {required super.isActionPressed,
       required super.isShowPressed,
       required super.actionEnum});
 }
 
-class ReorderState extends ButtonAnimationState {
-  const ReorderState(
+class ButtonReorderState extends ButtonAnimationState {
+  const ButtonReorderState(
       {required super.isActionPressed,
       required super.isShowPressed,
       required super.actionEnum});
 }
 
-class DeleteState extends ButtonAnimationState {
-  const DeleteState(
+class ButtonDeleteState extends ButtonAnimationState {
+  const ButtonDeleteState(
       {required super.isActionPressed,
       required super.isShowPressed,
       required super.actionEnum});
 }
 
-class DeleteMainMenuState extends ButtonAnimationState {
-  const DeleteMainMenuState(
+class ButtonDeleteMainMenuState extends ButtonAnimationState {
+  const ButtonDeleteMainMenuState(
       {required super.isActionPressed,
       required super.isShowPressed,
       required super.actionEnum});
@@ -62,8 +62,8 @@ class CancelState extends ButtonAnimationState {
       required super.actionEnum});
 }
 
-class DoneState extends ButtonAnimationState {
-  const DoneState(
+class ButtonDoneState extends ButtonAnimationState {
+  const ButtonDoneState(
       {required super.isActionPressed,
       required super.isShowPressed,
       required super.actionEnum,

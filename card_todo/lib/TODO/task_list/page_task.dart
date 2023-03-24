@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors,prefer_const_literals_to_create_immutables
 
 import 'package:card_todo/DATA/provider/todo_data.dart';
-import 'package:card_todo/TODO/TASK_LIST/bloc_task/task_menu_bloc.dart';
+import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
@@ -12,7 +12,7 @@ import 'package:card_todo/UTILS/widget/main_menu_button_flow.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:card_todo/TODO/buttonbloc/button_animation_bloc.dart';
+import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});

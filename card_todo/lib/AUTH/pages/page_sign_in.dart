@@ -3,7 +3,7 @@
 import 'package:card_todo/AUTH/cubit/password_cubit.dart';
 import 'package:card_todo/AUTH/pages/page_sign_up.dart';
 import 'package:card_todo/AUTH/pages/size/size_auth.dart';
-import 'package:card_todo/TODO/MAIN_MENU/page_main_menu.dart';
+import 'package:card_todo/TODO/main_menu/page_main_menu.dart';
 import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
 import 'package:card_todo/UTILS/widget/button.dart';
