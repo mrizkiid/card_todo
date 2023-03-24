@@ -10,29 +10,26 @@ abstract class ButtonAnimationEvent extends Equatable {
 class ButtonMainmenuInitialEvent extends ButtonAnimationEvent {}
 
 class ButtonActionEvent extends ButtonAnimationEvent {
-  final bool isPressed;
-
-  const ButtonActionEvent(this.isPressed);
+  final bool isAction;
+  const ButtonActionEvent({required this.isAction});
 }
 
 class ButtonActionDelete extends ButtonAnimationEvent {
-  final bool isPressed;
-
-  const ButtonActionDelete(this.isPressed);
+  const ButtonActionDelete();
 }
 
 class ButtonActionReorder extends ButtonAnimationEvent {
-  final bool isPressed;
-
-  const ButtonActionReorder(this.isPressed);
+  const ButtonActionReorder();
 }
 
 class ButtonActionAdd extends ButtonAnimationEvent {}
 
 class ButtonDoneEvent extends ButtonAnimationEvent {
-  final bool? isSave;
+  final bool isSave;
+  const ButtonDoneEvent({required this.isSave});
 
-  const ButtonDoneEvent({this.isSave});
+  @override
+  List<Object> get props => [isSave];
 }
 
 class ButtonCancelEvent extends ButtonAnimationEvent {}

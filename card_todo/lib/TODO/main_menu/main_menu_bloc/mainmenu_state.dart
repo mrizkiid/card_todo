@@ -15,21 +15,23 @@ class ReorderState extends MainMenuState {
 }
 
 class MainReorderProcessDataState extends MainMenuState {
-  final List<String> newlistTitle;
+  MainReorderProcessDataState(super.listTitle);
+  // final List<String> newlistTitle;
 
-  const MainReorderProcessDataState({required this.newlistTitle})
-      : super(newlistTitle);
+  // const MainReorderProcessDataState({required this.newlistTitle})
+  //     : super(newlistTitle);
 }
 
 class MainReorderButtonState extends MainMenuState {
-  final List<String> newlistTitle;
-  final bool isPressed;
+  // final List<String> newlistTitle;
+  // final bool isPressed;
 
-  const MainReorderButtonState(this.isPressed, this.newlistTitle)
-      : super(newlistTitle);
+  // const MainReorderButtonState(this.isPressed, this.newlistTitle)
+  //     : super(newlistTitle);
+  const MainReorderButtonState(super.listTitle);
 
-  @override
-  List<Object> get props => [isPressed];
+  // @override
+  // List<Object> get props => [isPressed];
 }
 
 class MainDeleteButtonState extends MainMenuState {

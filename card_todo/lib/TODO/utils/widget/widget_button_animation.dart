@@ -14,7 +14,10 @@ const double buttonsize = 80;
 class LinearFlowWidget extends StatefulWidget {
   const LinearFlowWidget({
     Key? key,
+    required this.isAction,
   }) : super(key: key);
+
+  final bool isAction;
 
   @override
   State<LinearFlowWidget> createState() => _LinearFlowWidgetState();
@@ -39,9 +42,11 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
     super.dispose();
   }
 
-  void onPressedBuildUtama(BuildContext context) {
-    context.read<ButtonAnimationBloc>().add(ButtonActionEvent());
-  }
+  // void onPressedBuildUtama(BuildContext context) {
+  //   context
+  //       .read<ButtonAnimationBloc>()
+  //       .add(const ButtonActionEvent(isPressed: true));
+  // }
 
   void onPressedReorder(
       {required ButtonAnimationBloc buttonAnimationBloc,
@@ -83,20 +88,26 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
 
     return Flow(delegate: FlowMenuDelegate(controller: controller), children: [
       BuildItemUtama(
+          isAction: widget.isAction,
           title1: 'Action',
           title2: 'Close',
           onPressed: () {
             if (controller.isCompleted) {
+              context
+                  .read<ButtonAnimationBloc>()
+                  .add(const ButtonActionEvent(isAction: true));
               controller.reverse();
-              onPressedBuildUtama(context);
               return;
             }
             if (controller.isAnimating) {
               return;
             }
             if (controller.isDismissed) {
-              onPressedBuildUtama(context);
+              context
+                  .read<ButtonAnimationBloc>()
+                  .add(const ButtonActionEvent(isAction: true));
               controller.forward();
+              return;
             }
           }),
       BuildItem(

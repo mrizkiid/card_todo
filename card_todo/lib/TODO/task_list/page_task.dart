@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
+import 'package:reorderables/reorderables.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -103,8 +104,17 @@ class _TaskPageState extends State<TaskPage> {
         floatingActionButton:
             BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
           builder: (context, state) {
-            if (state.isShowPressed == false) {
-              return const LinearFlowWidget();
+            if (state.actionEnum == ActionEnum.action &&
+                state is ButtonActionState) {
+              return LinearFlowWidget(
+                isAction: state.isAction,
+              );
+            }
+            if (state.actionEnum == ActionEnum.action &&
+                state is! ButtonActionState) {
+              return LinearFlowWidget(
+                isAction: false,
+              );
             }
             return Padding(
               padding: const EdgeInsets.only(left: 32),
@@ -138,19 +148,46 @@ class _TaskPageState extends State<TaskPage> {
             BlocBuilder<TaskMenuBloc, TaskMenuState>(
           builder: (context, state) {
             final taskMenuBloc = context.read<TaskMenuBloc>();
+            List<TaskList> taskList = state.taskList;
+
+            ///reordered state
+            if (state is TaskReorderState) {
+              ReorderableColumn(
+                onReorder: (oldIndex, newIndex) {
+                  taskMenuBloc.add(TaskReorderedProcess(
+                      oldIndex: oldIndex, newIndex: newIndex));
+                },
+                children: taskList
+                    .map((e) {
+                      return;
+                    })
+                    .toList()
+                    .cast<Widget>(),
+              );
+            }
+
+            //condition for delete
+            if (state is TaskDelete) {
+              isDelete = true;
+            } else {
+              isDelete = false;
+            }
+
+            /// it will build if not reordered
             return ListView.builder(
               padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
                   .copyWith(top: 30),
               itemCount: state.taskList.length,
               itemBuilder: (context, index) {
-                bool isChecked = state.taskList[index].isChecked;
-                String title = state.taskList[index].title;
+                bool isChecked = taskList[index].isChecked;
+                String title = taskList[index].title;
                 return TileTaskCard(
                   isChecked: isChecked,
                   title: title,
                   isDelete: isDelete,
                   onchanged: () {
-                    taskMenuBloc.add(TaskEvent(isChecked, title, index));
+                    taskMenuBloc.add(TaskEvent(
+                        isChecked: isChecked, title: title, index: index));
                   },
                 );
               },
@@ -204,7 +241,7 @@ class TileTaskCard extends StatelessWidget {
           ],
         ),
         child: ListTile(
-          leading: checkBoxCustom(isChecked, onchanged),
+          leading: checkBoxCustom(isChecked, onchanged, isDelete),
           title: Text(
             title,
             style: isChecked
@@ -229,13 +266,16 @@ class TileTaskCard extends StatelessWidget {
     );
   }
 
-  Widget checkBoxCustom(bool isPressed, void Function() onchanged) {
+  Widget checkBoxCustom(
+      bool isPressed, void Function() onchanged, bool isDelete) {
     return IconButton(
       hoverColor: Colors.white,
       splashColor: Colors.white,
-      onPressed: () {
-        onchanged();
-      },
+      onPressed: isDelete
+          ? () {
+              onchanged();
+            }
+          : null,
       icon: isPressed
           ? Icon(
               TodoAppIcon.check,

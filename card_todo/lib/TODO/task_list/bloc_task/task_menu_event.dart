@@ -20,7 +20,11 @@ class TaskEvent extends TaskMenuEvent {
   final String title;
   final int index;
 
-  const TaskEvent(this.isChecked, this.title, this.index);
+  const TaskEvent({
+    required this.isChecked,
+    required this.title,
+    required this.index,
+  });
 }
 
 class TaskDelete extends TaskMenuEvent {
@@ -29,5 +33,22 @@ class TaskDelete extends TaskMenuEvent {
   const TaskDelete(this.isDelete);
   // final
 }
+
+class TaskReorderedButton extends TaskMenuEvent {
+  final bool isPressed;
+
+  const TaskReorderedButton(this.isPressed);
+}
+
+class TaskReorderedProcess extends TaskMenuEvent {
+  final int oldIndex;
+  final int newIndex;
+
+  const TaskReorderedProcess({required this.oldIndex, required this.newIndex});
+}
+
+class TaskReorderedSave extends TaskMenuEvent {}
+
+class TaskSave extends TaskMenuEvent {}
 
 // class TaskCh

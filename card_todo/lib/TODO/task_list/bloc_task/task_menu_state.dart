@@ -7,20 +7,30 @@ abstract class TaskMenuState extends Equatable {
   });
   final List<TaskList> taskList;
   @override
-  // TODO: implement props
   List<Object?> get props => [taskList];
 }
 
 class TaskMenuInitial extends TaskMenuState {
-  TaskMenuInitial({required super.taskList});
+  const TaskMenuInitial({required super.taskList});
 
   // @override
   // List<Object> get props => [taskList];
 }
 
 class TaskState extends TaskMenuState {
-  TaskState({required super.taskList});
+  const TaskState({required super.taskList});
 
   // @override
   // List<Object> get props => [itaskList];
 }
+
+class TaskReorderState extends TaskMenuState {
+  final List<TaskList> taskListTrue;
+  const TaskReorderState({required super.taskList, required this.taskListTrue});
+}
+
+// class TaskReorderProcessState extends TaskMenuState {
+//   final List<TaskList> taskListTrue;
+//   const TaskReorderProcessState(
+//       {required super.taskList, required this.taskListTrue});
+// }

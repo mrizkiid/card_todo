@@ -13,64 +13,71 @@ class ButtonAnimationBloc
 
   ButtonAnimationBloc({required this.whichTodoBloc})
       : super(const ButtonAnimationInitial(
-            isActionPressed: false,
-            isShowPressed: false,
+            // isActionPressed: false,
+            // isShowPressed: false,
             actionEnum: ActionEnum.action)) {
     //
     on<ButtonActionEvent>((event, emit) {
-      bool isPressed = event.isPressed;
+      bool isAction = event.isAction;
       actionEnum = ActionEnum.action;
-      emit(ButtonActionState(
-          actionEnum: actionEnum,
-          isActionPressed: isPressed,
-          isShowPressed: state.isShowPressed));
+      emit(
+        ButtonActionState(actionEnum: actionEnum, isAction: isAction
+            // isShowPressed: state.isShowPressed
+            ),
+      );
     });
 
     on<ButtonActionAdd>((event, emit) {
-      bool isActionPressed = !state.isActionPressed;
+      // bool isActionPressed = !state.isActionPressed;
       actionEnum = ActionEnum.add;
       emit(ButtonReorderState(
-          isActionPressed: isActionPressed,
-          isShowPressed: state.isShowPressed,
+          // isActionPressed: isActionPressed,
+          // isShowPressed: state.isShowPressed,
           actionEnum: actionEnum));
     });
 
     on<ButtonActionReorder>((event, emit) {
-      bool isActionPressed = event.isPressed;
-      bool isShowPressed = !state.isShowPressed;
+      // bool isActionPressed = event.isPressed;
+      // bool isShowPressed = !state.isShowPressed;
       actionEnum = ActionEnum.reorder;
       emit(ButtonReorderState(
-          isActionPressed: isActionPressed,
-          isShowPressed: isShowPressed,
+          // isActionPressed: isActionPressed,
+          // isShowPressed: isShowPressed,
           actionEnum: actionEnum));
     });
 
     on<ButtonActionDelete>((event, emit) {
-      bool isPressed = event.isPressed;
-      bool isShowPressed = !state.isShowPressed;
+      // bool isPressed = event.isPressed;
+      // bool isShowPressed = !state.isShowPressed;
       actionEnum = ActionEnum.delete;
       emit(ButtonDeleteState(
-          isActionPressed: isPressed,
-          isShowPressed: isShowPressed,
+          // isActionPressed: isPressed,
+          // isShowPressed: isShowPressed,
           actionEnum: actionEnum));
     });
 
     on<ButtonDoneEvent>((event, emit) {
-      bool isPressed = !state.isShowPressed;
+      // bool isPressed = !state.isShowPressed;
       actionEnum = ActionEnum.action;
-      emit(ButtonDoneState(
+      emit(
+        ButtonDoneState(
           actionEnum: actionEnum,
-          isShowPressed: isPressed,
-          isActionPressed: state.isActionPressed));
+          // isShowPressed: isPressed,
+          // isActionPressed: state.isActionPressed
+        ),
+      );
     });
 
     on<ButtonCancelEvent>((event, emit) {
-      bool isPressed = !state.isShowPressed;
+      // bool isPressed = !state.isShowPressed;
       actionEnum = ActionEnum.action;
-      emit(ButtonDoneState(
+      emit(
+        ButtonDoneState(
           actionEnum: actionEnum,
-          isShowPressed: isPressed,
-          isActionPressed: state.isActionPressed));
+          // isShowPressed: isPressed,
+          // isActionPressed: state.isActionPressed
+        ),
+      );
     });
   }
 }

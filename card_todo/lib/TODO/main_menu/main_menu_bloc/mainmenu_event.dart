@@ -39,8 +39,8 @@ class InitialList extends MainmenuEvent {
   InitialList({required this.listTitle});
 }
 
-class SaveEvent extends MainmenuEvent {
+class MainSaveEvent extends MainmenuEvent {
   List<String> listTitle;
 
-  SaveEvent({required this.listTitle});
+  MainSaveEvent({required this.listTitle});
 }

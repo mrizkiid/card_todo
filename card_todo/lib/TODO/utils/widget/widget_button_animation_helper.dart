@@ -85,10 +85,12 @@ class BuildItemUtama extends StatelessWidget {
     required this.title1,
     required this.title2,
     required this.onPressed,
+    required this.isAction,
   }) : super(key: key);
 
   final String title1;
   final String title2;
+  final bool isAction;
   final VoidCallback onPressed;
 
   @override
@@ -118,17 +120,12 @@ class BuildItemUtama extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
-                    bloc: context.read<ButtonAnimationBloc>(),
-                    builder: (context, state) {
-                      return Text(
-                        (state.isActionPressed) ? title2 : title1,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
+                  Text(
+                    (isAction) ? title2 : title1,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
                   )
                 ],
               ),
@@ -149,14 +146,11 @@ class DoneButton extends StatelessWidget {
 
   final ActionEnum actionEnum;
   final TodoData todoData;
-  late ButtonAnimationBloc buttonAnimationBloc;
-  late MainMenuBloc? mainMenuBloc;
-  late TaskMenuBloc? taskMenuBloc;
 
   void onPressedDelete(
       {required WhichTodoBloc whichTodoBloc,
-      required MainMenuBloc? mainMenuBloc,
-      required TaskMenuBloc? taskMenuBloc}) {
+      MainMenuBloc? mainMenuBloc,
+      TaskMenuBloc? taskMenuBloc}) {
     if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
       mainMenuBloc.add(MainActionDeleteButton(false));
     }
@@ -167,8 +161,8 @@ class DoneButton extends StatelessWidget {
 
   void onPressedReorder(
       {required WhichTodoBloc whichTodoBloc,
-      required MainMenuBloc? mainMenuBloc,
-      required TaskMenuBloc? taskMenuBloc}) {
+      MainMenuBloc? mainMenuBloc,
+      TaskMenuBloc? taskMenuBloc}) {
     if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
       mainMenuBloc.add(MainActionReorderButton(false));
     }
@@ -184,6 +178,7 @@ class DoneButton extends StatelessWidget {
     required String button,
     required ButtonAnimationBloc buttonAnimationBloc,
     MainMenuBloc? mainMenuBloc,
+    TaskMenuBloc? taskMenuBloc,
   }) {
     showDialog(
       context: context,
@@ -201,22 +196,20 @@ class DoneButton extends StatelessWidget {
             TextButton(
               child: Text(button),
               onPressed: () {
-                if (mainMenuBloc != null) {
+                ////
+                if (actionEnum == ActionEnum.delete) {
                   ////
-                  if (actionEnum == ActionEnum.delete) {
-                    ////
-                    onPressedDelete(
-                        whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-                        mainMenuBloc: mainMenuBloc,
-                        taskMenuBloc: taskMenuBloc);
-                    ////
-                  }
-                  if (actionEnum == ActionEnum.reorder) {
-                    onPressedReorder(
-                        whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-                        mainMenuBloc: mainMenuBloc,
-                        taskMenuBloc: taskMenuBloc);
-                  }
+                  onPressedDelete(
+                      whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+                      mainMenuBloc: mainMenuBloc,
+                      taskMenuBloc: taskMenuBloc);
+                  ////
+                }
+                if (actionEnum == ActionEnum.reorder) {
+                  onPressedReorder(
+                      whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+                      mainMenuBloc: mainMenuBloc,
+                      taskMenuBloc: taskMenuBloc);
                 }
                 buttonAnimationBloc.add(const ButtonDoneEvent(isSave: true));
                 Navigator.of(context).pop();
@@ -230,6 +223,9 @@ class DoneButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ButtonAnimationBloc buttonAnimationBloc;
+    MainMenuBloc? mainMenuBloc;
+    TaskMenuBloc? taskMenuBloc;
     buttonAnimationBloc = context.read<ButtonAnimationBloc>();
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
       mainMenuBloc = context.read<MainMenuBloc>();
@@ -295,7 +291,7 @@ class DoneButton extends StatelessWidget {
           onTap: () {
             if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
                 mainMenuBloc != null) {
-              mainMenuBloc!.add(InitialList(listTitle: todoData.listTitle));
+              mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
             }
             if (actionEnum == ActionEnum.delete) {
               onPressedDelete(

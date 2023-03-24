@@ -49,8 +49,17 @@ class MainMenuPageState extends State<MainMenuPage> {
             ? const SizedBox()
             : BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
                 builder: (context, state) {
-                  if (state.actionEnum == ActionEnum.action) {
-                    return const LinearFlowWidget();
+                  if (state.actionEnum == ActionEnum.action &&
+                      state is ButtonActionState) {
+                    return LinearFlowWidget(
+                      isAction: state.isAction,
+                    );
+                  }
+                  if (state.actionEnum == ActionEnum.action &&
+                      state is! ButtonActionState) {
+                    return const LinearFlowWidget(
+                      isAction: false,
+                    );
                   }
                   return Padding(
                     padding: const EdgeInsets.only(left: 32),
@@ -113,8 +122,11 @@ class MainMenuPageState extends State<MainMenuPage> {
                     ],
                     child: BlocBuilder<MainMenuBloc, MainMenuState>(
                       builder: (context, state) {
-                        /// draggabl grid
-                        if (state is MainReorderButtonState) {
+                        /// This for reordere state
+                        /// if the state is in mainorederebuttonstate or in processs mean
+                        /// that reordere not finished yet untill user press save
+                        if (state is MainReorderButtonState ||
+                            state is MainReorderProcessDataState) {
                           print('reordere');
                           return ReorderableWrap(
                             padding: EdgeInsets.symmetric(
@@ -143,6 +155,7 @@ class MainMenuPageState extends State<MainMenuPage> {
                         if (state is MainDeleteButtonState) {
                           isDelete = state.isPressed;
                         }
+                        print('i am rendered');
 
                         ///Grid for delete and ordinary grid
                         return GridView.builder(

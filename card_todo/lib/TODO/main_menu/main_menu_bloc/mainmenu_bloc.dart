@@ -27,7 +27,7 @@ class MainMenuBloc extends Bloc<MainmenuEvent, MainMenuState> {
       // place the tile in new position
       listTitle.insert(newIndex, tile);
 
-      emit(MainReorderProcessDataState(newlistTitle: listTitle));
+      emit(MainReorderProcessDataState(listTitle));
     });
 
     on<MainActionDeleteButton>((event, emit) {
@@ -36,11 +36,11 @@ class MainMenuBloc extends Bloc<MainmenuEvent, MainMenuState> {
     });
 
     on<MainActionReorderButton>((event, emit) {
-      bool isPressed = event.isPressed;
-      emit(MainReorderButtonState(isPressed, listTitle));
+      // bool isPressed = event.isPressed;
+      emit(MainReorderButtonState(listTitle));
     });
 
-    on<SaveEvent>((event, emit) {
+    on<MainSaveEvent>((event, emit) {
       todoData.listTitle = [...state.listTitle];
       emit(SaveState(listTitle));
     });
