@@ -31,7 +31,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   TaskMenuBloc({required TodoData todoData})
       : super(TaskMenuInitial(taskList: [...todoData.tasklist])) {
     on<TaskInitialList>((event, emit) {
-      taskList = orderList(taskList: event.taskList);
+      taskList = orderList(taskList: state.taskList);
       emit(TaskState(taskList: taskList));
     });
 
@@ -45,32 +45,51 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       emit(TaskState(taskList: taskList));
     });
 
-    on<TaskReorderedButton>((event, emit) {
-      List<TaskList> taskListTrue =
-          taskList.where((element) => element.isChecked == true).toList();
-      emit(TaskReorderState(taskList: taskList, taskListTrue: taskListTrue));
+    on<TaskReordered>((event, emit) {
+      bool isOrdered = event.isOrdered;
+      taskList = [...state.taskList];
+      List<TaskList> taskListFalse =
+          findTaskListFalse(taskList: state.taskList);
+      // state.taskList.where((element) => element.isChecked == true).toList();
+      emit(TaskReorderState(
+          taskList: taskList,
+          taskListFalse: taskListFalse,
+          isOrdered: isOrdered));
     });
 
     on<TaskReorderedProcess>((event, emit) {
-      List<TaskList> taskListTrue = findTaskListTrue(taskList: taskList);
+      taskList = [...state.taskList];
+      List<TaskList> taskListFalse = [];
+      if (state is TaskReorderState) {
+        var currentState = state as TaskReorderState;
+        taskListFalse = [...currentState.taskListFalse];
+      }
       int newIndex = event.newIndex;
 
       // remove and put in tile
-      final TaskList tile = taskListTrue.removeAt(event.oldIndex);
+      final TaskList tile = taskListFalse.removeAt(event.oldIndex);
       // place the tile in new position
-      taskListTrue.insert(newIndex, tile);
-      emit(TaskReorderState(taskList: taskList, taskListTrue: taskListTrue));
+      taskListFalse.insert(newIndex, tile);
+      emit(TaskReorderState(
+          taskList: taskList, taskListFalse: taskListFalse, isOrdered: true));
     });
 
     on<TaskSave>((event, emit) {
       if (state is TaskReorderState) {
         final currentState = state as TaskReorderState;
         taskList = [
-          ...currentState.taskListTrue,
-          ...findTaskListFalse(taskList: taskList)
+          ...currentState.taskListFalse,
+          ...findTaskListTrue(taskList: state.taskList)
         ];
+        todoData.tasklist = [...taskList];
       }
       emit(TaskState(taskList: taskList));
+    });
+
+    on<TaskDelete>((event, emit) {
+      bool isDelete = event.isDelete;
+      taskList = [...state.taskList];
+      emit(TaskDeleteState(isDelete: isDelete, taskList: taskList));
     });
   }
 }

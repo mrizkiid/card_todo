@@ -25,12 +25,22 @@ class TaskState extends TaskMenuState {
 }
 
 class TaskReorderState extends TaskMenuState {
-  final List<TaskList> taskListTrue;
-  const TaskReorderState({required super.taskList, required this.taskListTrue});
+  final List<TaskList> taskListFalse;
+  final bool isOrdered;
+  const TaskReorderState(
+      {required super.taskList,
+      required this.taskListFalse,
+      required this.isOrdered});
+
+  @override
+  List<Object?> get props => [isOrdered, taskListFalse];
 }
 
-// class TaskReorderProcessState extends TaskMenuState {
-//   final List<TaskList> taskListTrue;
-//   const TaskReorderProcessState(
-//       {required super.taskList, required this.taskListTrue});
-// }
+class TaskDeleteState extends TaskMenuState {
+  final bool isDelete;
+
+  const TaskDeleteState({required this.isDelete, required super.taskList});
+
+  @override
+  List<Object?> get props => [isDelete];
+}

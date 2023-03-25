@@ -154,7 +154,27 @@ class MainMenuPageState extends State<MainMenuPage> {
 
                         if (state is MainDeleteButtonState) {
                           isDelete = state.isPressed;
+                          return GridView.builder(
+                            padding: EdgeInsets.symmetric(
+                                    horizontal: paddingHorizontal)
+                                .copyWith(bottom: 40),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10),
+                            itemCount: todoData.listTitle.length,
+                            itemBuilder: (context, index) {
+                              return CardWidget(
+                                fontSize: fontCard,
+                                title: state.listTitle[index],
+                                tasktodo: todoData.listTask.length,
+                                isDelete: false,
+                              );
+                            },
+                          );
                         }
+
                         print('i am rendered');
 
                         ///Grid for delete and ordinary grid
@@ -173,7 +193,7 @@ class MainMenuPageState extends State<MainMenuPage> {
                               fontSize: fontCard,
                               title: state.listTitle[index],
                               tasktodo: todoData.listTask.length,
-                              isDelete: isDelete,
+                              isDelete: false,
                             );
                           },
                         );

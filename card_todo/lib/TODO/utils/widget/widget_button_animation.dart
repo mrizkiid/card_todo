@@ -58,7 +58,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
     }
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
         taskMenuBloc != null) {
-      // taskMenuBloc.add();
+      taskMenuBloc.add(const TaskReordered(true));
     }
   }
 
@@ -72,7 +72,8 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
     }
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
         taskMenuBloc != null) {
-      // taskMenuBloc.add();
+      taskMenuBloc.add(const TaskDelete(true));
+      print('taskdelete is called');
     }
   }
 
@@ -122,7 +123,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           title: 'Reorder',
           onPressed: () {
             controller.reset();
-            buttonAnimationBloc.add(ButtonActionReorder());
+            buttonAnimationBloc.add(const ButtonActionReorder());
             onPressedReorder(
                 buttonAnimationBloc: buttonAnimationBloc,
                 mainMenuBloc: mainMenuBloc,
@@ -133,7 +134,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           title: 'Delete',
           onPressed: () {
             controller.reset();
-            buttonAnimationBloc.add(ButtonActionDelete());
+            buttonAnimationBloc.add(const ButtonActionDelete());
             onPressedDelete(
                 buttonAnimationBloc: buttonAnimationBloc,
                 mainMenuBloc: mainMenuBloc,

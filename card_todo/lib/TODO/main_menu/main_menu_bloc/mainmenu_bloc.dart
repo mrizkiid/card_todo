@@ -16,11 +16,6 @@ class MainMenuBloc extends Bloc<MainmenuEvent, MainMenuState> {
 
     on<MainReorderProcessData>((event, emit) {
       int newIndex = event.newIndex;
-      // listTitle = listTitle;
-
-      // if (event.oldIndex < event.newIndex) {
-      //   newIndex -= 1;
-      // }
 
       // remove and put in tile
       final String tile = listTitle.removeAt(event.oldIndex);

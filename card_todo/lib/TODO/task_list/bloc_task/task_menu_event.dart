@@ -9,10 +9,7 @@ abstract class TaskMenuEvent extends Equatable {
 }
 
 class TaskInitialList extends TaskMenuEvent {
-  List<TaskList> taskList;
-  TaskInitialList({
-    required this.taskList,
-  });
+  TaskInitialList();
 }
 
 class TaskEvent extends TaskMenuEvent {
@@ -25,19 +22,29 @@ class TaskEvent extends TaskMenuEvent {
     required this.title,
     required this.index,
   });
+
+  // @override
+  // List<Object> get props => [isChecked, title, index];
 }
 
 class TaskDelete extends TaskMenuEvent {
   final bool isDelete;
 
   const TaskDelete(this.isDelete);
-  // final
+  @override
+  List<Object> get props => [isDelete];
 }
 
-class TaskReorderedButton extends TaskMenuEvent {
-  final bool isPressed;
+class TaskDeleteProcess extends TaskMenuEvent {
+  const TaskDeleteProcess();
+}
 
-  const TaskReorderedButton(this.isPressed);
+class TaskReordered extends TaskMenuEvent {
+  final bool isOrdered;
+
+  const TaskReordered(this.isOrdered);
+  @override
+  List<Object> get props => [isOrdered];
 }
 
 class TaskReorderedProcess extends TaskMenuEvent {

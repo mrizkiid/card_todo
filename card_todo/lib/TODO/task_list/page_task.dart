@@ -29,18 +29,8 @@ class _TaskPageState extends State<TaskPage> {
     sizing.init(context);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
     double heightAppBar = 65;
-    bool isDelete = true;
+    bool isDelete = false;
     TodoData todoData = RepositoryProvider.of(context);
-    // for (var i in todoData.tasklist) {
-    //   print('${i.isChecked} == ${i.title}');
-    // }
-    // List<TaskList> listTaskTrue = todoData.tasklist
-    //     .where((element) => element.isChecked == true)
-    //     .toList();
-    // List<TaskList> listTaskFalse = todoData.tasklist
-    //     .where((element) => element.isChecked == false)
-    //     .toList();
-    // List<TaskList> listTaskFinal = [...listTaskFalse, ...listTaskTrue];
     return MultiBlocProvider(
       providers: [
         BlocProvider<ButtonAnimationBloc>(
@@ -61,16 +51,17 @@ class _TaskPageState extends State<TaskPage> {
                 bottomRight: Radius.circular(25),
               ),
             ),
-            child: Padding(
+            child: Container(
               padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
                   .copyWith(bottom: 10, top: 10),
-              child: Center(
+              child: Align(
+                alignment: Alignment.bottomCenter,
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -87,13 +78,13 @@ class _TaskPageState extends State<TaskPage> {
                         ),
                       ],
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.visibility,
-                        size: 27,
-                      ),
-                    )
+                    // IconButton(
+                    //   onPressed: () {},
+                    //   icon: Icon(
+                    //     Icons.visibility,
+                    //     size: 27,
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -152,26 +143,54 @@ class _TaskPageState extends State<TaskPage> {
 
             ///reordered state
             if (state is TaskReorderState) {
-              ReorderableColumn(
+              int i = -1;
+              return ReorderableColumn(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                    .copyWith(top: 30),
                 onReorder: (oldIndex, newIndex) {
-                  taskMenuBloc.add(TaskReorderedProcess(
-                      oldIndex: oldIndex, newIndex: newIndex));
+                  taskMenuBloc.add(
+                    TaskReorderedProcess(
+                        oldIndex: oldIndex, newIndex: newIndex),
+                  );
                 },
-                children: taskList
+                children: state.taskListFalse
                     .map((e) {
-                      return;
+                      i++;
+                      return TileTaskCard(
+                          key: ValueKey(i),
+                          isChecked: e.isChecked,
+                          title: e.title,
+                          isDelete: false,
+                          onchanged: () {});
                     })
                     .toList()
                     .cast<Widget>(),
               );
             }
 
-            //condition for delete
-            if (state is TaskDelete) {
-              isDelete = true;
-            } else {
-              isDelete = false;
+            /// Delete state
+            if (state is TaskDeleteState) {
+              return ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                    .copyWith(top: 30),
+                itemCount: state.taskList.length,
+                itemBuilder: (context, index) {
+                  bool isChecked = taskList[index].isChecked;
+                  String title = taskList[index].title;
+                  return TileTaskCard(
+                      isChecked: isChecked,
+                      title: title,
+                      isDelete: true,
+                      onchanged: () {});
+                },
+              );
             }
+
+            // if (state is! TaskDeleteState) {
+            //   isDelete = false;
+            // }
+
+            print('rebuild');
 
             /// it will build if not reordered
             return ListView.builder(
@@ -184,8 +203,9 @@ class _TaskPageState extends State<TaskPage> {
                 return TileTaskCard(
                   isChecked: isChecked,
                   title: title,
-                  isDelete: isDelete,
+                  isDelete: false,
                   onchanged: () {
+                    print('checked is pressed');
                     taskMenuBloc.add(TaskEvent(
                         isChecked: isChecked, title: title, index: index));
                   },
@@ -256,9 +276,14 @@ class TileTaskCard extends StatelessWidget {
                     color: Colors.black),
           ),
           trailing: isDelete
-              ? Icon(
-                  TodoAppIcon.delete,
-                  color: Colors.red,
+              ? IconButton(
+                  onPressed: () {
+                    context.read<TaskMenuBloc>().add(TaskDeleteProcess());
+                  },
+                  icon: Icon(
+                    TodoAppIcon.delete,
+                    color: Colors.red,
+                  ),
                 )
               : SizedBox(),
         ),
@@ -272,10 +297,10 @@ class TileTaskCard extends StatelessWidget {
       hoverColor: Colors.white,
       splashColor: Colors.white,
       onPressed: isDelete
-          ? () {
+          ? null
+          : () {
               onchanged();
-            }
-          : null,
+            },
       icon: isPressed
           ? Icon(
               TodoAppIcon.check,
