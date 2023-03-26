@@ -54,7 +54,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
       required TaskMenuBloc? taskMenuBloc}) {
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
         mainMenuBloc != null) {
-      mainMenuBloc.add(MainActionReorderButton(true));
+      mainMenuBloc.add(MainReorder(true));
     }
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
         taskMenuBloc != null) {
@@ -68,7 +68,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
       required TaskMenuBloc? taskMenuBloc}) {
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
         mainMenuBloc != null) {
-      mainMenuBloc.add(MainActionDeleteButton(true));
+      mainMenuBloc.add(const MainDelete(true));
     }
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
         taskMenuBloc != null) {

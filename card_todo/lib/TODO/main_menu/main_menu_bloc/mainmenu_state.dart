@@ -1,9 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'mainmenu_bloc.dart';
 
-abstract class MainMenuState {
+abstract class MainMenuState extends Equatable {
   const MainMenuState(this.listTitle);
 
   final List<String> listTitle;
+
+  @override
+  List<Object?> get props => [listTitle];
 }
 
 class MainmenuInitial extends MainMenuState {
@@ -14,36 +18,34 @@ class ReorderState extends MainMenuState {
   const ReorderState(super.listTitle);
 }
 
-class MainReorderProcessDataState extends MainMenuState {
-  MainReorderProcessDataState(super.listTitle);
-  // final List<String> newlistTitle;
-
-  // const MainReorderProcessDataState({required this.newlistTitle})
-  //     : super(newlistTitle);
+class MainReorderState extends MainMenuState {
+  const MainReorderState(super.listTitle);
 }
 
-class MainReorderButtonState extends MainMenuState {
-  // final List<String> newlistTitle;
-  // final bool isPressed;
-
-  // const MainReorderButtonState(this.isPressed, this.newlistTitle)
-  //     : super(newlistTitle);
-  const MainReorderButtonState(super.listTitle);
-
-  // @override
-  // List<Object> get props => [isPressed];
-}
-
-class MainDeleteButtonState extends MainMenuState {
+class MainDeleteState extends MainMenuState {
   final bool isPressed;
+  final List<bool> isRedList;
   final List<String> newlistTask;
-  const MainDeleteButtonState(this.isPressed, this.newlistTask)
-      : super(newlistTask);
+  const MainDeleteState({
+    required this.isRedList,
+    required this.isPressed,
+    required this.newlistTask,
+  }) : super(newlistTask);
 
   @override
-  List<Object> get props => [isPressed];
+  List<Object> get props => [isPressed, isRedList, newlistTask];
+}
+
+class MainDeleteProccess extends MainMenuState {
+  final bool isDelete;
+  const MainDeleteProccess(
+    super.listTitle, {
+    required this.isDelete,
+  });
+  @override
+  List<Object?> get props => [isDelete];
 }
 
 class SaveState extends MainMenuState {
-  SaveState(super.listTitle);
+  const SaveState(super.listTitle);
 }

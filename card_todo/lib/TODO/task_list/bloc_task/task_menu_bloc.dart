@@ -7,6 +7,7 @@ part 'task_menu_state.dart';
 
 class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   List<TaskList> taskList = [];
+  List<int> isDeleteList = [];
 
   //method for ordering list it will return lis of taskList
   List<TaskList> orderList({required List<TaskList> taskList}) {
@@ -26,6 +27,10 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   // Method for finding listFalse
   List<TaskList> findTaskListFalse({required List<TaskList> taskList}) {
     return taskList.where((element) => element.isChecked == false).toList();
+  }
+
+  void changedToNewList(List<TaskList> taskListNew) {
+    taskList = [...taskListNew];
   }
 
   TaskMenuBloc({required TodoData todoData})
@@ -50,7 +55,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       taskList = [...state.taskList];
       List<TaskList> taskListFalse =
           findTaskListFalse(taskList: state.taskList);
-      // state.taskList.where((element) => element.isChecked == true).toList();
       emit(TaskReorderState(
           taskList: taskList,
           taskListFalse: taskListFalse,
@@ -89,7 +93,29 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
     on<TaskDelete>((event, emit) {
       bool isDelete = event.isDelete;
       taskList = [...state.taskList];
-      emit(TaskDeleteState(isDelete: isDelete, taskList: taskList));
+      emit(TaskDeleteState(
+          isRedList: List.filled(taskList.length, false),
+          isDelete: isDelete,
+          taskList: taskList));
+    });
+
+    on<TaskDeleteProcess>((event, emit) {
+      List<bool> isRedList = [];
+      bool isDelete = true;
+      int index = event.index;
+      if (state is TaskDeleteState) {
+        final currentState = state as TaskDeleteState;
+        isRedList = [...currentState.isRedList];
+        isRedList[index] = !isRedList[index];
+        isDelete = currentState.isDelete;
+      }
+
+      isDeleteList.add(index);
+
+      changedToNewList(state.taskList);
+
+      emit(TaskDeleteState(
+          isRedList: isRedList, isDelete: isDelete, taskList: taskList));
     });
   }
 }

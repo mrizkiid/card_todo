@@ -34,7 +34,6 @@ class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => TodoData(),
@@ -42,9 +41,9 @@ class App extends StatelessWidget {
         // home: SingInPage(),
         // home: PageSignUp(),
         // home: TestGridCardPage(),
-        home: TaskPage(),
+        // home: TaskPage(),
         // home: TestPageFolder(),
-        // home: MainMenuPage(),
+        home: MainMenuPage(),
       ),
     );
   }

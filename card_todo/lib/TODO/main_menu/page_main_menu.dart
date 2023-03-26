@@ -107,77 +107,39 @@ class MainMenuPageState extends State<MainMenuPage> {
                       ),
                     ),
                   )
-                : MultiBlocListener(
-                    listeners: [
-                      BlocListener<MainMenuBloc, MainMenuState>(
-                        listener: (context, state) {},
-                      ),
-                      BlocListener<ButtonAnimationBloc, ButtonAnimationState>(
-                        listener: (context, state) {
-                          if (state is ButtonDoneState) {
-                            isDone = state.isSave ?? false;
-                          }
-                        },
-                      ),
-                    ],
-                    child: BlocBuilder<MainMenuBloc, MainMenuState>(
-                      builder: (context, state) {
-                        /// This for reordere state
-                        /// if the state is in mainorederebuttonstate or in processs mean
-                        /// that reordere not finished yet untill user press save
-                        if (state is MainReorderButtonState ||
-                            state is MainReorderProcessDataState) {
-                          print('reordere');
-                          return ReorderableWrap(
-                            padding: EdgeInsets.symmetric(
-                                    horizontal: paddingHorizontal)
-                                .copyWith(bottom: 40),
-                            spacing: 10,
-                            runSpacing: 10,
-                            children: state.listTitle
-                                .map(
-                                  (tile) => CardWidget(
-                                      fontSize: fontCard,
-                                      title: tile,
-                                      tasktodo: todoData.listTask.length,
-                                      sizeCard: sizeCard,
-                                      isDelete: isDelete),
-                                )
-                                .toList(),
-                            onReorder: (oldIndex, newIndex) {
-                              context.read<MainMenuBloc>().add(
-                                  MainReorderProcessData(
-                                      oldIndex: oldIndex, newIndex: newIndex));
-                            },
-                          );
-                        }
+                : BlocBuilder<MainMenuBloc, MainMenuState>(
+                    builder: (context, state) {
+                      /// This for reordere state
+                      /// if the state is in mainorederebuttonstate or in processs mean
+                      /// that reordere not finished yet untill user press save
+                      if (state is MainReorderState) {
+                        print('reordere');
+                        return ReorderableWrap(
+                          padding: EdgeInsets.symmetric(
+                                  horizontal: paddingHorizontal)
+                              .copyWith(bottom: 40),
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: state.listTitle
+                              .map(
+                                (tile) => CardWidget(
+                                    fontSize: fontCard,
+                                    title: tile,
+                                    tasktodo: todoData.listTask.length,
+                                    sizeCard: sizeCard,
+                                    isDelete: isDelete),
+                              )
+                              .toList(),
+                          onReorder: (oldIndex, newIndex) {
+                            context.read<MainMenuBloc>().add(
+                                MainReorderProcessData(
+                                    oldIndex: oldIndex, newIndex: newIndex));
+                          },
+                        );
+                      }
 
-                        if (state is MainDeleteButtonState) {
-                          isDelete = state.isPressed;
-                          return GridView.builder(
-                            padding: EdgeInsets.symmetric(
-                                    horizontal: paddingHorizontal)
-                                .copyWith(bottom: 40),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10),
-                            itemCount: todoData.listTitle.length,
-                            itemBuilder: (context, index) {
-                              return CardWidget(
-                                fontSize: fontCard,
-                                title: state.listTitle[index],
-                                tasktodo: todoData.listTask.length,
-                                isDelete: false,
-                              );
-                            },
-                          );
-                        }
-
-                        print('i am rendered');
-
-                        ///Grid for delete and ordinary grid
+                      if (state is MainDeleteState) {
+                        print('rebuild delete state');
                         return GridView.builder(
                           padding: EdgeInsets.symmetric(
                                   horizontal: paddingHorizontal)
@@ -189,16 +151,49 @@ class MainMenuPageState extends State<MainMenuPage> {
                                   mainAxisSpacing: 10),
                           itemCount: todoData.listTitle.length,
                           itemBuilder: (context, index) {
+                            bool isDelete = state.isRedList[index];
                             return CardWidget(
                               fontSize: fontCard,
+                              color: isDelete
+                                  ? const Color(0xFFFF6961)
+                                  : Colors.white,
                               title: state.listTitle[index],
                               tasktodo: todoData.listTask.length,
-                              isDelete: false,
+                              isDelete: state.isPressed,
+                              onpressed: () {
+                                print('color pressed');
+                                context
+                                    .read<MainMenuBloc>()
+                                    .add(MainDeleteProcess(index: index));
+                              },
                             );
                           },
                         );
-                      },
-                    ),
+                      }
+
+                      print('i am rendered');
+
+                      ///Grid for default
+                      return GridView.builder(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                                .copyWith(bottom: 40),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
+                        itemCount: todoData.listTitle.length,
+                        itemBuilder: (context, index) {
+                          return CardWidget(
+                            fontSize: fontCard,
+                            title: state.listTitle[index],
+                            tasktodo: todoData.listTask.length,
+                            isDelete: false,
+                          );
+                        },
+                      );
+                    },
                   ),
           ],
         ),

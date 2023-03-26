@@ -152,7 +152,7 @@ class DoneButton extends StatelessWidget {
       MainMenuBloc? mainMenuBloc,
       TaskMenuBloc? taskMenuBloc}) {
     if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-      mainMenuBloc.add(MainActionDeleteButton(false));
+      mainMenuBloc.add(MainDelete(false));
     }
     if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
       taskMenuBloc.add(const TaskDelete(false));
@@ -164,7 +164,7 @@ class DoneButton extends StatelessWidget {
       MainMenuBloc? mainMenuBloc,
       TaskMenuBloc? taskMenuBloc}) {
     if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-      mainMenuBloc.add(MainActionReorderButton(false));
+      mainMenuBloc.add(MainReorder(false));
     }
     if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
       // if (whichTodoBloc == WhichTodoBloc.taskMenu) {
@@ -206,6 +206,7 @@ class DoneButton extends StatelessWidget {
                 }
                 buttonAnimationBloc.add(const ButtonDoneEvent(isSave: true));
                 Navigator.of(context).pop();
+                ////
                 ////
                 // if (actionEnum == ActionEnum.delete) {
                 //   print('delete is Pressed');

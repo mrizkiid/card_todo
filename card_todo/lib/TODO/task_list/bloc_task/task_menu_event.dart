@@ -36,7 +36,8 @@ class TaskDelete extends TaskMenuEvent {
 }
 
 class TaskDeleteProcess extends TaskMenuEvent {
-  const TaskDeleteProcess();
+  final int index;
+  const TaskDeleteProcess({required this.index});
 }
 
 class TaskReordered extends TaskMenuEvent {

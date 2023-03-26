@@ -1,7 +1,9 @@
+import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
 import 'package:flutter/material.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 ///Make Containein above main menu
 class ProfileContainer extends StatelessWidget {
@@ -78,14 +80,17 @@ class ProfileContainer extends StatelessWidget {
 
 /// make cardwidget title for main menu
 class CardWidget extends StatelessWidget {
-  const CardWidget(
-      {super.key,
-      required this.fontSize,
-      required this.title,
-      required this.tasktodo,
-      this.isDelete,
-      this.sizeCard,
-      this.index});
+  const CardWidget({
+    super.key,
+    required this.fontSize,
+    required this.title,
+    required this.tasktodo,
+    this.isDelete,
+    this.sizeCard,
+    this.index,
+    this.onpressed,
+    this.color,
+  });
 
   final double fontSize;
   final String title;
@@ -93,56 +98,59 @@ class CardWidget extends StatelessWidget {
   final bool? isDelete;
   final double? sizeCard;
   final int? index;
-
+  final void Function()? onpressed;
+  final Color? color;
+//
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      height: sizeCard,
-      width: sizeCard,
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(25)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
+    return GestureDetector(
+      onTap: onpressed,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        height: sizeCard,
+        width: sizeCard,
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(25),
+            ),
+            color: color ?? Colors.white,
+            boxShadow: [
+              BoxShadow(
                 offset: const Offset(2, 2),
                 blurRadius: 4,
-                color: Colors.black.withOpacity(0.25)),
-          ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Flexible(
-                flex: 4,
-                fit: FlexFit.tight,
-                child: SizedBox(
-                  child: Text(
-                    title,
-                    style: TextStyle(fontSize: fontSize),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                color: Colors.black.withOpacity(0.25),
               ),
-              Expanded(
-                flex: 1,
-                child: Visibility(
-                  visible: isDelete ?? false,
-                  child: IconButton(
-                    onPressed: () {
-                      print('delete');
-                    },
-                    icon: const Icon(TodoAppIcon.delete),
+            ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Flexible(
+                  flex: 4,
+                  fit: FlexFit.tight,
+                  child: SizedBox(
+                    child: Text(
+                      title,
+                      style: TextStyle(fontSize: fontSize),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
-              )
-            ],
-          ),
-          Text('You have $tasktodo Tasks')
-        ],
+                Expanded(
+                  flex: 1,
+                  child: Visibility(
+                    visible: isDelete ?? false,
+                    child: const Icon(TodoAppIcon.delete),
+                  ),
+                )
+              ],
+            ),
+            Text('You have $tasktodo Tasks')
+          ],
+        ),
       ),
     );
   }

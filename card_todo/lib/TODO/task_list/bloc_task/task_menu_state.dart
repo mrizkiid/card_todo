@@ -38,9 +38,13 @@ class TaskReorderState extends TaskMenuState {
 
 class TaskDeleteState extends TaskMenuState {
   final bool isDelete;
+  final List<bool> isRedList;
 
-  const TaskDeleteState({required this.isDelete, required super.taskList});
+  const TaskDeleteState(
+      {required this.isRedList,
+      required this.isDelete,
+      required super.taskList});
 
   @override
-  List<Object?> get props => [isDelete];
+  List<Object?> get props => [isDelete, isRedList];
 }

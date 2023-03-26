@@ -1,18 +1,18 @@
 part of 'mainmenu_bloc.dart';
 
-abstract class MainmenuEvent {
-  const MainmenuEvent();
+abstract class MainMenuEvent {
+  const MainMenuEvent();
 }
 
-class MainActionEvent extends MainmenuEvent {
+class MainActionEvent extends MainMenuEvent {
   const MainActionEvent();
 }
 
-class MainActionAdd extends MainmenuEvent {
+class MainActionAdd extends MainMenuEvent {
   const MainActionAdd();
 }
 
-class MainReorderProcessData extends MainmenuEvent {
+class MainReorderProcessData extends MainMenuEvent {
   const MainReorderProcessData(
       {required this.oldIndex, required this.newIndex});
   final int oldIndex;
@@ -22,23 +22,32 @@ class MainReorderProcessData extends MainmenuEvent {
   // List<Object?> get props => [oldIndex, newIndex];
 }
 
-class MainActionDeleteButton extends MainmenuEvent {
+class MainDelete extends MainMenuEvent {
   final bool isPressed;
 
-  MainActionDeleteButton(this.isPressed);
+  const MainDelete(this.isPressed);
 }
 
-class MainActionReorderButton extends MainmenuEvent {
+class MainDeleteProcess extends MainMenuEvent {
+  final int index;
+  const MainDeleteProcess({required this.index});
+}
+
+class MainReorder extends MainMenuEvent {
   final bool isPressed;
 
-  MainActionReorderButton(this.isPressed);
+  MainReorder(this.isPressed);
 }
 
-class InitialList extends MainmenuEvent {
+class InitialList extends MainMenuEvent {
   final List<String> listTitle;
   InitialList({required this.listTitle});
 }
 
-class MainSaveEvent extends MainmenuEvent {
+class MainSaveEvent extends MainMenuEvent {
   MainSaveEvent();
+}
+
+class MainDeleteSaveEvent extends MainMenuEvent {
+  MainDeleteSaveEvent();
 }

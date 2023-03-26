@@ -31,4 +31,5 @@ class TodoAppIcon {
   static const IconData handlepng = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData menu = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData previous = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData undo = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
