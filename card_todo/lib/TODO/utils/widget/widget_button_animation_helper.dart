@@ -152,7 +152,7 @@ class DoneButton extends StatelessWidget {
       MainMenuBloc? mainMenuBloc,
       TaskMenuBloc? taskMenuBloc}) {
     if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-      mainMenuBloc.add(MainDelete(false));
+      mainMenuBloc.add(const MainDeleteEvent(false));
     }
     if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
       taskMenuBloc.add(const TaskDelete(false));
@@ -164,7 +164,7 @@ class DoneButton extends StatelessWidget {
       MainMenuBloc? mainMenuBloc,
       TaskMenuBloc? taskMenuBloc}) {
     if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-      mainMenuBloc.add(MainReorder(false));
+      mainMenuBloc.add(MainReorderEvent(false));
     }
     if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
       // if (whichTodoBloc == WhichTodoBloc.taskMenu) {
@@ -199,37 +199,24 @@ class DoneButton extends StatelessWidget {
               child: Text(button),
               onPressed: () {
                 if (taskMenuBloc != null) {
-                  taskMenuBloc.add(TaskSave());
+                  if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
+                    taskMenuBloc.add(TaskDeleteSave());
+                  }
+                  if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
+                    taskMenuBloc.add(TaskReorderSave());
+                  }
                 }
                 if (mainMenuBloc != null) {
-                  mainMenuBloc.add(MainSaveEvent());
+                  // mainMenuBloc.add(MainReorderSaveEvent());
+                  if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
+                    mainMenuBloc.add(MainDeleteSaveEvent());
+                  }
+                  if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
+                    mainMenuBloc.add(MainReorderSaveEvent());
+                  }
                 }
-                buttonAnimationBloc.add(const ButtonDoneEvent(isSave: true));
+                buttonAnimationBloc.add(const ButtonDoneEvent(isSave: false));
                 Navigator.of(context).pop();
-                ////
-                ////
-                // if (actionEnum == ActionEnum.delete) {
-                //   print('delete is Pressed');
-                //   ////
-                //   // onPressedDelete(
-                //   //     whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-                //   //     mainMenuBloc: mainMenuBloc,
-                //   //     taskMenuBloc: taskMenuBloc);
-                //   ////
-
-                // }
-                // if (actionEnum == ActionEnum.reorder) {
-                //   if (buttonAnimationBloc.whichTodoBloc ==
-                //           WhichTodoBloc.taskMenu &&
-                //       taskMenuBloc != null) {
-                //     print('task save is pressed');
-                //     taskMenuBloc.add(TaskSave());
-                //   }
-                //   // onPressedReorder(
-                //   //     whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-                //   //     mainMenuBloc: mainMenuBloc,
-                //   //     taskMenuBloc: taskMenuBloc);
-                // }
               },
             ),
           ],
@@ -244,7 +231,6 @@ class DoneButton extends StatelessWidget {
     MainMenuBloc? mainMenuBloc;
     TaskMenuBloc? taskMenuBloc;
     buttonAnimationBloc = context.read<ButtonAnimationBloc>();
-    // WhichTodoBloc actionEnum = buttonAnimationBloc.whichTodoBloc;
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
       mainMenuBloc = context.read<MainMenuBloc>();
     }
@@ -259,7 +245,15 @@ class DoneButton extends StatelessWidget {
         // done button
         InkWell(
           onTap: () {
-            if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
+            bool isDelete =
+                (buttonAnimationBloc.actionEnum == ActionEnum.delete)
+                    ? true
+                    : false;
+            bool isReorder =
+                (buttonAnimationBloc.actionEnum == ActionEnum.reorder)
+                    ? true
+                    : false;
+            if (isDelete) {
               showDialogMehtod(context,
                   buttonAnimationBloc: buttonAnimationBloc,
                   mainMenuBloc: mainMenuBloc,
@@ -270,7 +264,7 @@ class DoneButton extends StatelessWidget {
                   button: 'Delete');
               return;
             }
-            if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
+            if (isReorder) {
               showDialogMehtod(context,
                   buttonAnimationBloc: buttonAnimationBloc,
                   mainMenuBloc: mainMenuBloc,
@@ -311,28 +305,13 @@ class DoneButton extends StatelessWidget {
           onTap: () {
             if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
                 mainMenuBloc != null) {
-              mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
+              mainMenuBloc.add(InitialListEvent(listTitle: todoData.listTitle));
             }
 
             if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
                 taskMenuBloc != null) {
               taskMenuBloc.add(TaskInitialList());
             }
-            // if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
-            //   onPressedDelete(
-            //       whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-            //       mainMenuBloc: mainMenuBloc,
-            //       taskMenuBloc: taskMenuBloc);
-            //   // mainMenuBloc.add(MainActionDeleteButton(false));
-            // }
-            // if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
-            //   // mainMenuBloc.add(InitialList(listTitle: todoData.listTitle));
-            //   onPressedReorder(
-            //       whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-            //       mainMenuBloc: mainMenuBloc,
-            //       taskMenuBloc: taskMenuBloc);
-            //   // mainMenuBloc.add(MainActionReorderButton(false));
-            // }
             buttonAnimationBloc.add(ButtonCancelEvent());
           },
           child: Container(

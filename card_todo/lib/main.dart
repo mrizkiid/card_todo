@@ -6,6 +6,7 @@ import 'package:card_todo/AUTH/pages/page_sign_up.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/main_menu/page_main_menu.dart';
 import 'package:card_todo/TODO/task_list/page_task.dart';
+import 'package:card_todo/UTILS/route/app_route.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
 import 'package:card_todo/general_bloc_observer.dart';
 import 'package:card_todo/testfolder/testfile.dart';
@@ -26,25 +27,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return App();
+    return RepositoryProvider(
+      create: (_) => TodoData(),
+      child: App(),
+    );
   }
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  App({super.key});
+  AppRoute appRoute = AppRoute();
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => TodoData(),
-      child: MaterialApp(
-        // home: SingInPage(),
-        // home: PageSignUp(),
-        // home: TestGridCardPage(),
-        // home: TaskPage(),
-        // home: TestPageFolder(),
-        home: MainMenuPage(),
-      ),
+    TodoData todoData = RepositoryProvider.of<TodoData>(context);
+    return MaterialApp(
+      onGenerateRoute: (settings) {
+        return appRoute.onGenerateRoute(
+          settings,
+          todoData,
+        );
+      },
+      // home: SingInPage(),
+      // home: PageSignUp(),
+      // home: TestGridCardPage(),
+      home: TaskPage(),
+      // home: TestPageFolder(),
+      // home: MainMenuPage(),
     );
   }
 }

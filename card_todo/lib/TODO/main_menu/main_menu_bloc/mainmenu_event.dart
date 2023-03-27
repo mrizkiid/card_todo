@@ -4,16 +4,21 @@ abstract class MainMenuEvent {
   const MainMenuEvent();
 }
 
+class InitialListEvent extends MainMenuEvent {
+  final List<String> listTitle;
+  InitialListEvent({required this.listTitle});
+}
+
 class MainActionEvent extends MainMenuEvent {
   const MainActionEvent();
 }
 
-class MainActionAdd extends MainMenuEvent {
-  const MainActionAdd();
+class MainActionAddEvent extends MainMenuEvent {
+  const MainActionAddEvent();
 }
 
-class MainReorderProcessData extends MainMenuEvent {
-  const MainReorderProcessData(
+class MainReorderProcessDataEvent extends MainMenuEvent {
+  const MainReorderProcessDataEvent(
       {required this.oldIndex, required this.newIndex});
   final int oldIndex;
   final int newIndex;
@@ -22,30 +27,25 @@ class MainReorderProcessData extends MainMenuEvent {
   // List<Object?> get props => [oldIndex, newIndex];
 }
 
-class MainDelete extends MainMenuEvent {
+class MainDeleteEvent extends MainMenuEvent {
   final bool isPressed;
 
-  const MainDelete(this.isPressed);
+  const MainDeleteEvent(this.isPressed);
 }
 
-class MainDeleteProcess extends MainMenuEvent {
+class MainDeleteProcessEvent extends MainMenuEvent {
   final int index;
-  const MainDeleteProcess({required this.index});
+  const MainDeleteProcessEvent({required this.index});
 }
 
-class MainReorder extends MainMenuEvent {
+class MainReorderEvent extends MainMenuEvent {
   final bool isPressed;
 
-  MainReorder(this.isPressed);
+  MainReorderEvent(this.isPressed);
 }
 
-class InitialList extends MainMenuEvent {
-  final List<String> listTitle;
-  InitialList({required this.listTitle});
-}
-
-class MainSaveEvent extends MainMenuEvent {
-  MainSaveEvent();
+class MainReorderSaveEvent extends MainMenuEvent {
+  MainReorderSaveEvent();
 }
 
 class MainDeleteSaveEvent extends MainMenuEvent {

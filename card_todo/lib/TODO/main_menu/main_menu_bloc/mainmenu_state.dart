@@ -36,9 +36,9 @@ class MainDeleteState extends MainMenuState {
   List<Object> get props => [isPressed, isRedList, newlistTask];
 }
 
-class MainDeleteProccess extends MainMenuState {
+class MainDeleteProccessState extends MainMenuState {
   final bool isDelete;
-  const MainDeleteProccess(
+  const MainDeleteProccessState(
     super.listTitle, {
     required this.isDelete,
   });

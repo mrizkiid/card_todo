@@ -17,18 +17,18 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
   MainMenuBloc({required TodoData todoData})
       : super(const MainmenuInitial([])) {
-    on<InitialList>((event, emit) {
+    on<InitialListEvent>((event, emit) {
       // listTitle = [...event.listTitle];
       changeToNewList(event.listTitle);
       emit(MainmenuInitial(listTitle));
     });
 
-    on<MainReorder>((event, emit) {
+    on<MainReorderEvent>((event, emit) {
       changeToNewList(state.listTitle);
       emit(MainReorderState(listTitle));
     });
 
-    on<MainReorderProcessData>((event, emit) {
+    on<MainReorderProcessDataEvent>((event, emit) {
       changeToNewList(state.listTitle);
       int newIndex = event.newIndex;
       // remove and put in tile
@@ -39,7 +39,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       emit(MainReorderState(listTitle));
     });
 
-    on<MainDelete>((event, emit) {
+    on<MainDeleteEvent>((event, emit) {
       changeToNewList(state.listTitle);
       bool isPressed = event.isPressed;
       emit(MainDeleteState(
@@ -48,7 +48,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
           newlistTask: listTitle));
     });
 
-    on<MainDeleteProcess>((event, emit) {
+    on<MainDeleteProcessEvent>((event, emit) {
       List<bool> isRedList = [];
       if (state is MainDeleteState) {
         final currentState = state as MainDeleteState;
@@ -61,7 +61,6 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       /// this adding to list index , it will do delete in last when
       /// do saving event
       indexDelete.add(event.index);
-
       //changing listTitle to new list
       changeToNewList(state.listTitle);
       bool isPressed = true;
@@ -69,7 +68,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
           isRedList: isRedList, isPressed: isPressed, newlistTask: listTitle));
     });
 
-    on<MainSaveEvent>((event, emit) {
+    on<MainReorderSaveEvent>((event, emit) {
       ///saving to list
       todoData.listTitle = [...listTitle];
 

@@ -19,9 +19,10 @@ class TaskMenuInitial extends TaskMenuState {
 
 class TaskState extends TaskMenuState {
   const TaskState({required super.taskList});
+}
 
-  // @override
-  // List<Object> get props => [itaskList];
+class TaskSaveState extends TaskMenuState {
+  const TaskSaveState({required super.taskList});
 }
 
 class TaskReorderState extends TaskMenuState {

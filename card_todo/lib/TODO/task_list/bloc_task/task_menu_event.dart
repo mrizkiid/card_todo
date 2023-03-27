@@ -57,6 +57,8 @@ class TaskReorderedProcess extends TaskMenuEvent {
 
 class TaskReorderedSave extends TaskMenuEvent {}
 
-class TaskSave extends TaskMenuEvent {}
+class TaskReorderSave extends TaskMenuEvent {}
+
+class TaskDeleteSave extends TaskMenuEvent {}
 
 // class TaskCh

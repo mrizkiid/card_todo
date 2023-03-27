@@ -50,6 +50,9 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       emit(TaskState(taskList: taskList));
     });
 
+    ///
+    /// Task Reordered
+    ///
     on<TaskReordered>((event, emit) {
       bool isOrdered = event.isOrdered;
       taskList = [...state.taskList];
@@ -78,7 +81,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
           taskList: taskList, taskListFalse: taskListFalse, isOrdered: true));
     });
 
-    on<TaskSave>((event, emit) {
+    on<TaskReorderSave>((event, emit) {
       if (state is TaskReorderState) {
         final currentState = state as TaskReorderState;
         taskList = [
@@ -87,9 +90,12 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         ];
         todoData.tasklist = [...taskList];
       }
-      emit(TaskState(taskList: taskList));
+      emit(TaskSaveState(taskList: taskList));
     });
 
+    ///
+    /// Task Delete
+    ///
     on<TaskDelete>((event, emit) {
       bool isDelete = event.isDelete;
       taskList = [...state.taskList];
@@ -116,6 +122,18 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
 
       emit(TaskDeleteState(
           isRedList: isRedList, isDelete: isDelete, taskList: taskList));
+    });
+
+    on<TaskDeleteSave>((event, emit) {
+      isDeleteList.sort(
+        (a, b) => b.compareTo(a),
+      );
+      for (int i in isDeleteList) {
+        taskList.removeAt(i);
+      }
+      todoData.tasklist = [...taskList];
+      changedToNewList(taskList);
+      emit(TaskSaveState(taskList: taskList));
     });
   }
 }
