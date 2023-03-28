@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:card_todo/AUTH/pages/page_sign_in.dart';
 import 'package:card_todo/AUTH/pages/page_sign_up.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:card_todo/TODO/add_main_menu/page_add_main_menu.dart';
 import 'package:card_todo/TODO/main_menu/page_main_menu.dart';
 import 'package:card_todo/TODO/task_list/page_task.dart';
 import 'package:card_todo/UTILS/route/app_route.dart';
@@ -51,9 +52,10 @@ class App extends StatelessWidget {
       // home: SingInPage(),
       // home: PageSignUp(),
       // home: TestGridCardPage(),
-      home: TaskPage(),
+      // home: TaskPage(),
       // home: TestPageFolder(),
       // home: MainMenuPage(),
+      // home: PageAddMainMenu(),
     );
   }
 }

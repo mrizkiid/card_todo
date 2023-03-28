@@ -172,9 +172,10 @@ class MainMenuPageState extends State<MainMenuPage> {
                               crossAxisCount: 2,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10),
-                      itemCount: todoData.listTitle.length,
+                      itemCount: state.listTitle.length,
                       itemBuilder: (context, index) {
-                        String arg = todoData.listTitle[index];
+                        String arg = state.listTitle[index];
+                        print('default title ${state.listTitle.length}');
                         return CardWidget(
                           onpressed: () {
                             Navigator.of(context)

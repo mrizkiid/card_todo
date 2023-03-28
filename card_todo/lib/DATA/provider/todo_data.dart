@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class TodoData {
   List<String> listTask = [
     'todo1',
@@ -27,6 +28,57 @@ class TodoData {
     'PROJECT7',
   ];
 
+  List<TitleList> todoList = [
+    TitleList(
+      title: 'Gym',
+      taskList: [
+        TaskList(isChecked: false, title: 'Pertama'),
+        TaskList(isChecked: true, title: 'Kedua'),
+        TaskList(isChecked: false, title: 'Ketiga'),
+        TaskList(isChecked: false, title: 'Keempat'),
+        TaskList(isChecked: true, title: 'Kelima'),
+        TaskList(isChecked: true, title: 'Keenam'),
+        TaskList(isChecked: false, title: 'Ketujuh'),
+      ],
+    ),
+    TitleList(
+      title: 'Gym',
+      taskList: [
+        TaskList(isChecked: false, title: 'Pertama'),
+        TaskList(isChecked: true, title: 'Kedua'),
+        TaskList(isChecked: false, title: 'Ketiga'),
+        TaskList(isChecked: false, title: 'Keempat'),
+        TaskList(isChecked: true, title: 'Kelima'),
+        TaskList(isChecked: true, title: 'Keenam'),
+        TaskList(isChecked: false, title: 'Ketujuh'),
+      ],
+    ),
+    TitleList(
+      title: 'Gym',
+      taskList: [
+        TaskList(isChecked: false, title: 'Pertama'),
+        TaskList(isChecked: true, title: 'Kedua'),
+        TaskList(isChecked: false, title: 'Ketiga'),
+        TaskList(isChecked: false, title: 'Keempat'),
+        TaskList(isChecked: true, title: 'Kelima'),
+        TaskList(isChecked: true, title: 'Keenam'),
+        TaskList(isChecked: false, title: 'Ketujuh'),
+      ],
+    ),
+    TitleList(
+      title: 'Gym',
+      taskList: [
+        TaskList(isChecked: false, title: 'Pertama'),
+        TaskList(isChecked: true, title: 'Kedua'),
+        TaskList(isChecked: false, title: 'Ketiga'),
+        TaskList(isChecked: false, title: 'Keempat'),
+        TaskList(isChecked: true, title: 'Kelima'),
+        TaskList(isChecked: true, title: 'Keenam'),
+        TaskList(isChecked: false, title: 'Ketujuh'),
+      ],
+    ),
+  ];
+
   List<TaskList> tasklist = [
     TaskList(isChecked: false, title: 'Pertama'),
     TaskList(isChecked: true, title: 'Kedua'),
@@ -46,5 +98,14 @@ class TaskList {
   TaskList({
     required this.isChecked,
     required this.title,
+  });
+}
+
+class TitleList {
+  String title;
+  List<TaskList> taskList;
+  TitleList({
+    required this.title,
+    required this.taskList,
   });
 }

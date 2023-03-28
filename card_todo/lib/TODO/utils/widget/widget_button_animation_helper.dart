@@ -305,7 +305,7 @@ class DoneButton extends StatelessWidget {
           onTap: () {
             if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
                 mainMenuBloc != null) {
-              mainMenuBloc.add(InitialListEvent(listTitle: todoData.listTitle));
+              mainMenuBloc.add(InitialListEvent());
             }
 
             if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&

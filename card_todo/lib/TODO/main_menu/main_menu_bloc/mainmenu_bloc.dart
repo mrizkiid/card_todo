@@ -18,8 +18,8 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   MainMenuBloc({required TodoData todoData})
       : super(const MainmenuInitial([])) {
     on<InitialListEvent>((event, emit) {
-      // listTitle = [...event.listTitle];
-      changeToNewList(event.listTitle);
+      /////
+      changeToNewList(todoData.listTitle);
       emit(MainmenuInitial(listTitle));
     });
 
@@ -87,10 +87,14 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
           listTitle.removeAt(i);
         }
       }
+      //move list to todoData
+      todoData.listTitle = [...listTitle];
 
       changeToNewList(listTitle);
-
       emit(SaveState(listTitle));
+
+      // deleteing list delete
+      indexDelete = [];
     });
   }
 }

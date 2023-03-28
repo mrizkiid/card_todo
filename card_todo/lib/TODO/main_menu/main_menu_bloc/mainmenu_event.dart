@@ -5,8 +5,7 @@ abstract class MainMenuEvent {
 }
 
 class InitialListEvent extends MainMenuEvent {
-  final List<String> listTitle;
-  InitialListEvent({required this.listTitle});
+  InitialListEvent();
 }
 
 class MainActionEvent extends MainMenuEvent {

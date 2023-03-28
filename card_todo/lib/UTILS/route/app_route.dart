@@ -1,4 +1,5 @@
 import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:card_todo/TODO/add_main_menu/page_add_main_menu.dart';
 import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/TODO/main_menu/page_main_menu.dart';
@@ -11,12 +12,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppRoute {
   Route onGenerateRoute(RouteSettings settings, TodoData todoData) {
     switch (settings.name) {
-      case '/':
+      case '/hsd':
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => MainMenuBloc(todoData: todoData),
+                create: (_) =>
+                    MainMenuBloc(todoData: todoData)..add(InitialListEvent()),
               ),
               BlocProvider(
                 create: (_) =>
@@ -26,6 +28,7 @@ class AppRoute {
             child: const MainMenuPage(),
           ),
         );
+
       case '/TaskPage':
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -40,6 +43,10 @@ class AppRoute {
             ],
             child: const TaskPage(),
           ),
+        );
+      case '/':
+        return MaterialPageRoute(
+          builder: (_) => PageAddMainMenu(),
         );
       default:
         return MaterialPageRoute(
