@@ -2,10 +2,8 @@
 
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
-import 'package:card_todo/TODO/utils/widget/widget_app_bar.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
-import 'package:card_todo/TODO/utils/widget/widget_task_page.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
 import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:card_todo/UTILS/static/enum_todo.dart';
@@ -26,200 +24,301 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   Sizing sizing = Sizing();
-  String titleTodo = 'unknown';
   @override
   Widget build(BuildContext context) {
-    if (ModalRoute.of(context) != null) {
-      titleTodo = ModalRoute.of(context)!.settings.arguments.toString();
-    }
     sizing.init(context);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
-    double heightAppBar = 70;
+    double heightAppBar = 65;
+    bool isDelete = false;
     TodoData todoData = RepositoryProvider.of(context);
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(heightAppBar),
-        child: CustomAppBar(
-          heightAppBar: heightAppBar,
-          paddingHorizontal: paddingHorizontal / 2,
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(
-              'Today',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              ' Today you have 4 tasks',
-              style: TextStyle(fontSize: 12),
-            ),
-            trailing: GestureDetector(
-              onTap: () {
-                print('back is pressed from page task');
-              },
-              child: Icon(
-                TodoAppIcon.previous,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: Row(
-          //     crossAxisAlignment: CrossAxisAlignment.end,
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Column(
-          //         mainAxisAlignment: MainAxisAlignment.end,
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: [
-          //           Text(
-          //             'Today',
-          //             style:
-          //                 TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          //           ),
-          //           SizedBox(
-          //             height: 3,
-          //           ),
-          //           Text(
-          //             ' Today you have 4 tasks',
-          //             style: TextStyle(fontSize: 12),
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ButtonAnimationBloc>(
+          create: (context) =>
+              ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.taskMenu),
         ),
-      ),
-      floatingActionButton:
-          BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
-        builder: (context, state) {
-          if (state.actionEnum == ActionEnum.action &&
-              state is ButtonActionState) {
-            return LinearFlowWidget(
-              isAction: state.isAction,
-            );
-          }
-          if (state.actionEnum == ActionEnum.action &&
-              state is! ButtonActionState) {
-            return LinearFlowWidget(
-              isAction: false,
-            );
-          }
-          return Padding(
-            padding: const EdgeInsets.only(left: 32),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: DoneButton(
-                actionEnum: state.actionEnum,
-                todoData: todoData,
+        BlocProvider<TaskMenuBloc>(
+            create: (context) => TaskMenuBloc(todoData: todoData)),
+      ],
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(heightAppBar),
+          child: Container(
+            decoration: BoxDecoration(
+              color: ColorStatic.maincolor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25),
               ),
             ),
-          );
-        },
-      ),
-      body:
-          // For addin if list null
-          //
-          //  Align(
-          //   alignment: Alignment.center,
-          //   child: IconButton(
-          //     onPressed: () {
-          //       print('add Pressed');
-          //     },
-          //     icon: Icon(
-          //       TodoAppIcon.add,
-          //       color: Colors.black.withOpacity(0.3),
-          //       size: sizing.isPotrait ? 50 : 30,
-          //     ),
-          //   ),
-          // ),
-
-          BlocBuilder<TaskMenuBloc, TaskMenuState>(
-        builder: (context, state) {
-          final taskMenuBloc = context.read<TaskMenuBloc>();
-          List<TaskList> taskList = state.taskList;
-
-          ///reordered state
-          if (state is TaskReorderState) {
-            int i = -1;
-            return ReorderableColumn(
+            child: Container(
               padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                  .copyWith(top: 30),
-              onReorder: (oldIndex, newIndex) {
-                taskMenuBloc.add(
-                  TaskReorderedProcess(oldIndex: oldIndex, newIndex: newIndex),
-                );
-              },
-              children: state.taskListFalse
-                  .map((e) {
-                    i++;
-                    return TileTaskCard(
-                        key: ValueKey(i),
-                        isChecked: e.isChecked,
-                        title: e.title,
-                        isDelete: false,
-                        onchanged: () {});
-                  })
-                  .toList()
-                  .cast<Widget>(),
+                  .copyWith(bottom: 10, top: 10),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Today',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          ' Today you have 4 tasks',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // ch
+          ),
+        ),
+        floatingActionButton:
+            BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
+          builder: (context, state) {
+            if (state.actionEnum == ActionEnum.action &&
+                state is ButtonActionState) {
+              return LinearFlowWidget(
+                isAction: state.isAction,
+              );
+            }
+            if (state.actionEnum == ActionEnum.action &&
+                state is! ButtonActionState) {
+              return LinearFlowWidget(
+                isAction: false,
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.only(left: 32),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: DoneButton(
+                  actionEnum: state.actionEnum,
+                  todoData: todoData,
+                ),
+              ),
             );
-          }
+          },
+        ),
+        body:
+            // For addin if list null
+            //
+            //  Align(
+            //   alignment: Alignment.center,
+            //   child: IconButton(
+            //     onPressed: () {
+            //       print('add Pressed');
+            //     },
+            //     icon: Icon(
+            //       TodoAppIcon.add,
+            //       color: Colors.black.withOpacity(0.3),
+            //       size: sizing.isPotrait ? 50 : 30,
+            //     ),
+            //   ),
+            // ),
 
-          /// Delete state
-          if (state is TaskDeleteState) {
+            BlocBuilder<TaskMenuBloc, TaskMenuState>(
+          builder: (context, state) {
+            final taskMenuBloc = context.read<TaskMenuBloc>();
+            List<TaskList> taskList = state.taskList;
+
+            ///reordered state
+            if (state is TaskReorderState) {
+              int i = -1;
+              return ReorderableColumn(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                    .copyWith(top: 30),
+                onReorder: (oldIndex, newIndex) {
+                  taskMenuBloc.add(
+                    TaskReorderedProcess(
+                        oldIndex: oldIndex, newIndex: newIndex),
+                  );
+                },
+                children: state.taskListFalse
+                    .map((e) {
+                      i++;
+                      return TileTaskCard(
+                          key: ValueKey(i),
+                          isChecked: e.isChecked,
+                          title: e.title,
+                          isDelete: false,
+                          onchanged: () {});
+                    })
+                    .toList()
+                    .cast<Widget>(),
+              );
+            }
+
+            /// Delete state
+            if (state is TaskDeleteState) {
+              return ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                    .copyWith(top: 30),
+                itemCount: state.taskList.length,
+                itemBuilder: (context, index) {
+                  bool isChecked = taskList[index].isChecked;
+                  bool isDelete = state.isRedList[index];
+                  String title = taskList[index].title;
+                  return TileTaskCard(
+                      onTapDelete: () {
+                        context
+                            .read<TaskMenuBloc>()
+                            .add(TaskDeleteProcess(index: index));
+                      },
+                      color: isDelete ? const Color(0xFFFF6961) : Colors.white,
+                      isChecked: isChecked,
+                      title: title,
+                      isDelete: true,
+                      onchanged: () {});
+                },
+              );
+            }
+
+            // if (state is! TaskDeleteState) {
+            //   isDelete = false;
+            // }
+
+            print('rebuild');
+
+            /// it will build if not reordered
             return ListView.builder(
               padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
                   .copyWith(top: 30),
               itemCount: state.taskList.length,
               itemBuilder: (context, index) {
                 bool isChecked = taskList[index].isChecked;
-                bool isDelete = state.isRedList[index];
                 String title = taskList[index].title;
                 return TileTaskCard(
-                    onTapDelete: () {
-                      context
-                          .read<TaskMenuBloc>()
-                          .add(TaskDeleteProcess(index: index));
-                    },
-                    color:
-                        isDelete ? const Color(0xFFFF6961) : Color(0xFFFFFFFF),
-                    isChecked: isChecked,
-                    title: title,
-                    isDelete: true,
-                    onchanged: () {});
+                  isChecked: isChecked,
+                  title: title,
+                  isDelete: false,
+                  onchanged: () {
+                    print('checked is pressed');
+                    taskMenuBloc.add(TaskEvent(
+                        isChecked: isChecked, title: title, index: index));
+                  },
+                );
               },
             );
-          }
-
-          // if (state is! TaskDeleteState) {
-          //   isDelete = false;
-          // }
-
-          print('rebuild');
-
-          /// it will build if not reordered
-          return ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                .copyWith(top: 30),
-            itemCount: state.taskList.length,
-            itemBuilder: (context, index) {
-              bool isChecked = taskList[index].isChecked;
-              String title = taskList[index].title;
-              return TileTaskCard(
-                isChecked: isChecked,
-                title: title,
-                isDelete: false,
-                onchanged: () {
-                  print('checked is pressed');
-                  taskMenuBloc.add(TaskEvent(
-                      isChecked: isChecked, title: title, index: index));
-                },
-              );
-            },
-          );
-        },
+          },
+        ),
       ),
+    );
+  }
+}
+
+class TileTaskCard extends StatelessWidget {
+  final bool isChecked;
+  final String title;
+  final bool isDelete;
+  final void Function() onchanged;
+  final void Function()? onTapDelete;
+  final Color? color;
+  const TileTaskCard({
+    super.key,
+    required this.isChecked,
+    required this.title,
+    required this.isDelete,
+    required this.onchanged,
+    this.onTapDelete,
+    this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: GestureDetector(
+        onTap: onTapDelete,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+            boxShadow: [
+              if (isChecked)
+                BoxShadow(
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                  spreadRadius: 2,
+                  color: Colors.black.withOpacity(0.07),
+                )
+              else
+                BoxShadow(
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                  spreadRadius: 2,
+                  color: Colors.black.withOpacity(0.12),
+                ),
+            ],
+          ),
+          child: ListTile(
+            leading: checkBoxCustom(isChecked, onchanged, isDelete),
+            title: Text(
+              title,
+              style: isChecked
+                  ? TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black.withOpacity(0.3),
+                      decoration: TextDecoration.lineThrough)
+                  : TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+            ),
+            trailing: isDelete
+                ? IconButton(
+                    onPressed: () {
+                      // context.read<TaskMenuBloc>().add(TaskDeleteProcess());
+                    },
+                    icon: Icon(
+                      TodoAppIcon.delete,
+                      color: Colors.red,
+                    ),
+                  )
+                : SizedBox(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget checkBoxCustom(
+      bool isPressed, void Function() onchanged, bool isDelete) {
+    return IconButton(
+      hoverColor: Colors.white,
+      splashColor: Colors.white,
+      onPressed: isDelete
+          ? null
+          : () {
+              onchanged();
+            },
+      icon: isPressed
+          ? Icon(
+              TodoAppIcon.check,
+              size: 27,
+              color: Colors.black.withOpacity(0.3),
+            )
+          : Icon(
+              TodoAppIcon.empty_checkbox,
+              size: 20,
+              color: Colors.black,
+            ),
     );
   }
 }
