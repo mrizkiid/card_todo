@@ -43,6 +43,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     TodoData todoData = RepositoryProvider.of<TodoData>(context);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: (settings) {
         return appRoute.onGenerateRoute(
           settings,

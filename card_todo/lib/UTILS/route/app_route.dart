@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppRoute {
   Route onGenerateRoute(RouteSettings settings, TodoData todoData) {
     switch (settings.name) {
-      case '/hsd':
+      case '/':
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
@@ -28,8 +28,8 @@ class AppRoute {
             child: const MainMenuPage(),
           ),
         );
-
-      case '/TaskPage':
+      // case '/TaskPage':
+      case '/a':
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
@@ -44,10 +44,10 @@ class AppRoute {
             child: const TaskPage(),
           ),
         );
-      case '/':
-        return MaterialPageRoute(
-          builder: (_) => PageAddMainMenu(),
-        );
+      // case '/':
+      //   return MaterialPageRoute(
+      //     builder: (_) => PageAddMainMenu(),
+      //   );
       default:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

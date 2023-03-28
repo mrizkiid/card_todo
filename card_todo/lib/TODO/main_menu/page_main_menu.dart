@@ -31,8 +31,7 @@ class MainMenuPageState extends State<MainMenuPage> {
     double heightAppBar = sizing.heightCalc(percent: 22.3, min: 120);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
     double fontCard = sizing.widthCalc(percent: 5.2);
-    double sizeCard =
-        sizing.sizeInCont(sizeParent: (sizing.screenWidth - 90), percent: 47);
+    double sizeCard = (sizing.screenWidth - (paddingHorizontal * 2) - 10) / 2;
     return Scaffold(
       floatingActionButton: todoData.listTask.isEmpty
           ? const SizedBox()
@@ -98,32 +97,37 @@ class MainMenuPageState extends State<MainMenuPage> {
                 )
               : BlocBuilder<MainMenuBloc, MainMenuState>(
                   builder: (context, state) {
+                    final listTitle = state.listTitle;
+
                     /// This for reordere state
                     /// if the state is in mainorederebuttonstate or in processs mean
                     /// that reordere not finished yet untill user press save
                     if (state is MainReorderState) {
                       print('reordere');
-                      return ReorderableWrap(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                                .copyWith(bottom: 40),
-                        spacing: 10,
-                        runSpacing: 10,
-                        children: state.listTitle
-                            .map(
-                              (tile) => CardWidget(
-                                  fontSize: fontCard,
-                                  title: tile,
-                                  tasktodo: todoData.listTask.length,
-                                  sizeCard: sizeCard,
-                                  isDelete: isDelete),
-                            )
-                            .toList(),
-                        onReorder: (oldIndex, newIndex) {
-                          context.read<MainMenuBloc>().add(
-                              MainReorderProcessDataEvent(
-                                  oldIndex: oldIndex, newIndex: newIndex));
-                        },
+                      return Center(
+                        child: ReorderableWrap(
+                          maxMainAxisCount: 2,
+                          padding: EdgeInsets.symmetric(
+                                  horizontal: paddingHorizontal)
+                              .copyWith(bottom: 40, top: 20),
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: listTitle
+                              .map(
+                                (tile) => CardWidget(
+                                    fontSize: fontCard,
+                                    title: tile,
+                                    tasktodo: todoData.listTask.length,
+                                    sizeCard: sizeCard,
+                                    isDelete: false),
+                              )
+                              .toList(),
+                          onReorder: (oldIndex, newIndex) {
+                            context.read<MainMenuBloc>().add(
+                                MainReorderProcessDataEvent(
+                                    oldIndex: oldIndex, newIndex: newIndex));
+                          },
+                        ),
                       );
                     }
 
@@ -132,22 +136,22 @@ class MainMenuPageState extends State<MainMenuPage> {
                       return GridView.builder(
                         padding:
                             EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                                .copyWith(bottom: 40),
+                                .copyWith(bottom: 40, top: 20),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10),
-                        itemCount: todoData.listTitle.length,
+                        itemCount: listTitle.length,
                         itemBuilder: (context, index) {
                           bool isDelete = state.isRedList[index];
                           return CardWidget(
                             fontSize: fontCard,
                             color: isDelete
                                 ? const Color(0xFFFF6961)
-                                : Colors.white,
-                            title: state.listTitle[index],
-                            tasktodo: todoData.listTask.length,
+                                : const Color(0xFFFFFFFF),
+                            title: listTitle[index],
+                            tasktodo: listTitle.length,
                             isDelete: state.isPressed,
                             onpressed: () {
                               print('color pressed');
@@ -166,7 +170,7 @@ class MainMenuPageState extends State<MainMenuPage> {
                     return GridView.builder(
                       padding:
                           EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                              .copyWith(bottom: 40),
+                              .copyWith(bottom: 40, top: 20),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -174,15 +178,16 @@ class MainMenuPageState extends State<MainMenuPage> {
                               mainAxisSpacing: 10),
                       itemCount: state.listTitle.length,
                       itemBuilder: (context, index) {
-                        String arg = state.listTitle[index];
+                        String title = listTitle[index];
                         print('default title ${state.listTitle.length}');
                         return CardWidget(
                           onpressed: () {
                             Navigator.of(context)
-                                .pushNamed('/TaskPage', arguments: arg);
+                                .pushNamed('/TaskPage', arguments: title);
                           },
+                          color: const Color(0xFFFFFFFF),
                           fontSize: fontCard,
-                          title: state.listTitle[index],
+                          title: title,
                           tasktodo: todoData.listTask.length,
                           isDelete: false,
                         );

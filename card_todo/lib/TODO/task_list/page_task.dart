@@ -52,33 +52,20 @@ class _TaskPageState extends State<TaskPage> {
               ),
             ),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                  .copyWith(bottom: 10, top: 10),
+              padding: EdgeInsets.symmetric(horizontal: paddingHorizontal / 2)
+                  .copyWith(top: 10),
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Today',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 3,
-                        ),
-                        Text(
-                          ' Today you have 4 tasks',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ],
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'Today',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    ' Today you have 4 tasks',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
               ),
             ),
@@ -177,7 +164,9 @@ class _TaskPageState extends State<TaskPage> {
                             .read<TaskMenuBloc>()
                             .add(TaskDeleteProcess(index: index));
                       },
-                      color: isDelete ? const Color(0xFFFF6961) : Colors.white,
+                      color: isDelete
+                          ? const Color(0xFFFF6961)
+                          : Color(0xFFFFFFFF),
                       isChecked: isChecked,
                       title: title,
                       isDelete: true,
@@ -185,10 +174,6 @@ class _TaskPageState extends State<TaskPage> {
                 },
               );
             }
-
-            // if (state is! TaskDeleteState) {
-            //   isDelete = false;
-            // }
 
             print('rebuild');
 
@@ -201,6 +186,7 @@ class _TaskPageState extends State<TaskPage> {
                 bool isChecked = taskList[index].isChecked;
                 String title = taskList[index].title;
                 return TileTaskCard(
+                  color: Color(0xFFFFFFFF),
                   isChecked: isChecked,
                   title: title,
                   isDelete: false,
