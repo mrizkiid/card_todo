@@ -22,7 +22,6 @@ class PageAddMainMenu extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(heightAppBar),
         child: CustomAppBar(
-          heightAppBar: heightAppBar,
           paddingHorizontal: paddingHorizontal / 2,
           child: const Align(
             alignment: Alignment.bottomCenter,

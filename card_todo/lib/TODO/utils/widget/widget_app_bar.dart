@@ -31,12 +31,10 @@ import 'package:flutter/material.dart';
 // }
 
 class CustomAppBar extends StatelessWidget {
-  final double heightAppBar;
   final double paddingHorizontal;
   final Widget child;
   CustomAppBar({
     super.key,
-    required this.heightAppBar,
     required this.paddingHorizontal,
     required this.child,
   });

@@ -42,12 +42,6 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
     super.dispose();
   }
 
-  // void onPressedBuildUtama(BuildContext context) {
-  //   context
-  //       .read<ButtonAnimationBloc>()
-  //       .add(const ButtonActionEvent(isPressed: true));
-  // }
-
   void onPressedReorder(
       {required ButtonAnimationBloc buttonAnimationBloc,
       required MainMenuBloc? mainMenuBloc,
@@ -170,5 +164,14 @@ class FlowMenuDelegate extends FlowDelegate {
   @override
   bool shouldRepaint(covariant FlowDelegate oldDelegate) {
     return false;
+  }
+}
+
+class MainDialogAdd extends StatelessWidget {
+  const MainDialogAdd({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

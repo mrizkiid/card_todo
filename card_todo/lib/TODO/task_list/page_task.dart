@@ -2,6 +2,7 @@
 
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
+import 'package:card_todo/TODO/utils/widget/widget_app_bar.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
@@ -43,35 +44,38 @@ class _TaskPageState extends State<TaskPage> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(heightAppBar),
-          child: Container(
-            decoration: BoxDecoration(
-              color: ColorStatic.maincolor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25),
-              ),
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: paddingHorizontal / 2)
-                  .copyWith(top: 10),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    'Today',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    ' Today you have 4 tasks',
-                    style: TextStyle(fontSize: 12),
-                  ),
+          child:
+              // Container(
+              //   decoration: BoxDecoration(
+              //     color: ColorStatic.maincolor,
+              //     borderRadius: BorderRadius.only(
+              //       bottomLeft: Radius.circular(25),
+              //       bottomRight: Radius.circular(25),
+              //     ),
+              //   ),
+              //   child: Container(
+              //     padding: EdgeInsets.symmetric(horizontal: paddingHorizontal / 2)
+              //         .copyWith(top: 10),
+              //     child:
+              CustomAppBar(
+            paddingHorizontal: paddingHorizontal / 2,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  'Today',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  ' Today you have 4 tasks',
+                  style: TextStyle(fontSize: 12),
                 ),
               ),
             ),
-            // ch
           ),
         ),
+        // ch
         floatingActionButton:
             BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
           builder: (context, state) {
@@ -99,29 +103,29 @@ class _TaskPageState extends State<TaskPage> {
             );
           },
         ),
-        body:
-            // For addin if list null
-            //
-            //  Align(
-            //   alignment: Alignment.center,
-            //   child: IconButton(
-            //     onPressed: () {
-            //       print('add Pressed');
-            //     },
-            //     icon: Icon(
-            //       TodoAppIcon.add,
-            //       color: Colors.black.withOpacity(0.3),
-            //       size: sizing.isPotrait ? 50 : 30,
-            //     ),
-            //   ),
-            // ),
-
-            BlocBuilder<TaskMenuBloc, TaskMenuState>(
+        body: BlocBuilder<TaskMenuBloc, TaskMenuState>(
           builder: (context, state) {
             final taskMenuBloc = context.read<TaskMenuBloc>();
             List<TaskList> taskList = state.taskList;
 
-            ///reordered state
+            /// For addin if list null
+            if (taskList.isEmpty) {
+              return Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                  onPressed: () {
+                    print('add Pressed');
+                  },
+                  icon: Icon(
+                    TodoAppIcon.add,
+                    color: Colors.black.withOpacity(0.3),
+                    size: sizing.isPotrait ? 50 : 30,
+                  ),
+                ),
+              );
+            }
+
+            /// Reordered state
             if (state is TaskReorderState) {
               int i = -1;
               return ReorderableColumn(
