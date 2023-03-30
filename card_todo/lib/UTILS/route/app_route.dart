@@ -29,7 +29,7 @@ class AppRoute {
           ),
         );
 
-      case '/TaskPage':
+      case '/':
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
@@ -44,7 +44,7 @@ class AppRoute {
             child: const TaskPage(),
           ),
         );
-      case '/':
+      case '/addmainmenu':
         return MaterialPageRoute(
           builder: (_) => PageAddMainMenu(),
         );

@@ -44,6 +44,10 @@ class ButtonActionState extends ButtonAnimationState {
   List<Object?> get props => [isAction];
 }
 
+class ButtonAddState extends ButtonAnimationState {
+  const ButtonAddState({required super.actionEnum});
+}
+
 class ButtonReorderState extends ButtonAnimationState {
   const ButtonReorderState(
       {

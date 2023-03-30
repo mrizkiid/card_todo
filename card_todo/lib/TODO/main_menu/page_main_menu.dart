@@ -82,8 +82,25 @@ class MainMenuPageState extends State<MainMenuPage> {
           ),
 
           ///
-          todoData.listTitle.isEmpty
-              ? Align(
+          // todoData.listTitle.isEmpty
+          //     ? Align(
+          //         alignment: Alignment.center,
+          //         child: IconButton(
+          //           onPressed: () {
+          //             print('add button');
+          //           },
+          //           icon: Icon(
+          //             TodoAppIcon.add,
+          //             color: Colors.black.withOpacity(0.3),
+          //             size: sizing.isPotrait ? 50 : 30,
+          //           ),
+          //         ),
+          //       )
+          //     :
+          BlocBuilder<MainMenuBloc, MainMenuState>(
+            builder: (context, state) {
+              if (state.listTitle.isEmpty) {
+                return Align(
                   alignment: Alignment.center,
                   child: IconButton(
                     onPressed: () {
@@ -95,101 +112,94 @@ class MainMenuPageState extends State<MainMenuPage> {
                       size: sizing.isPotrait ? 50 : 30,
                     ),
                   ),
-                )
-              : BlocBuilder<MainMenuBloc, MainMenuState>(
-                  builder: (context, state) {
-                    /// This for reordere state
-                    /// if the state is in mainorederebuttonstate or in processs mean
-                    /// that reordere not finished yet untill user press save
-                    if (state is MainReorderState) {
-                      print('reordere');
-                      return ReorderableWrap(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                                .copyWith(bottom: 40),
-                        spacing: 10,
-                        runSpacing: 10,
-                        children: state.listTitle
-                            .map(
-                              (tile) => CardWidget(
-                                  fontSize: fontCard,
-                                  title: tile,
-                                  tasktodo: todoData.listTask.length,
-                                  sizeCard: sizeCard,
-                                  isDelete: isDelete),
-                            )
-                            .toList(),
-                        onReorder: (oldIndex, newIndex) {
-                          context.read<MainMenuBloc>().add(
-                              MainReorderProcessDataEvent(
-                                  oldIndex: oldIndex, newIndex: newIndex));
-                        },
-                      );
-                    }
+                );
+              }
 
-                    if (state is MainDeleteState) {
-                      print('rebuild delete state');
-                      return GridView.builder(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                                .copyWith(bottom: 40),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10),
-                        itemCount: todoData.listTitle.length,
-                        itemBuilder: (context, index) {
-                          bool isDelete = state.isRedList[index];
-                          return CardWidget(
+              /// This for reordere state
+              /// if the state is in mainorederebuttonstate or in processs mean
+              /// that reordere not finished yet untill user press save
+              if (state is MainReorderState) {
+                print('reordere');
+                return ReorderableWrap(
+                  padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                      .copyWith(bottom: 40),
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: state.listTitle
+                      .map(
+                        (tile) => CardWidget(
                             fontSize: fontCard,
-                            color: isDelete
-                                ? const Color(0xFFFF6961)
-                                : Colors.white,
-                            title: state.listTitle[index],
+                            title: tile,
                             tasktodo: todoData.listTask.length,
-                            isDelete: state.isPressed,
-                            onpressed: () {
-                              print('color pressed');
-                              context
-                                  .read<MainMenuBloc>()
-                                  .add(MainDeleteProcessEvent(index: index));
-                            },
-                          );
-                        },
-                      );
-                    }
+                            sizeCard: sizeCard,
+                            isDelete: isDelete),
+                      )
+                      .toList(),
+                  onReorder: (oldIndex, newIndex) {
+                    context.read<MainMenuBloc>().add(
+                        MainReorderProcessDataEvent(
+                            oldIndex: oldIndex, newIndex: newIndex));
+                  },
+                );
+              }
 
-                    print('i am rendered');
-
-                    ///Grid for default
-                    return GridView.builder(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                              .copyWith(bottom: 40),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10),
-                      itemCount: state.listTitle.length,
-                      itemBuilder: (context, index) {
-                        String arg = state.listTitle[index];
-                        print('default title ${state.listTitle.length}');
-                        return CardWidget(
-                          onpressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/TaskPage', arguments: arg);
-                          },
-                          fontSize: fontCard,
-                          title: state.listTitle[index],
-                          tasktodo: todoData.listTask.length,
-                          isDelete: false,
-                        );
+              if (state is MainDeleteState) {
+                print('rebuild delete state');
+                return GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                      .copyWith(bottom: 40),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10),
+                  itemCount: todoData.listTitle.length,
+                  itemBuilder: (context, index) {
+                    bool isDelete = state.isRedList[index];
+                    return CardWidget(
+                      fontSize: fontCard,
+                      color: isDelete ? const Color(0xFFFF6961) : Colors.white,
+                      title: state.listTitle[index],
+                      tasktodo: todoData.listTask.length,
+                      isDelete: state.isPressed,
+                      onpressed: () {
+                        print('color pressed');
+                        context
+                            .read<MainMenuBloc>()
+                            .add(MainDeleteProcessEvent(index: index));
                       },
                     );
                   },
-                ),
+                );
+              }
+
+              print('i am rendered');
+
+              ///Grid for default
+              return GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                    .copyWith(bottom: 40),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
+                itemCount: state.listTitle.length,
+                itemBuilder: (context, index) {
+                  String arg = state.listTitle[index];
+                  print('default title ${state.listTitle.length}');
+                  return CardWidget(
+                    onpressed: () {
+                      Navigator.of(context)
+                          .pushNamed('/TaskPage', arguments: arg);
+                    },
+                    fontSize: fontCard,
+                    title: state.listTitle[index],
+                    tasktodo: todoData.listTask.length,
+                    isDelete: false,
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
       //

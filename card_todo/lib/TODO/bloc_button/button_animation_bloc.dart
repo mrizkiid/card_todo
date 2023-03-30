@@ -29,8 +29,8 @@ class ButtonAnimationBloc
 
     on<ButtonActionAdd>((event, emit) {
       // bool isActionPressed = !state.isActionPressed;
-      actionEnum = ActionEnum.add;
-      emit(ButtonReorderState(
+      actionEnum = ActionEnum.action;
+      emit(ButtonAddState(
           // isActionPressed: isActionPressed,
           // isShowPressed: state.isShowPressed,
           actionEnum: actionEnum));

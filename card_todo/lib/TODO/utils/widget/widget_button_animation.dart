@@ -1,11 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
-import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
-import 'package:card_todo/UTILS/static/enum_todo.dart';
-import './widget_button_animation_helper.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
+import 'package:card_todo/UTILS/static/color_class.dart';
+import 'package:card_todo/UTILS/static/enum_todo.dart';
+import './widget_dialog_add.dart';
+
+import './widget_button_animation_helper.dart';
 
 const double buttonsize = 80;
 
@@ -42,12 +48,6 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
     super.dispose();
   }
 
-  // void onPressedBuildUtama(BuildContext context) {
-  //   context
-  //       .read<ButtonAnimationBloc>()
-  //       .add(const ButtonActionEvent(isPressed: true));
-  // }
-
   void onPressedReorder(
       {required ButtonAnimationBloc buttonAnimationBloc,
       required MainMenuBloc? mainMenuBloc,
@@ -79,14 +79,20 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
 
   @override
   Widget build(BuildContext context) {
+    String title;
+    List<String> listOfFindingTrue;
     final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
       mainMenuBloc = context.read<MainMenuBloc>();
+      final listTask = RepositoryProvider.of<TodoData>(context).tasklist;
+      listOfFindingTrue = listTask.map((e) => e.title.toLowerCase()).toList();
     }
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu) {
+      final listTask = RepositoryProvider.of<TodoData>(context).tasklist;
       taskMenuBloc = context.read<TaskMenuBloc>();
     }
-
+    var listTask = RepositoryProvider.of<TodoData>(context).tasklist;
+    final listTaskTitle = listTask.map((e) => e.title.toLowerCase()).toList();
     return Flow(delegate: FlowMenuDelegate(controller: controller), children: [
       BuildItemUtama(
           isAction: widget.isAction,
@@ -117,6 +123,21 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           onPressed: () {
             controller.reset();
             buttonAnimationBloc.add(ButtonActionAdd());
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  contentPadding: EdgeInsets.zero,
+                  backgroundColor: ColorStatic.maincolor,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  content: MainDialog(
+                      parentContext: context,
+                      listData: listTaskTitle,
+                      title: 'Add Task'),
+                );
+              },
+            );
           }),
       BuildItem(
           icon: TodoAppIcon.convert,

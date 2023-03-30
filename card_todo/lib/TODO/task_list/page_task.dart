@@ -97,7 +97,7 @@ class _TaskPageState extends State<TaskPage> {
           if (state.actionEnum == ActionEnum.action &&
               state is ButtonActionState) {
             return LinearFlowWidget(
-              isAction: state.isAction,
+              isAction: true,
             );
           }
           if (state.actionEnum == ActionEnum.action &&
