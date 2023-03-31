@@ -10,15 +10,23 @@ abstract class TaskMenuEvent extends Equatable {
 
 class TaskInitialList extends TaskMenuEvent {
   final String title;
-  const TaskInitialList({required this.title});
+  final String keyValue;
+  const TaskInitialList({
+    required this.title,
+    required this.keyValue,
+  });
 }
 
 class TaskEvent extends TaskMenuEvent {
+  final String keyValue;
+  final String titleTask;
   final bool isChecked;
   final String title;
   final int index;
 
   const TaskEvent({
+    required this.keyValue,
+    required this.titleTask,
     required this.isChecked,
     required this.title,
     required this.index,

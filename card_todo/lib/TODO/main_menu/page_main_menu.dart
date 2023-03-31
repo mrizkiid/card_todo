@@ -1,3 +1,5 @@
+import 'package:card_todo/DATA/model/modelArguments.dart';
+import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
@@ -8,6 +10,7 @@ import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
 import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
+import 'package:card_todo/testfolder/hive/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
@@ -23,6 +26,7 @@ class MainMenuPage extends StatefulWidget {
 class MainMenuPageState extends State<MainMenuPage> {
   bool? isDelete = false;
   bool? isDone = false;
+
   Sizing sizing = Sizing();
   @override
   Widget build(BuildContext context) {
@@ -31,10 +35,11 @@ class MainMenuPageState extends State<MainMenuPage> {
     double heightAppBar = sizing.heightCalc(percent: 22.3, min: 120);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
     double fontCard = sizing.widthCalc(percent: 5.2);
+    List<TitleList> listTitle = todoData.listTitle;
     double sizeCard =
         sizing.sizeInCont(sizeParent: (sizing.screenWidth - 90), percent: 47);
     return Scaffold(
-      floatingActionButton: todoData.listTask.isEmpty
+      floatingActionButton: listTitle.isEmpty
           ? const SizedBox()
           : BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
               builder: (context, state) {
@@ -129,8 +134,8 @@ class MainMenuPageState extends State<MainMenuPage> {
                       .map(
                         (tile) => CardWidget(
                             fontSize: fontCard,
-                            title: tile,
-                            tasktodo: todoData.listTask.length,
+                            title: tile.title,
+                            tasktodo: state.listTitle.length,
                             sizeCard: sizeCard,
                             isDelete: isDelete),
                       )
@@ -155,11 +160,13 @@ class MainMenuPageState extends State<MainMenuPage> {
                   itemCount: todoData.listTitle.length,
                   itemBuilder: (context, index) {
                     bool isDelete = state.isRedList[index];
+                    String title = state.listTitle[index].title;
+                    int sumTask = state.listTitle[index].sumTask;
                     return CardWidget(
                       fontSize: fontCard,
                       color: isDelete ? const Color(0xFFFF6961) : Colors.white,
-                      title: state.listTitle[index],
-                      tasktodo: todoData.listTask.length,
+                      title: title,
+                      tasktodo: sumTask,
                       isDelete: state.isPressed,
                       onpressed: () {
                         print('color pressed');
@@ -184,16 +191,19 @@ class MainMenuPageState extends State<MainMenuPage> {
                     mainAxisSpacing: 10),
                 itemCount: state.listTitle.length,
                 itemBuilder: (context, index) {
-                  String arg = state.listTitle[index];
+                  String title = state.listTitle[index].title;
+                  String keyValue = state.listTitle[index].keyValue;
+                  int sumTask = state.listTitle[index].sumTask;
+                  ScreenArguments args = ScreenArguments('title', keyValue);
                   print('default title ${state.listTitle.length}');
                   return CardWidget(
                     onpressed: () {
                       Navigator.of(context)
-                          .pushNamed('/TaskPage', arguments: arg);
+                          .pushNamed('/TaskPage', arguments: args);
                     },
                     fontSize: fontCard,
-                    title: state.listTitle[index],
-                    tasktodo: todoData.listTask.length,
+                    title: title,
+                    tasktodo: sumTask,
                     isDelete: false,
                   );
                 },

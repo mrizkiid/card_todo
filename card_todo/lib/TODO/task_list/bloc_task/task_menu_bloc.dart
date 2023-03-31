@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:equatable/equatable.dart';
 
@@ -35,8 +36,8 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
 
   TaskMenuBloc({required TodoData todoData})
       : super(const TaskMenuInitial(taskList: [])) {
-    on<TaskInitialList>((event, emit) {
-      taskList = [...todoData.getTasklist(event.title)];
+    on<TaskInitialList>((event, emit) async {
+      taskList = [...await todoData.getTaskList(event.title, event.keyValue)];
       taskList = orderList(taskList: state.taskList);
       emit(TaskState(taskList: taskList));
     });
@@ -47,7 +48,10 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       taskList[event.index] =
           TaskList(isChecked: isChecked, title: event.title);
       taskList = orderList(taskList: taskList);
-      todoData.get = [...taskList];
+      todoData.saveTaskList(
+          keyValue: event.keyValue,
+          title: event.title,
+          taskList: [...taskList]);
       emit(TaskState(taskList: taskList));
     });
 

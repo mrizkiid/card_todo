@@ -4,7 +4,7 @@ part of 'mainmenu_bloc.dart';
 abstract class MainMenuState extends Equatable {
   const MainMenuState(this.listTitle);
 
-  final List<String> listTitle;
+  final List<TitleList> listTitle;
 
   @override
   List<Object?> get props => [listTitle];
@@ -25,7 +25,7 @@ class MainReorderState extends MainMenuState {
 class MainDeleteState extends MainMenuState {
   final bool isPressed;
   final List<bool> isRedList;
-  final List<String> newlistTask;
+  final List<TitleList> newlistTask;
   const MainDeleteState({
     required this.isRedList,
     required this.isPressed,

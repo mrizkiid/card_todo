@@ -1,25 +1,28 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:card_todo/testfolder/hive/model/user.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'mainmenu_event.dart';
 part 'mainmenu_state.dart';
 
 class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
-  List<String> listTitle = [];
+  List<TitleList> listTitle = [];
   List<int> indexDelete = [];
 
-  void changeToNewList(List<String> listTileNew) {
+  void changeToNewList(List<TitleList> listTileNew) {
     listTitle = [...listTileNew];
   }
 
   MainMenuBloc({required TodoData todoData})
       : super(const MainmenuInitial([])) {
-    on<InitialListEvent>((event, emit) {
+    on<InitialListEvent>((event, emit) async {
       /////
-      changeToNewList(todoData.listTitle);
+      changeToNewList(await todoData.getTitleList);
       emit(MainmenuInitial(listTitle));
     });
 
@@ -32,7 +35,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       changeToNewList(state.listTitle);
       int newIndex = event.newIndex;
       // remove and put in tile
-      final String tile = listTitle.removeAt(event.oldIndex);
+      final TitleList tile = listTitle.removeAt(event.oldIndex);
       // place the tile in new position
       listTitle.insert(newIndex, tile);
 
@@ -70,7 +73,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
     on<MainReorderSaveEvent>((event, emit) {
       ///saving to list
-      todoData.listTitle = [...listTitle];
+      todoData.saveTitleList([...listTitle]);
 
       //emitting listTile to new List
       changeToNewList(state.listTitle);
@@ -88,7 +91,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
         }
       }
       //move list to todoData
-      todoData.listTitle = [...listTitle];
+      todoData.saveTitleList([...listTitle]);
 
       changeToNewList(listTitle);
       emit(SaveState(listTitle));
