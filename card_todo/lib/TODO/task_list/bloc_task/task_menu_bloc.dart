@@ -9,6 +9,8 @@ part 'task_menu_state.dart';
 class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   late List<TaskList> taskList;
   late List<int> isDeleteList;
+  String keyValue = '';
+  String titleTask = '';
 
   //method for ordering list it will return lis of taskList
   List<TaskList> orderList({required List<TaskList> taskList}) {
@@ -34,11 +36,26 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
     taskList = [...taskListNew];
   }
 
+  void saveTask(
+      {required TodoData todoData,
+      required String keyValue,
+      required String titleTask,
+      required List<TaskList> taskListNew}) {
+    todoData.listTask = taskListNew;
+    todoData.saveTaskList(
+        keyValue: keyValue, title: titleTask, taskList: taskListNew);
+  }
+
   TaskMenuBloc({required TodoData todoData})
       : super(const TaskMenuInitial(taskList: [])) {
     on<TaskInitialList>((event, emit) async {
-      taskList = [...await todoData.getTaskList(event.title, event.keyValue)];
+      keyValue = event.keyValue ?? keyValue;
+      titleTask = event.title ?? keyValue;
+      taskList = [
+        ...await todoData.getTaskList(title: titleTask, keyValue: keyValue)
+      ];
       taskList = orderList(taskList: state.taskList);
+      todoData.listTask = [...taskList];
       emit(TaskState(taskList: taskList));
     });
 
@@ -48,10 +65,13 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       taskList[event.index] =
           TaskList(isChecked: isChecked, title: event.title);
       taskList = orderList(taskList: taskList);
-      todoData.saveTaskList(
-          keyValue: event.keyValue,
-          title: event.title,
-          taskList: [...taskList]);
+      // todoData.saveTaskList(
+      //     keyValue: keyValue, title: titleTask, taskList: [...taskList]);
+      saveTask(
+          todoData: todoData,
+          keyValue: keyValue,
+          titleTask: titleTask,
+          taskListNew: [...taskList]);
       emit(TaskState(taskList: taskList));
     });
 
@@ -93,8 +113,13 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
           ...currentState.taskListFalse,
           ...findTaskListTrue(taskList: state.taskList)
         ];
-        todoData.tasklist = [...taskList];
+        saveTask(
+            todoData: todoData,
+            keyValue: keyValue,
+            titleTask: titleTask,
+            taskListNew: [...taskList]);
       }
+      changedToNewList(taskList);
       emit(TaskSaveState(taskList: taskList));
     });
 
@@ -136,8 +161,12 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       for (int i in isDeleteList) {
         taskList.removeAt(i);
       }
-      todoData.tasklist = [...taskList];
       changedToNewList(taskList);
+      saveTask(
+          todoData: todoData,
+          keyValue: keyValue,
+          titleTask: titleTask,
+          taskListNew: [...taskList]);
       emit(TaskSaveState(taskList: taskList));
     });
   }

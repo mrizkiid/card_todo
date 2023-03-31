@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class TodoData {
   late Box _todoBox;
   List<TitleList> listTitle = [];
+  List<TaskList> listTask = [];
 
   Future<void> init() async {
     Hive.registerAdapter(TitleListAdapter());
@@ -45,7 +46,8 @@ class TodoData {
 
   // void editTitleList(Str)
 
-  Future<List<TaskList>> getTaskList(String title, String keyValue) async {
+  Future<List<TaskList>> getTaskList(
+      {required String title, required String keyValue}) async {
     TodoList todoList;
 
     todoList = await _todoBox.get(keyValue);

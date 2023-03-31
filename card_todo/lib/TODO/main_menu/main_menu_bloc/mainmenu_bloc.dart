@@ -13,6 +13,8 @@ part 'mainmenu_state.dart';
 class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   List<TitleList> listTitle = [];
   List<int> indexDelete = [];
+  String keyValue = '';
+  String title = '';
 
   void changeToNewList(List<TitleList> listTileNew) {
     listTitle = [...listTileNew];
@@ -23,6 +25,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     on<InitialListEvent>((event, emit) async {
       /////
       changeToNewList(await todoData.getTitleList);
+      todoData.listTitle = listTitle;
       emit(MainmenuInitial(listTitle));
     });
 

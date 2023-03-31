@@ -80,19 +80,20 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
   @override
   Widget build(BuildContext context) {
     String title;
-    List<String> listOfFindingTrue;
+    List<dynamic> listOfFindingTrue;
     final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
       mainMenuBloc = context.read<MainMenuBloc>();
-      final listTask = RepositoryProvider.of<TodoData>(context).tasklist;
-      listOfFindingTrue = listTask.map((e) => e.title.toLowerCase()).toList();
+      final listTitle = RepositoryProvider.of<TodoData>(context).listTitle;
+      listOfFindingTrue = listTitle.map((e) => e.title.toLowerCase()).toList();
     }
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu) {
-      final listTask = RepositoryProvider.of<TodoData>(context).tasklist;
+      final lisTask = RepositoryProvider.of<TodoData>(context).listTask;
+      listOfFindingTrue = lisTask.map((e) => e.title.toLowerCase()).toList();
       taskMenuBloc = context.read<TaskMenuBloc>();
     }
-    var listTask = RepositoryProvider.of<TodoData>(context).tasklist;
-    final listTaskTitle = listTask.map((e) => e.title.toLowerCase()).toList();
+    var listTitle = RepositoryProvider.of<TodoData>(context).listTitle;
+    final listTaskTitle = listTitle.map((e) => e.title.toLowerCase()).toList();
     return Flow(delegate: FlowMenuDelegate(controller: controller), children: [
       BuildItemUtama(
           isAction: widget.isAction,
