@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors,prefer_const_literals_to_create_immutables
 
+import 'package:card_todo/DATA/model/modelArguments.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/TODO/utils/widget/widget_app_bar.dart';
@@ -26,11 +27,11 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   Sizing sizing = Sizing();
-  String titleTodo = 'unknown';
+  ScreenArguments args = ScreenArguments('unknown', 'keyUnknown');
   @override
   Widget build(BuildContext context) {
     if (ModalRoute.of(context) != null) {
-      titleTodo = ModalRoute.of(context)!.settings.arguments.toString();
+      args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     }
     sizing.init(context);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
