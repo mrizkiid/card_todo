@@ -36,8 +36,8 @@ class TodoData {
   //   'PROJECT7',
   // ];
 
-  List<TitleList> todoList = [
-    TitleList(
+  List<TodoList> todoList = [
+    TodoList(
       title: 'Gym',
       taskList: [
         TaskList(isChecked: false, title: 'Gym Pertama'),
@@ -49,7 +49,7 @@ class TodoData {
         TaskList(isChecked: false, title: 'Gym Ketujuh'),
       ],
     ),
-    TitleList(
+    TodoList(
       title: 'Pray',
       taskList: [
         TaskList(isChecked: false, title: 'Pray Pertama'),
@@ -61,7 +61,7 @@ class TodoData {
         TaskList(isChecked: false, title: 'Pray Ketujuh'),
       ],
     ),
-    TitleList(
+    TodoList(
       title: 'Diet',
       taskList: [
         TaskList(isChecked: false, title: 'Diet Pertama'),
@@ -73,7 +73,7 @@ class TodoData {
         TaskList(isChecked: false, title: 'Diet Ketujuh'),
       ],
     ),
-    TitleList(
+    TodoList(
       title: 'Work',
       taskList: [
         TaskList(isChecked: false, title: 'Work Pertama'),
@@ -85,7 +85,7 @@ class TodoData {
         TaskList(isChecked: false, title: 'Work Ketujuh'),
       ],
     ),
-    TitleList(
+    TodoList(
       title: 'Thesis',
       taskList: [
         TaskList(isChecked: false, title: 'Thesis Pertama'),
@@ -97,7 +97,7 @@ class TodoData {
         TaskList(isChecked: false, title: 'Thesis Ketujuh'),
       ],
     ),
-    TitleList(
+    TodoList(
       title: 'Relationship',
       taskList: [
         TaskList(isChecked: false, title: 'Relationship Pertama'),
@@ -111,7 +111,9 @@ class TodoData {
     ),
   ];
 
-  List<String> getTitleList() => todoList.map((e) => e.title).toList();
+  // List<String> getTi
+
+  List<String> get getTitleList => todoList.map((e) => e.title).toList();
 
   List<TaskList> getTasklist(String title) =>
       todoList.firstWhere((element) => element.title == title).taskList;
@@ -130,19 +132,26 @@ class TodoData {
 }
 
 class TaskList {
-  bool isChecked;
-  String title;
+  final bool isChecked;
+  final String title;
   TaskList({
     required this.isChecked,
     required this.title,
   });
 }
 
-class TitleList {
-  String title;
-  List<TaskList> taskList;
-  TitleList({
+class TodoList {
+  final String title;
+  final List<TaskList> taskList;
+  TodoList({
     required this.title,
     required this.taskList,
   });
+}
+
+class TitleList {
+  final String title;
+  final String keyValue;
+
+  TitleList({required this.title, required this.keyValue});
 }

@@ -9,7 +9,8 @@ abstract class TaskMenuEvent extends Equatable {
 }
 
 class TaskInitialList extends TaskMenuEvent {
-  TaskInitialList();
+  final String title;
+  const TaskInitialList({required this.title});
 }
 
 class TaskEvent extends TaskMenuEvent {

@@ -6,8 +6,8 @@ part 'task_menu_event.dart';
 part 'task_menu_state.dart';
 
 class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
-  List<TaskList> taskList = [];
-  List<int> isDeleteList = [];
+  late List<TaskList> taskList;
+  late List<int> isDeleteList;
 
   //method for ordering list it will return lis of taskList
   List<TaskList> orderList({required List<TaskList> taskList}) {
@@ -34,8 +34,9 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   }
 
   TaskMenuBloc({required TodoData todoData})
-      : super(TaskMenuInitial(taskList: [...todoData.tasklist])) {
+      : super(const TaskMenuInitial(taskList: [])) {
     on<TaskInitialList>((event, emit) {
+      taskList = [...todoData.getTasklist(event.title)];
       taskList = orderList(taskList: state.taskList);
       emit(TaskState(taskList: taskList));
     });
@@ -46,7 +47,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       taskList[event.index] =
           TaskList(isChecked: isChecked, title: event.title);
       taskList = orderList(taskList: taskList);
-      todoData.tasklist = [...taskList];
+      todoData.get = [...taskList];
       emit(TaskState(taskList: taskList));
     });
 
