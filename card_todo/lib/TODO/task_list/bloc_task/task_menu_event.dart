@@ -66,4 +66,10 @@ class TaskReorderSave extends TaskMenuEvent {}
 
 class TaskDeleteSave extends TaskMenuEvent {}
 
+class TaskAddEvent extends TaskMenuEvent {
+  final String task;
+
+  const TaskAddEvent({required this.task});
+}
+
 // class TaskCh

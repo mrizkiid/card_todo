@@ -3,6 +3,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:card_todo/AUTH/pages/page_sign_in.dart';
 import 'package:card_todo/AUTH/pages/page_sign_up.dart';
+import 'package:card_todo/DATA/model/modelUser.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/add_main_menu/page_add_main_menu.dart';
 import 'package:card_todo/TODO/main_menu/page_main_menu.dart';
@@ -16,9 +17,9 @@ import './AUTH/bloc/auth_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Hive.initFlutter();
+  await Hive.initFlutter();
   Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
@@ -28,8 +29,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (_) => TodoData(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (_) => UserModel(),
+        ),
+        RepositoryProvider(
+          /// it will open the box
+          create: (_) => TodoData()..init(),
+        )
+      ],
       child: App(),
     );
   }
@@ -42,12 +51,10 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TodoData todoData = RepositoryProvider.of<TodoData>(context);
+    UserModel userModel = RepositoryProvider.of<UserModel>(context);
     return MaterialApp(
       onGenerateRoute: (settings) {
-        return appRoute.onGenerateRoute(
-          settings,
-          todoData,
-        );
+        return appRoute.onGenerateRoute(settings, todoData, userModel);
       },
       // home: SingInPage(),
       // home: PageSignUp(),

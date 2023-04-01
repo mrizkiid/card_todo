@@ -20,7 +20,8 @@ import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:reorderables/reorderables.dart';
 
 class TaskPage extends StatefulWidget {
-  const TaskPage({super.key});
+  const TaskPage({super.key, required this.titleTask});
+  final String titleTask;
 
   @override
   State<TaskPage> createState() => _TaskPageState();
@@ -28,16 +29,13 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   Sizing sizing = Sizing();
-  ScreenArguments args = ScreenArguments('unknown', 'keyUnknown');
   @override
   Widget build(BuildContext context) {
-    if (ModalRoute.of(context) != null) {
-      args = ModalRoute.of(context)!.settings.arguments as ScreenArguments;
-    }
     sizing.init(context);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
     double heightAppBar = 70;
     TodoData todoData = RepositoryProvider.of(context);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(heightAppBar),
@@ -47,16 +45,16 @@ class _TaskPageState extends State<TaskPage> {
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(
-              'Today',
+              widget.titleTask,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              ' Today you have 4 tasks',
+              ' Today you have ${todoData.trueListTask.length} tasks',
               style: TextStyle(fontSize: 12),
             ),
             trailing: GestureDetector(
               onTap: () {
-                print('back is pressed from page task');
+                Navigator.of(context).pop();
               },
               child: Icon(
                 TodoAppIcon.previous,
@@ -96,16 +94,19 @@ class _TaskPageState extends State<TaskPage> {
       floatingActionButton:
           BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
         builder: (context, state) {
+          final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
           if (state.actionEnum == ActionEnum.action &&
               state is ButtonActionState) {
             return LinearFlowWidget(
               isAction: true,
+              whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
             );
           }
           if (state.actionEnum == ActionEnum.action &&
               state is! ButtonActionState) {
             return LinearFlowWidget(
               isAction: false,
+              whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
             );
           }
           return Padding(

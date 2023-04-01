@@ -7,10 +7,10 @@ part 'task_menu_event.dart';
 part 'task_menu_state.dart';
 
 class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
-  late List<TaskList> taskList;
-  late List<int> isDeleteList;
-  String keyValue = '';
-  String titleTask = '';
+  late List<TaskList> _taskList;
+  late List<int> _isDeleteList;
+  String _keyValue = '';
+  String _titleTask = '';
 
   //method for ordering list it will return lis of taskList
   List<TaskList> orderList({required List<TaskList> taskList}) {
@@ -33,7 +33,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   }
 
   void changedToNewList(List<TaskList> taskListNew) {
-    taskList = [...taskListNew];
+    _taskList = [...taskListNew];
   }
 
   void saveTask(
@@ -49,30 +49,30 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   TaskMenuBloc({required TodoData todoData})
       : super(const TaskMenuInitial(taskList: [])) {
     on<TaskInitialList>((event, emit) async {
-      keyValue = event.keyValue ?? keyValue;
-      titleTask = event.title ?? keyValue;
-      taskList = [
-        ...await todoData.getTaskList(title: titleTask, keyValue: keyValue)
+      _keyValue = event.keyValue ?? _keyValue;
+      _titleTask = event.title ?? _keyValue;
+      _taskList = [
+        ...await todoData.getTaskList(title: _titleTask, keyValue: _keyValue)
       ];
-      taskList = orderList(taskList: state.taskList);
-      todoData.listTask = [...taskList];
-      emit(TaskState(taskList: taskList));
+      _taskList = orderList(taskList: state.taskList);
+      todoData.listTask = [..._taskList];
+      emit(TaskState(taskList: _taskList));
     });
 
     on<TaskEvent>((event, emit) {
       bool isChecked = !event.isChecked;
-      taskList = [...state.taskList];
-      taskList[event.index] =
+      _taskList = [...state.taskList];
+      _taskList[event.index] =
           TaskList(isChecked: isChecked, title: event.title);
-      taskList = orderList(taskList: taskList);
+      _taskList = orderList(taskList: _taskList);
       // todoData.saveTaskList(
       //     keyValue: keyValue, title: titleTask, taskList: [...taskList]);
       saveTask(
           todoData: todoData,
-          keyValue: keyValue,
-          titleTask: titleTask,
-          taskListNew: [...taskList]);
-      emit(TaskState(taskList: taskList));
+          keyValue: _keyValue,
+          titleTask: _titleTask,
+          taskListNew: [..._taskList]);
+      emit(TaskState(taskList: _taskList));
     });
 
     ///
@@ -80,17 +80,17 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
     ///
     on<TaskReordered>((event, emit) {
       bool isOrdered = event.isOrdered;
-      taskList = [...state.taskList];
+      _taskList = [...state.taskList];
       List<TaskList> taskListFalse =
           findTaskListFalse(taskList: state.taskList);
       emit(TaskReorderState(
-          taskList: taskList,
+          taskList: _taskList,
           taskListFalse: taskListFalse,
           isOrdered: isOrdered));
     });
 
     on<TaskReorderedProcess>((event, emit) {
-      taskList = [...state.taskList];
+      _taskList = [...state.taskList];
       List<TaskList> taskListFalse = [];
       if (state is TaskReorderState) {
         var currentState = state as TaskReorderState;
@@ -103,24 +103,24 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       // place the tile in new position
       taskListFalse.insert(newIndex, tile);
       emit(TaskReorderState(
-          taskList: taskList, taskListFalse: taskListFalse, isOrdered: true));
+          taskList: _taskList, taskListFalse: taskListFalse, isOrdered: true));
     });
 
     on<TaskReorderSave>((event, emit) {
       if (state is TaskReorderState) {
         final currentState = state as TaskReorderState;
-        taskList = [
+        _taskList = [
           ...currentState.taskListFalse,
           ...findTaskListTrue(taskList: state.taskList)
         ];
         saveTask(
             todoData: todoData,
-            keyValue: keyValue,
-            titleTask: titleTask,
-            taskListNew: [...taskList]);
+            keyValue: _keyValue,
+            titleTask: _titleTask,
+            taskListNew: [..._taskList]);
       }
-      changedToNewList(taskList);
-      emit(TaskSaveState(taskList: taskList));
+      changedToNewList(_taskList);
+      emit(TaskSaveState(taskList: _taskList));
     });
 
     ///
@@ -128,11 +128,11 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
     ///
     on<TaskDelete>((event, emit) {
       bool isDelete = event.isDelete;
-      taskList = [...state.taskList];
+      _taskList = [...state.taskList];
       emit(TaskDeleteState(
-          isRedList: List.filled(taskList.length, false),
+          isRedList: List.filled(_taskList.length, false),
           isDelete: isDelete,
-          taskList: taskList));
+          taskList: _taskList));
     });
 
     on<TaskDeleteProcess>((event, emit) {
@@ -146,28 +146,28 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         isDelete = currentState.isDelete;
       }
 
-      isDeleteList.add(index);
+      _isDeleteList.add(index);
 
       changedToNewList(state.taskList);
 
       emit(TaskDeleteState(
-          isRedList: isRedList, isDelete: isDelete, taskList: taskList));
+          isRedList: isRedList, isDelete: isDelete, taskList: _taskList));
     });
 
     on<TaskDeleteSave>((event, emit) {
-      isDeleteList.sort(
+      _isDeleteList.sort(
         (a, b) => b.compareTo(a),
       );
-      for (int i in isDeleteList) {
-        taskList.removeAt(i);
+      for (int i in _isDeleteList) {
+        _taskList.removeAt(i);
       }
-      changedToNewList(taskList);
+      changedToNewList(_taskList);
       saveTask(
           todoData: todoData,
-          keyValue: keyValue,
-          titleTask: titleTask,
-          taskListNew: [...taskList]);
-      emit(TaskSaveState(taskList: taskList));
+          keyValue: _keyValue,
+          titleTask: _titleTask,
+          taskListNew: [..._taskList]);
+      emit(TaskSaveState(taskList: _taskList));
     });
   }
 }

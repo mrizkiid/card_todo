@@ -22,6 +22,10 @@ class MainReorderState extends MainMenuState {
   const MainReorderState(super.listTitle);
 }
 
+class MainLoadingState extends MainMenuState {
+  const MainLoadingState(super.listTitle);
+}
+
 class MainDeleteState extends MainMenuState {
   final bool isPressed;
   final List<bool> isRedList;

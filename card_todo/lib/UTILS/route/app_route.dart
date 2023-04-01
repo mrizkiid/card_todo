@@ -1,3 +1,5 @@
+import 'package:card_todo/DATA/model/modelArguments.dart';
+import 'package:card_todo/DATA/model/modelUser.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/add_main_menu/page_add_main_menu.dart';
 import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
@@ -10,15 +12,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRoute {
-  Route onGenerateRoute(RouteSettings settings, TodoData todoData) {
+  Route onGenerateRoute(
+      RouteSettings settings, TodoData todoData, UserModel userModel) {
     switch (settings.name) {
-      case '/hsd':
+      case '/':
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
                 create: (_) =>
-                    MainMenuBloc(todoData: todoData)..add(InitialListEvent()),
+                    MainMenuBloc(todoData: todoData, userModel: userModel)
+                      ..add(InitialListEvent()),
               ),
               BlocProvider(
                 create: (_) =>
@@ -29,19 +33,23 @@ class AppRoute {
           ),
         );
 
-      case '/':
+      case '/TaskPage':
+        final args = settings.arguments as ScreenArguments;
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => TaskMenuBloc(todoData: todoData),
+                create: (_) => TaskMenuBloc(todoData: todoData)
+                  ..add(
+                    TaskInitialList(title: args.title, keyValue: args.keyValue),
+                  ),
               ),
               BlocProvider(
                 create: (_) =>
                     ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.taskMenu),
               )
             ],
-            child: const TaskPage(),
+            child: TaskPage(titleTask: args.title),
           ),
         );
       case '/addmainmenu':
@@ -51,7 +59,8 @@ class AppRoute {
       default:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (_) => MainMenuBloc(todoData: todoData),
+            create: (_) =>
+                MainMenuBloc(todoData: todoData, userModel: userModel),
           ),
         );
     }

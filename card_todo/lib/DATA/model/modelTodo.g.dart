@@ -20,19 +20,22 @@ class TitleListAdapter extends TypeAdapter<TitleList> {
       title: fields[0] as String,
       keyValue: fields[1] as String,
       sumTask: fields[2] as int,
+      username: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, TitleList obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.keyValue)
       ..writeByte(2)
-      ..write(obj.sumTask);
+      ..write(obj.sumTask)
+      ..writeByte(3)
+      ..write(obj.username);
   }
 
   @override

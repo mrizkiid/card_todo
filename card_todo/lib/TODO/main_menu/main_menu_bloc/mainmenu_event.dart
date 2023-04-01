@@ -14,9 +14,9 @@ class MainActionEvent extends MainMenuEvent {
   const MainActionEvent();
 }
 
-class MainActionAddEvent extends MainMenuEvent {
-  const MainActionAddEvent();
-}
+// class MainActionAddEvent extends MainMenuEvent {
+//   const MainActionAddEvent();
+// }
 
 class MainReorderProcessDataEvent extends MainMenuEvent {
   const MainReorderProcessDataEvent(
@@ -45,10 +45,14 @@ class MainReorderEvent extends MainMenuEvent {
   MainReorderEvent(this.isPressed);
 }
 
-class MainReorderSaveEvent extends MainMenuEvent {
-  MainReorderSaveEvent();
+class MainMenuAddEvent extends MainMenuEvent {
+  final String titleTask;
+
+  MainMenuAddEvent({required this.titleTask});
 }
 
-class MainDeleteSaveEvent extends MainMenuEvent {
-  MainDeleteSaveEvent();
-}
+class MainReorderSaveEvent extends MainMenuEvent {}
+
+class MainDeleteSaveEvent extends MainMenuEvent {}
+
+class InitialService extends MainMenuEvent {}

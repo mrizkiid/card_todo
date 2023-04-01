@@ -10,9 +10,14 @@ class TitleList {
   final String keyValue;
   @HiveField(2)
   final int sumTask;
+  @HiveField(3)
+  final String username;
 
   TitleList(
-      {required this.title, required this.keyValue, required this.sumTask});
+      {required this.title,
+      required this.keyValue,
+      required this.sumTask,
+      required this.username});
 }
 
 @HiveType(typeId: 1)

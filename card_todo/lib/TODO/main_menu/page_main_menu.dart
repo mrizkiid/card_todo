@@ -43,16 +43,19 @@ class MainMenuPageState extends State<MainMenuPage> {
           ? const SizedBox()
           : BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
               builder: (context, state) {
+                final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
                 if (state.actionEnum == ActionEnum.action &&
                     state is ButtonActionState) {
                   return LinearFlowWidget(
                     isAction: state.isAction,
+                    whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
                   );
                 }
                 if (state.actionEnum == ActionEnum.action &&
                     state is! ButtonActionState) {
-                  return const LinearFlowWidget(
+                  return LinearFlowWidget(
                     isAction: false,
+                    whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
                   );
                 }
                 return Padding(
@@ -104,6 +107,12 @@ class MainMenuPageState extends State<MainMenuPage> {
           //     :
           BlocBuilder<MainMenuBloc, MainMenuState>(
             builder: (context, state) {
+              if (state is MainLoadingState) {
+                return Container(
+                  color: Colors.white.withOpacity(0.5),
+                  child: const Center(child: CircularProgressIndicator()),
+                );
+              }
               if (state.listTitle.isEmpty) {
                 return Align(
                   alignment: Alignment.center,
@@ -194,7 +203,8 @@ class MainMenuPageState extends State<MainMenuPage> {
                   String title = state.listTitle[index].title;
                   String keyValue = state.listTitle[index].keyValue;
                   int sumTask = state.listTitle[index].sumTask;
-                  ScreenArguments args = ScreenArguments('title', keyValue);
+                  ScreenArguments args =
+                      ScreenArguments(title: title, keyValue: keyValue);
                   print('default title ${state.listTitle.length}');
                   return CardWidget(
                     onpressed: () {

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:card_todo/DATA/model/modelTodo.dart';
+import 'package:card_todo/UTILS/static/hive_const.dart';
 import 'package:card_todo/testfolder/hive/model/user.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -8,19 +9,22 @@ class TodoData {
   late Box _todoBox;
   List<TitleList> listTitle = [];
   List<TaskList> listTask = [];
+  String lastKey = '';
 
   Future<void> init() async {
     Hive.registerAdapter(TitleListAdapter());
-    _todoBox = await Hive.openBox('todobox');
+    _todoBox = await Hive.openBox(HiveKey.todoBox);
     if (_todoBox.isEmpty) {
       // _todoBox.put(key, value)
-      _todoBox.put(
-        'ListTitle',
+      await _todoBox.put(
+        HiveKey.listTitle,
         [
-          TitleList(title: 'Example', keyValue: 't1', sumTask: 2),
+          TitleList(
+              title: 'Example', keyValue: 't1', sumTask: 2, username: 'guest'),
         ],
       );
-      _todoBox.put(
+      await _todoBox.put(HiveKey.lastKey, 't1');
+      await _todoBox.put(
         't1',
         TodoList(
           title: 'Example',
@@ -30,18 +34,20 @@ class TodoData {
           ],
         ),
       );
-      _todoBox.put('LastKey', 't1');
     }
     if (_todoBox.isNotEmpty) {
-      listTitle = _todoBox.get('ListTitle');
+      listTitle = await _todoBox.get(HiveKey.listTitle);
     }
   }
 
-  Future<List<TitleList>> get getTitleList async =>
-      await _todoBox.get('ListTitle');
+  List<TaskList> get trueListTask =>
+      listTask.where((element) => element.isChecked == true).toList();
 
-  void saveTitleList(List<TitleList> titleList) async {
-    await _todoBox.put('ListTitle', titleList);
+  Future<List<TitleList>> get getTitleList async =>
+      await _todoBox.get(HiveKey.listTitle);
+
+  Future<void> saveTitleList(List<TitleList> titleList) async {
+    await _todoBox.put(HiveKey.listTitle, titleList);
   }
 
   // void editTitleList(Str)
@@ -62,8 +68,12 @@ class TodoData {
   }
 
   Future<String> get findLastKey async {
-    String lastKey = _todoBox.get('LastKey');
+    String lastKey = _todoBox.get(HiveKey.lastKey);
     return lastKey;
+  }
+
+  Future<void> saveLastKey(String keyValue) async {
+    await _todoBox.put(HiveKey.lastKey, keyValue);
   }
 
   // List<String> listTask = [

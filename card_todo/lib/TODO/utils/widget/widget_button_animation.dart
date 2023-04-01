@@ -21,9 +21,11 @@ class LinearFlowWidget extends StatefulWidget {
   const LinearFlowWidget({
     Key? key,
     required this.isAction,
+    required this.whichTodoBloc,
   }) : super(key: key);
 
   final bool isAction;
+  final WhichTodoBloc whichTodoBloc;
 
   @override
   State<LinearFlowWidget> createState() => _LinearFlowWidgetState();
@@ -34,6 +36,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
   late AnimationController controller;
   MainMenuBloc? mainMenuBloc;
   TaskMenuBloc? taskMenuBloc;
+  String titleDialog = '';
 
   @override
   void initState() {
@@ -74,6 +77,22 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
         taskMenuBloc != null) {
       taskMenuBloc.add(const TaskDelete(true));
       print('taskdelete is called');
+    }
+  }
+
+  void findTitle(WhichTodoBloc whichTodoBloc) {
+    switch (whichTodoBloc) {
+      case WhichTodoBloc.mainMenu:
+        titleDialog = 'Add Title';
+        break;
+
+      case WhichTodoBloc.taskMenu:
+        titleDialog = 'Add Task';
+        break;
+
+      default:
+        titleDialog = 'Add';
+        break;
     }
   }
 
@@ -124,6 +143,9 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           onPressed: () {
             controller.reset();
             buttonAnimationBloc.add(ButtonActionAdd());
+            findTitle(widget.whichTodoBloc);
+
+            /// show dialog box for add
             showDialog(
               context: context,
               builder: (context) {
@@ -131,11 +153,17 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   contentPadding: EdgeInsets.zero,
                   backgroundColor: ColorStatic.maincolor,
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
                   content: MainDialog(
-                      parentContext: context,
-                      listData: listTaskTitle,
-                      title: 'Add Task'),
+                    parentContext: context,
+                    listData: listTaskTitle,
+                    title: titleDialog,
+                    mainMenuBloc: mainMenuBloc,
+                    taskMenuBloc: taskMenuBloc,
+                  ),
                 );
               },
             );

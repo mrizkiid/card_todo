@@ -1,16 +1,22 @@
+import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:flutter/material.dart';
 
 class MainDialog extends StatefulWidget {
   MainDialog(
       {Key? key,
       required this.parentContext,
-      required this.title,
-      required this.listData})
+      this.mainMenuBloc,
+      this.taskMenuBloc,
+      required this.listData,
+      required this.title})
       : super(key: key);
 
   final BuildContext parentContext;
   List<String> listData;
   final String title;
+  final MainMenuBloc? mainMenuBloc;
+  final TaskMenuBloc? taskMenuBloc;
 
   @override
   State<MainDialog> createState() => _MainDialogState();
@@ -35,17 +41,20 @@ class _MainDialogState extends State<MainDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final mainMenuBloc = widget.mainMenuBloc;
+    final taskMenuBloc = widget.taskMenuBloc;
+    String titleTask = widget.title;
     return SizedBox(
       width: 300,
       height: 270,
       child: Column(
         children: <Widget>[
-          const SizedBox(
+          SizedBox(
             height: 70,
             child: Center(
               child: Text(
-                'Add Task',
-                style: TextStyle(color: Colors.black, fontSize: 20),
+                titleTask,
+                style: const TextStyle(color: Colors.black, fontSize: 20),
               ),
             ),
           ),
@@ -69,10 +78,10 @@ class _MainDialogState extends State<MainDialog> {
                           controller: textEditingController,
                           validator: (value) {
                             if (value == null) {
-                              return '${widget.title} harus diisi';
+                              return '$titleTask harus diisi';
                             }
                             if (checkValue(value)) {
-                              return '${widget.title} telah diisi sebelumnya';
+                              return '$titleTask telah diisi sebelumnya';
                             }
 
                             return null;
@@ -130,8 +139,16 @@ class _MainDialogState extends State<MainDialog> {
                               onTap: () {
                                 final isValid =
                                     formkey.currentState!.validate();
+                                String text = textEditingController.text;
                                 if (isValid) {
-                                  print(textEditingController.text);
+                                  if (mainMenuBloc != null) {
+                                    mainMenuBloc
+                                        .add(MainMenuAddEvent(titleTask: text));
+                                  }
+                                  if (taskMenuBloc != null) {
+                                    taskMenuBloc.add(TaskAddEvent(task: text));
+                                  }
+                                  print(text);
                                   Navigator.of(widget.parentContext).pop();
                                   // textEditingController.dispose();
                                 }
