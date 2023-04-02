@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           /// it will open the box
-          create: (_) => TodoData()..init(),
+          create: (_) => TodoData(),
         )
       ],
       child: App(),

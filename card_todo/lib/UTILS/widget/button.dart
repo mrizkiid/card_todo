@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ButtonAction extends StatelessWidget {
-  const ButtonAction({super.key, required this.labeltext, required this.onTap});
+  const ButtonAction(
+      {super.key,
+      required this.labeltext,
+      required this.onTap,
+      this.color,
+      this.height});
 
   final String labeltext;
+  final Color? color;
+  final double? height;
   final void Function() onTap;
 
   @override
@@ -13,10 +20,10 @@ class ButtonAction extends StatelessWidget {
       // onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30)
-            .copyWith(bottom: 10, top: 10),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+            .copyWith(bottom: height ?? 10, top: height ?? 10),
+        decoration: BoxDecoration(
+          color: color ?? Colors.black,
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
         ),
         child: Text(
           labeltext,

@@ -1,3 +1,4 @@
+import 'package:card_todo/AUTH/pages/page_sign_in.dart';
 import 'package:card_todo/DATA/model/modelArguments.dart';
 import 'package:card_todo/DATA/model/modelUser.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
@@ -15,14 +16,19 @@ class AppRoute {
   Route onGenerateRoute(
       RouteSettings settings, TodoData todoData, UserModel userModel) {
     switch (settings.name) {
-      case '/':
+      case '/a':
+        return MaterialPageRoute(
+          builder: (_) => const SingInPage(),
+        );
+
+      case '/HomePage':
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
                 create: (_) =>
                     MainMenuBloc(todoData: todoData, userModel: userModel)
-                      ..add(InitialListEvent()),
+                      ..add(InitialService()),
               ),
               BlocProvider(
                 create: (_) =>
@@ -57,10 +63,13 @@ class AppRoute {
           builder: (_) => PageAddMainMenu(),
         );
       default:
+        print('default trigerred');
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) =>
-                MainMenuBloc(todoData: todoData, userModel: userModel),
+                MainMenuBloc(todoData: todoData, userModel: userModel)
+                  ..add(InitialService()),
+            child: const MainMenuPage(),
           ),
         );
     }

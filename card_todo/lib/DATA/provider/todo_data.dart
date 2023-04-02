@@ -12,31 +12,42 @@ class TodoData {
   String lastKey = '';
 
   Future<void> init() async {
-    Hive.registerAdapter(TitleListAdapter());
-    _todoBox = await Hive.openBox(HiveKey.todoBox);
-    if (_todoBox.isEmpty) {
-      // _todoBox.put(key, value)
-      await _todoBox.put(
-        HiveKey.listTitle,
-        [
-          TitleList(
-              title: 'Example', keyValue: 't1', sumTask: 2, username: 'guest'),
-        ],
-      );
-      await _todoBox.put(HiveKey.lastKey, 't1');
-      await _todoBox.put(
-        't1',
-        TodoList(
-          title: 'Example',
-          taskList: [
-            TaskList(isChecked: false, title: 'first task'),
-            TaskList(isChecked: true, title: 'second task'),
+    if (_todoBox.isOpen) {
+      print('todoBox is Open');
+    } else {
+      print('todoBox is not Open');
+      Hive.registerAdapter(TitleListAdapter());
+      Hive.registerAdapter(TodoListAdapter());
+      Hive.registerAdapter(TaskListAdapter());
+
+      _todoBox = await Hive.openBox(HiveKey.todoBox);
+      if (_todoBox.isEmpty) {
+        // _todoBox.put(key, value)
+        await _todoBox.put(
+          HiveKey.listTitle,
+          [
+            TitleList(
+                title: 'Example',
+                keyValue: 't1',
+                sumTask: 2,
+                username: 'guest'),
           ],
-        ),
-      );
-    }
-    if (_todoBox.isNotEmpty) {
-      listTitle = await _todoBox.get(HiveKey.listTitle);
+        );
+        await _todoBox.put(HiveKey.lastKey, 't1');
+        await _todoBox.put(
+          't1',
+          TodoList(
+            title: 'Example',
+            taskList: [
+              TaskList(isChecked: false, title: 'first task'),
+              TaskList(isChecked: true, title: 'second task'),
+            ],
+          ),
+        );
+      }
+      if (_todoBox.isNotEmpty) {
+        listTitle = await _todoBox.get(HiveKey.listTitle);
+      }
     }
   }
 

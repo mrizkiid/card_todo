@@ -31,15 +31,19 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   MainMenuBloc({required TodoData todoData, required UserModel userModel})
       : super(const MainmenuInitial([])) {
     on<InitialService>((event, emit) async {
+      print('InitialService is proceed');
+      emit(MainLoadingState([...state.listTitle]));
       await todoData.init();
+      add(InitialListEvent());
     });
 
     on<InitialListEvent>((event, emit) async {
-      emit(MainLoadingState(const []));
+      print('InitiaListEvent is proceed');
+      // emit(MainLoadingState(state.listTitle));
       // get data from hive and put the value to _listTitle
       changeToNewList(await todoData.getTitleList);
       _lastKey = await todoData.findLastKey;
-      _username = await userModel.username;
+      _username = userModel.username;
       todoData.listTitle = _listTitle;
       todoData.lastKey = _lastKey;
       emit(MainmenuInitial(_listTitle));
@@ -90,7 +94,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     });
 
     on<MainMenuAddEvent>((event, emit) async {
-      emit(MainLoadingState(const []));
+      emit(MainLoadingState(state.listTitle));
 
       /// create keyValue
       int numberKey = takeIntFromKey(_lastKey);
@@ -124,7 +128,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     });
 
     on<MainDeleteSaveEvent>((event, emit) {
-      emit(MainLoadingState(const []));
+      emit(MainLoadingState(state.listTitle));
       _listTitle = state.listTitle;
       if (_indexDelete.isNotEmpty) {
         _indexDelete.sort(

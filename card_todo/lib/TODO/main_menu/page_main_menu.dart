@@ -113,21 +113,22 @@ class MainMenuPageState extends State<MainMenuPage> {
                   child: const Center(child: CircularProgressIndicator()),
                 );
               }
-              if (state.listTitle.isEmpty) {
-                return Align(
-                  alignment: Alignment.center,
-                  child: IconButton(
-                    onPressed: () {
-                      print('add button');
-                    },
-                    icon: Icon(
-                      TodoAppIcon.add,
-                      color: Colors.black.withOpacity(0.3),
-                      size: sizing.isPotrait ? 50 : 30,
-                    ),
-                  ),
-                );
-              }
+
+              // if (state.listTitle.isEmpty) {
+              //   return Align(
+              //     alignment: Alignment.center,
+              //     child: IconButton(
+              //       onPressed: () {
+              //         print('add button');
+              //       },
+              //       icon: Icon(
+              //         TodoAppIcon.add,
+              //         color: Colors.black.withOpacity(0.3),
+              //         size: sizing.isPotrait ? 50 : 30,
+              //       ),
+              //     ),
+              //   );
+              // }
 
               /// This for reordere state
               /// if the state is in mainorederebuttonstate or in processs mean
@@ -188,35 +189,50 @@ class MainMenuPageState extends State<MainMenuPage> {
                 );
               }
 
-              print('i am rendered');
+              if (state.listTitle.isNotEmpty) {
+                print('i am rendered');
 
-              ///Grid for default
-              return GridView.builder(
-                padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
-                    .copyWith(bottom: 40),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10),
-                itemCount: state.listTitle.length,
-                itemBuilder: (context, index) {
-                  String title = state.listTitle[index].title;
-                  String keyValue = state.listTitle[index].keyValue;
-                  int sumTask = state.listTitle[index].sumTask;
-                  ScreenArguments args =
-                      ScreenArguments(title: title, keyValue: keyValue);
-                  print('default title ${state.listTitle.length}');
-                  return CardWidget(
-                    onpressed: () {
-                      Navigator.of(context)
-                          .pushNamed('/TaskPage', arguments: args);
-                    },
-                    fontSize: fontCard,
-                    title: title,
-                    tasktodo: sumTask,
-                    isDelete: false,
-                  );
-                },
+                ///Grid for default
+                return GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
+                      .copyWith(bottom: 40),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10),
+                  itemCount: state.listTitle.length,
+                  itemBuilder: (context, index) {
+                    String title = state.listTitle[index].title;
+                    String keyValue = state.listTitle[index].keyValue;
+                    int sumTask = state.listTitle[index].sumTask;
+                    ScreenArguments args =
+                        ScreenArguments(title: title, keyValue: keyValue);
+                    print('default title ${state.listTitle.length}');
+                    return CardWidget(
+                      onpressed: () {
+                        Navigator.of(context)
+                            .pushNamed('/TaskPage', arguments: args);
+                      },
+                      fontSize: fontCard,
+                      title: title,
+                      tasktodo: sumTask,
+                      isDelete: false,
+                    );
+                  },
+                );
+              }
+              return Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                  onPressed: () {
+                    print('add button');
+                  },
+                  icon: Icon(
+                    TodoAppIcon.add,
+                    color: Colors.black.withOpacity(0.3),
+                    size: sizing.isPotrait ? 50 : 30,
+                  ),
+                ),
               );
             },
           ),

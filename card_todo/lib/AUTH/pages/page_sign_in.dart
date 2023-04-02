@@ -27,6 +27,7 @@ class _SingInPageState extends State<SingInPage> {
   void dispose() {
     usernameCtr.dispose();
     passwordCtr.dispose();
+    passwordCubit.close();
     super.dispose();
   }
 
@@ -64,9 +65,10 @@ class _SingInPageState extends State<SingInPage> {
                           min: 50,
                           max: 200),
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/images/logo.png'),
-                              fit: BoxFit.contain)),
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/logo.png'),
+                            fit: BoxFit.contain),
+                      ),
                     ),
                   ],
                 ),
@@ -104,7 +106,7 @@ class _SingInPageState extends State<SingInPage> {
                       ),
                     ),
                     SizedBox(
-                      height: sizing.heightCalc(percent: 5.9),
+                      height: sizing.heightCalc(percent: 5),
                     ),
                     InputCard(
                         titletext: 'Email / User Name',
@@ -119,9 +121,13 @@ class _SingInPageState extends State<SingInPage> {
                       controller: passwordCtr,
                       passwordCubit: passwordCubit,
                     ),
+                    // SizedBox(
+                    //   height: sizing.heightCalc(percent: 7),
+                    // ),
                     SizedBox(
-                      height: sizing.heightCalc(percent: 7),
+                      height: 15,
                     ),
+
                     ButtonAction(
                         labeltext: 'SIGN IN',
                         onTap: () {
@@ -134,7 +140,25 @@ class _SingInPageState extends State<SingInPage> {
                               'Username : ${usernameCtr.text} == Password : ${passwordCtr.text}');
                         }),
                     SizedBox(
-                      height: sizing.heightCalc(percent: 3.46),
+                      height: 10,
+                    ),
+                    ButtonAction(
+                        labeltext: 'Sign in later',
+                        color: Colors.grey,
+                        height: 7,
+                        onTap: () {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => MainMenuPage(),
+                          //     ));
+                          Navigator.pushNamed(context, '/HomePage');
+                          print(
+                              'Username : ${usernameCtr.text} == Password : ${passwordCtr.text}');
+                        }),
+
+                    SizedBox(
+                      height: 10,
                     ),
                     LinkText(
                         comment: 'Don\'t have any account ? ',
