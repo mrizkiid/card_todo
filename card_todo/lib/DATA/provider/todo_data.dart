@@ -6,12 +6,26 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class TodoData {
-  late Box _todoBox;
+  Box? _todoBox;
   List<TitleList> listTitle = [];
   List<TaskList> listTask = [];
   String lastKey = '';
 
   Future<void> init() async {
+    if (_todoBox != null) {
+      if (_todoBox!.isOpen) {
+        print('todoBox is Open');
+      } else {}
+    }
+
+    if (_todoBox == null) {
+      print('todoBox is not Open');
+      Hive.registerAdapter(TitleListAdapter());
+      Hive.registerAdapter(TodoListAdapter());
+      Hive.registerAdapter(TaskListAdapter());
+
+      _todoBox = await Hive.openBox(HiveKey.todoBox);
+    }
     if (_todoBox.isOpen) {
       print('todoBox is Open');
     } else {
@@ -21,9 +35,9 @@ class TodoData {
       Hive.registerAdapter(TaskListAdapter());
 
       _todoBox = await Hive.openBox(HiveKey.todoBox);
-      if (_todoBox.isEmpty) {
+      if (_todoBox!.isEmpty) {
         // _todoBox.put(key, value)
-        await _todoBox.put(
+        await _todoBox!.put(
           HiveKey.listTitle,
           [
             TitleList(
@@ -33,8 +47,8 @@ class TodoData {
                 username: 'guest'),
           ],
         );
-        await _todoBox.put(HiveKey.lastKey, 't1');
-        await _todoBox.put(
+        await _todoBox!.put(HiveKey.lastKey, 't1');
+        await _todoBox!.put(
           't1',
           TodoList(
             title: 'Example',
@@ -45,8 +59,8 @@ class TodoData {
           ),
         );
       }
-      if (_todoBox.isNotEmpty) {
-        listTitle = await _todoBox.get(HiveKey.listTitle);
+      if (_todoBox!.isNotEmpty) {
+        listTitle = await _todoBox!.get(HiveKey.listTitle);
       }
     }
   }
