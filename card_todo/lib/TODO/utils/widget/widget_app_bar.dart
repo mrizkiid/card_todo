@@ -34,7 +34,7 @@ class CustomAppBar extends StatelessWidget {
   final double heightAppBar;
   final double paddingHorizontal;
   final Widget child;
-  CustomAppBar({
+  const CustomAppBar({
     super.key,
     required this.heightAppBar,
     required this.paddingHorizontal,

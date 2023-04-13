@@ -11,6 +11,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   late List<int> _isDeleteList;
   String _keyValue = '';
   String _titleTask = '';
+  bool isListNull = false;
 
   //method for ordering list it will return lis of taskList
   List<TaskList> orderList({required List<TaskList> taskList}) {
@@ -56,6 +57,9 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       ];
       _taskList = orderList(taskList: state.taskList);
       todoData.listTask = [..._taskList];
+      if (_taskList.isEmpty) {
+        isListNull = true;
+      }
       emit(TaskState(taskList: _taskList));
     });
 
@@ -65,8 +69,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _taskList[event.index] =
           TaskList(isChecked: isChecked, title: event.title);
       _taskList = orderList(taskList: _taskList);
-      // todoData.saveTaskList(
-      //     keyValue: keyValue, title: titleTask, taskList: [...taskList]);
       saveTask(
           todoData: todoData,
           keyValue: _keyValue,
@@ -162,6 +164,9 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         _taskList.removeAt(i);
       }
       changedToNewList(_taskList);
+      if (_taskList.isEmpty) {
+        isListNull = true;
+      }
       saveTask(
           todoData: todoData,
           keyValue: _keyValue,

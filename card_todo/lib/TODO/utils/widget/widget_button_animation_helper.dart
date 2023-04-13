@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
@@ -138,40 +137,41 @@ class BuildItemUtama extends StatelessWidget {
 }
 
 class DoneButton extends StatelessWidget {
-  DoneButton({
+  const DoneButton({
     Key? key,
     required this.actionEnum,
-    required this.todoData,
   }) : super(key: key);
 
   final ActionEnum actionEnum;
-  final TodoData todoData;
 
-  void onPressedDelete(
-      {required WhichTodoBloc whichTodoBloc,
-      MainMenuBloc? mainMenuBloc,
-      TaskMenuBloc? taskMenuBloc}) {
-    if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-      mainMenuBloc.add(const MainDeleteEvent(false));
-    }
-    if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
-      taskMenuBloc.add(const TaskDelete(false));
-    }
-  }
+  // void onPressedDelete(
+  //     {required WhichTodoBloc whichTodoBloc,
+  //     MainMenuBloc? mainMenuBloc,
+  //     TaskMenuBloc? taskMenuBloc}) {
+  //   if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
+  //     mainMenuBloc.add(const MainDeleteEvent(false));
+  //     if(mainMenuBloc.isListNull){
 
-  void onPressedReorder(
-      {required WhichTodoBloc whichTodoBloc,
-      MainMenuBloc? mainMenuBloc,
-      TaskMenuBloc? taskMenuBloc}) {
-    if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-      mainMenuBloc.add(MainReorderEvent(false));
-    }
-    if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
-      // if (whichTodoBloc == WhichTodoBloc.taskMenu) {
-      taskMenuBloc.add(const TaskReordered(false));
-      taskMenuBloc.add(TaskInitialList());
-    }
-  }
+  //     }
+  //   }
+  //   if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
+  //     taskMenuBloc.add(const TaskDelete(false));
+  //   }
+  // }
+
+  // void onPressedReorder(
+  //     {required WhichTodoBloc whichTodoBloc,
+  //     MainMenuBloc? mainMenuBloc,
+  //     TaskMenuBloc? taskMenuBloc}) {
+  //   if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
+  //     mainMenuBloc.add(MainReorderEvent(false));
+  //   }
+  //   if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
+  //     // if (whichTodoBloc == WhichTodoBloc.taskMenu) {
+  //     taskMenuBloc.add(const TaskReordered(false));
+  //     taskMenuBloc.add(const TaskInitialList());
+  //   }
+  // }
 
   void showDialogMehtod(
     BuildContext context, {
@@ -209,6 +209,9 @@ class DoneButton extends StatelessWidget {
                 if (mainMenuBloc != null) {
                   // mainMenuBloc.add(MainReorderSaveEvent());
                   if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
+                    if (mainMenuBloc.isListNull) {
+                      buttonAnimationBloc.add(ButtonEmptyEvent());
+                    }
                     mainMenuBloc.add(MainDeleteSaveEvent());
                   }
                   if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
@@ -310,7 +313,7 @@ class DoneButton extends StatelessWidget {
 
             if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
                 taskMenuBloc != null) {
-              taskMenuBloc.add(TaskInitialList());
+              taskMenuBloc.add(const TaskInitialList());
             }
             buttonAnimationBloc.add(ButtonCancelEvent());
           },

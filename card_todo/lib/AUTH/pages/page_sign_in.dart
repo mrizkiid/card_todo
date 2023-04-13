@@ -37,8 +37,6 @@ class _SingInPageState extends State<SingInPage> {
     sizing.init(context);
     SizeAuth sizeAuth = SizeAuth();
     sizeAuth.init(sizing);
-    // double heightScreen = InitSizing().screenHeight;
-    double widthScreen = sizing.screenWidth;
     double heightHeader = sizing.heightCalc(percent: 24, min: 200);
 
     return Scaffold(

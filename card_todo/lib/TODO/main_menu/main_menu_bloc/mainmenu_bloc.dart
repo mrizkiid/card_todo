@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:card_todo/DATA/model/modelTodo.dart';
-import 'package:card_todo/DATA/model/modelUser.dart';
+import 'package:card_todo/DATA/model/model_user.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
-import 'package:card_todo/testfolder/hive/model/user.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 part 'mainmenu_event.dart';
 part 'mainmenu_state.dart';
@@ -18,6 +14,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   // String _title = '';
   String _lastKey = '';
   String _username = '';
+  bool isListNull = false;
 
   void changeToNewList(List<TitleList> listTileNew) {
     _listTitle = [...listTileNew];
@@ -80,6 +77,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
         final currentState = state as MainDeleteState;
         //make new list isRedList
         isRedList = [...currentState.isRedList];
+
         //changing isRedList value
         isRedList[event.index] = !isRedList[event.index];
       }
@@ -93,10 +91,37 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
           isRedList: isRedList, isPressed: isPressed, newlistTask: _listTitle));
     });
 
+    on<MainDeleteSaveEvent>((event, emit) async {
+      emit(MainLoadingState(state.listTitle));
+      _listTitle = state.listTitle;
+      if (_indexDelete.isNotEmpty) {
+        _indexDelete.sort(
+          (a, b) => b.compareTo(a),
+        );
+        for (int i in _indexDelete) {
+          await todoData.deleteTaskList(keyValue: _listTitle[i].keyValue);
+          _listTitle.removeAt(i);
+        }
+      }
+      //move list to todoData
+      await todoData.saveTitleList([..._listTitle]);
+
+      changeToNewList(_listTitle);
+      if (_listTitle.isEmpty) {
+        isListNull = true;
+      }
+
+      emit(SaveState(_listTitle));
+
+      // deleteing list delete
+      _indexDelete = [];
+    });
+
     on<MainMenuAddEvent>((event, emit) async {
       emit(MainLoadingState(state.listTitle));
 
       /// create keyValue
+      _lastKey = await todoData.findLastKey;
       int numberKey = takeIntFromKey(_lastKey);
       numberKey = numberKey + 1;
       _keyValue = 't$numberKey';
@@ -104,17 +129,27 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       /// save lastKey in to hive
       await todoData.saveLastKey(_keyValue);
 
-      todoData.listTitle.add(TitleList(
+      _listTitle.add(TitleList(
           title: event.titleTask,
           keyValue: _keyValue,
           sumTask: 0,
           username: _username));
 
+      todoData.listTitle = _listTitle;
+
       /// cange list to new list
       changeToNewList(_listTitle);
 
+      print('bloc ${_listTitle.length} ${event.titleTask} $_keyValue');
+
+      if (_listTitle.isNotEmpty) {
+        isListNull = false;
+      }
+
       /// save listTitle in to Hive
       await todoData.saveTitleList(_listTitle);
+      await todoData.saveTaskList(
+          keyValue: _keyValue, title: event.titleTask, taskList: <TaskList>[]);
       emit(SaveState(_listTitle));
     });
 
@@ -125,27 +160,6 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       //emitting listTile to new List
       changeToNewList(state.listTitle);
       emit(SaveState(_listTitle));
-    });
-
-    on<MainDeleteSaveEvent>((event, emit) {
-      emit(MainLoadingState(state.listTitle));
-      _listTitle = state.listTitle;
-      if (_indexDelete.isNotEmpty) {
-        _indexDelete.sort(
-          (a, b) => b.compareTo(a),
-        );
-        for (int i in _indexDelete) {
-          _listTitle.removeAt(i);
-        }
-      }
-      //move list to todoData
-      todoData.saveTitleList([..._listTitle]);
-
-      changeToNewList(_listTitle);
-      emit(SaveState(_listTitle));
-
-      // deleteing list delete
-      _indexDelete = [];
     });
   }
 }

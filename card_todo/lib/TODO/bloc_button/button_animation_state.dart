@@ -1,42 +1,25 @@
 part of 'button_animation_bloc.dart';
 
 abstract class ButtonAnimationState extends Equatable {
-  // final bool isActionPressed;
-  // final bool isShowPressed;
   final ActionEnum actionEnum;
 
-  const ButtonAnimationState(
-      {
-      //   required this.isActionPressed,
-      // required this.isShowPressed,
-      required this.actionEnum});
+  const ButtonAnimationState({required this.actionEnum});
   @override
   List<Object?> get props => [actionEnum];
 }
 
 class ButtonAnimationInitial extends ButtonAnimationState {
-  const ButtonAnimationInitial(
-      {
-      //   required super.isActionPressed,
-      // required super.isShowPressed,
-      required super.actionEnum});
+  const ButtonAnimationInitial({required super.actionEnum});
 }
 
 class ButtonMainmenuInitial extends ButtonAnimationState {
   const ButtonMainmenuInitial({
     required super.actionEnum,
-    // required super.isActionPressed,
-    // required super.isShowPressed
   });
 }
 
 class ButtonActionState extends ButtonAnimationState {
-  const ButtonActionState(
-      {
-      //   required super.isActionPressed,
-      // required super.isShowPressed,
-      required super.actionEnum,
-      required this.isAction});
+  const ButtonActionState({required super.actionEnum, required this.isAction});
 
   final bool isAction;
 
@@ -49,44 +32,27 @@ class ButtonAddState extends ButtonAnimationState {
 }
 
 class ButtonReorderState extends ButtonAnimationState {
-  const ButtonReorderState(
-      {
-      //   required super.isActionPressed,
-      // required super.isShowPressed,
-      required super.actionEnum});
+  const ButtonReorderState({required super.actionEnum});
 }
 
 class ButtonDeleteState extends ButtonAnimationState {
-  const ButtonDeleteState(
-      {
-      //   required super.isActionPressed,
-      // required super.isShowPressed,
-      required super.actionEnum});
+  const ButtonDeleteState({required super.actionEnum});
 }
 
 class ButtonDeleteMainMenuState extends ButtonAnimationState {
-  const ButtonDeleteMainMenuState(
-      {
-      //   required super.isActionPressed,
-      // required super.isShowPressed,
-      required super.actionEnum});
+  const ButtonDeleteMainMenuState({required super.actionEnum});
 }
 
 class CancelState extends ButtonAnimationState {
-  const CancelState(
-      {
-      //   required super.isActionPressed,
-      // required super.isShowPressed,
-      required super.actionEnum});
+  const CancelState({required super.actionEnum});
 }
 
 class ButtonDoneState extends ButtonAnimationState {
-  const ButtonDoneState(
-      {
-      //   required super.isActionPressed,
-      // required super.isShowPressed,
-      required super.actionEnum,
-      this.isSave});
+  const ButtonDoneState({required super.actionEnum, this.isSave});
 
   final bool? isSave;
+}
+
+class ButtonEmptyState extends ButtonAnimationState {
+  const ButtonEmptyState({required super.actionEnum});
 }

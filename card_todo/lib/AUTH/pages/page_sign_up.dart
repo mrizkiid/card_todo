@@ -7,14 +7,30 @@ import 'package:card_todo/UTILS/widget/button.dart';
 import 'package:card_todo/UTILS/widget/input_card.dart';
 import 'package:flutter/material.dart';
 
-class PageSignUp extends StatelessWidget {
-  PageSignUp({super.key});
+class PageSignUp extends StatefulWidget {
+  const PageSignUp({super.key});
 
+  @override
+  State<PageSignUp> createState() => _PageSignUpState();
+}
+
+class _PageSignUpState extends State<PageSignUp> {
   TextEditingController nicknamectr = TextEditingController();
   TextEditingController namectr = TextEditingController();
   TextEditingController emailctr = TextEditingController();
   TextEditingController passwordctr = TextEditingController();
+
   PasswordCubit passwordCubit = PasswordCubit(true);
+
+  @override
+  void dispose() {
+    passwordCubit.close();
+    nicknamectr.dispose();
+    namectr.dispose();
+    emailctr.dispose();
+    passwordctr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

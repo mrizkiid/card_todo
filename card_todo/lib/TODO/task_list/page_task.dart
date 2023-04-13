@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors,prefer_const_literals_to_create_immutables
 
-import 'package:card_todo/DATA/model/modelArguments.dart';
 import 'package:card_todo/DATA/model/modelTodo.dart';
+import 'package:card_todo/DATA/model/model_arguments.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/TODO/utils/widget/widget_app_bar.dart';
@@ -9,10 +9,8 @@ import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
 import 'package:card_todo/TODO/utils/widget/widget_task_page.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
-import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
-import 'package:card_todo/UTILS/widget/main_menu_button_flow.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +33,6 @@ class _TaskPageState extends State<TaskPage> {
     double paddingHorizontal = sizing.widthCalc(percent: 12);
     double heightAppBar = 70;
     TodoData todoData = RepositoryProvider.of(context);
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(heightAppBar),
@@ -115,7 +112,6 @@ class _TaskPageState extends State<TaskPage> {
               alignment: Alignment.bottomCenter,
               child: DoneButton(
                 actionEnum: state.actionEnum,
-                todoData: todoData,
               ),
             ),
           );

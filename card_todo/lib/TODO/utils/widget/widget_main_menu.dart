@@ -1,9 +1,7 @@
-import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:card_todo/UTILS/static/size_class.dart';
 import 'package:flutter/material.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 ///Make Containein above main menu
 class ProfileContainer extends StatelessWidget {
@@ -11,10 +9,14 @@ class ProfileContainer extends StatelessWidget {
     super.key,
     required this.paddingHorizontal,
     required this.sizing,
+    required this.sumTask,
+    required this.name,
   });
 
   final double paddingHorizontal;
   final Sizing sizing;
+  final int sumTask;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +42,14 @@ class ProfileContainer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hi, Rizki',
+                          'Hi, $name',
                           style: TextStyle(
                               fontSize:
                                   sizing.heightCalc(percent: 5.7, max: 30),
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'You Have 5 tasks',
+                          'You Have $sumTask tasks',
                           style: TextStyle(
                               fontSize:
                                   sizing.heightCalc(percent: 3.7, max: 15),

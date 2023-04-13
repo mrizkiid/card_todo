@@ -99,7 +99,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
   @override
   Widget build(BuildContext context) {
     String title;
-    List<dynamic> listOfFindingTrue;
+    List<String> listOfFindingTrue = [];
     final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
       mainMenuBloc = context.read<MainMenuBloc>();
@@ -112,7 +112,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
       taskMenuBloc = context.read<TaskMenuBloc>();
     }
     var listTitle = RepositoryProvider.of<TodoData>(context).listTitle;
-    final listTaskTitle = listTitle.map((e) => e.title.toLowerCase()).toList();
+    // final listTaskTitle = listTitle.map((e) => e.title.toLowerCase()).toList();
     return Flow(delegate: FlowMenuDelegate(controller: controller), children: [
       BuildItemUtama(
           isAction: widget.isAction,
@@ -159,7 +159,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                   ),
                   content: MainDialog(
                     parentContext: context,
-                    listData: listTaskTitle,
+                    listData: listOfFindingTrue,
                     title: titleDialog,
                     mainMenuBloc: mainMenuBloc,
                     taskMenuBloc: taskMenuBloc,

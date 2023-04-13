@@ -33,3 +33,5 @@ class ButtonDoneEvent extends ButtonAnimationEvent {
 }
 
 class ButtonCancelEvent extends ButtonAnimationEvent {}
+
+class ButtonEmptyEvent extends ButtonAnimationEvent {}

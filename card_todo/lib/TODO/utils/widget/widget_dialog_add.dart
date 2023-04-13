@@ -3,7 +3,7 @@ import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:flutter/material.dart';
 
 class MainDialog extends StatefulWidget {
-  MainDialog(
+  const MainDialog(
       {Key? key,
       required this.parentContext,
       this.mainMenuBloc,
@@ -13,7 +13,7 @@ class MainDialog extends StatefulWidget {
       : super(key: key);
 
   final BuildContext parentContext;
-  List<String> listData;
+  final List<String> listData;
   final String title;
   final MainMenuBloc? mainMenuBloc;
   final TaskMenuBloc? taskMenuBloc;
