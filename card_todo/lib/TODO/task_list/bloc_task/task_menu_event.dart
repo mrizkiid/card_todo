@@ -68,8 +68,9 @@ class TaskDeleteSave extends TaskMenuEvent {}
 
 class TaskAddEvent extends TaskMenuEvent {
   final String task;
+  final String keyValue;
 
-  const TaskAddEvent({required this.task});
+  const TaskAddEvent({required this.keyValue, required this.task});
 }
 
 // class TaskCh

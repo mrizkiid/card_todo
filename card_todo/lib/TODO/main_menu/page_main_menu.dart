@@ -30,7 +30,7 @@ class MainMenuPageState extends State<MainMenuPage> {
   Sizing sizing = Sizing();
   @override
   Widget build(BuildContext context) {
-    TodoData todoData = RepositoryProvider.of<TodoData>(context);
+    // TodoData todoData = RepositoryProvider.of<TodoData>(context);
     sizing.init(context);
     double heightAppBar = sizing.heightCalc(percent: 22.3, min: 120);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
@@ -159,7 +159,7 @@ class MainMenuPageState extends State<MainMenuPage> {
                 );
               }
 
-              if (state.listTitle.isNotEmpty || state is SaveState) {
+              if (state.listTitle.isNotEmpty) {
                 print('i am rendered');
 
                 ///Grid for default
@@ -195,18 +195,25 @@ class MainMenuPageState extends State<MainMenuPage> {
                 alignment: Alignment.center,
                 child: IconButton(
                   onPressed: () {
-                    final listTitle =
-                        RepositoryProvider.of<TodoData>(context).listTitle;
+                    final listTitle = state.listTitle;
                     final listOfFindingTrue =
                         listTitle.map((e) => e.title.toLowerCase()).toList();
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                          content: MainDialog(
-                              mainMenuBloc: mainMenuBloc,
-                              parentContext: context,
-                              listData: listOfFindingTrue,
-                              title: 'Add Title')),
+                        contentPadding: EdgeInsets.zero,
+                        backgroundColor: ColorStatic.maincolor,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        content: MainDialog(
+                            mainMenuBloc: mainMenuBloc,
+                            parentContext: context,
+                            listData: listOfFindingTrue,
+                            title: 'Add Title'),
+                      ),
                     );
                   },
                   icon: Icon(

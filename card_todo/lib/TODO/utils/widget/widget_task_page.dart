@@ -68,14 +68,9 @@ class TileTaskCard extends StatelessWidget {
                       color: Colors.black),
             ),
             trailing: isDelete
-                ? IconButton(
-                    onPressed: () {
-                      // context.read<TaskMenuBloc>().add(TaskDeleteProcess());
-                    },
-                    icon: const Icon(
-                      TodoAppIcon.delete,
-                      color: Colors.red,
-                    ),
+                ? const Icon(
+                    TodoAppIcon.delete,
+                    color: Colors.red,
                   )
                 : const SizedBox(),
           ),

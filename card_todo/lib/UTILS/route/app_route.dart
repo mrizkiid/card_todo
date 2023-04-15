@@ -27,17 +27,8 @@ class AppRoute {
       // case AppRouteConst.homepage:
       case '/':
         return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) =>
-                    MainMenuBloc(todoData: todoData, userModel: userModel)
-                      ..add(InitialService()),
-              ),
-              BlocProvider.value(
-                value: blocButtonMain,
-              )
-            ],
+          builder: (_) => BlocProvider.value(
+            value: blocButtonMain,
             child: const MainMenuPage(),
           ),
         );
@@ -48,7 +39,8 @@ class AppRoute {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => TaskMenuBloc(todoData: todoData)
+                create: (_) => TaskMenuBloc(
+                    todoData: todoData, buttonAnimationBloc: blocButtonTask)
                   ..add(
                     TaskInitialList(title: args.title, keyValue: args.keyValue),
                   ),
@@ -57,16 +49,18 @@ class AppRoute {
                 value: blocButtonTask,
               )
             ],
-            child: TaskPage(titleTask: args.title),
+            child: TaskPage(titleTask: args.title, keyValue: args.keyValue),
           ),
         );
       default:
         print('default trigerred');
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (_) =>
-                MainMenuBloc(todoData: todoData, userModel: userModel)
-                  ..add(InitialService()),
+            create: (_) => MainMenuBloc(
+                todoData: todoData,
+                userModel: userModel,
+                buttonAnimationBloc: blocButtonMain)
+              ..add(InitialService()),
             child: const MainMenuPage(),
           ),
         );

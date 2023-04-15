@@ -3,6 +3,7 @@
 import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/DATA/model/model_user.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/UTILS/route/app_route.dart';
 import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:card_todo/general_bloc_observer.dart';
@@ -72,15 +73,26 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     TodoData todoData = RepositoryProvider.of<TodoData>(context);
     UserModel userModel = RepositoryProvider.of<UserModel>(context);
-    return MaterialApp(
-      onGenerateRoute: (settings) {
-        return appRoute.onGenerateRoute(
-            settings: settings,
-            todoData: todoData,
-            userModel: userModel,
-            blocButtonMain: blocButtonMain,
-            blocButtonTask: blocButtonTask);
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MainMenuBloc>(
+          create: (_) => MainMenuBloc(
+              todoData: todoData,
+              userModel: userModel,
+              buttonAnimationBloc: blocButtonMain)
+            ..add(InitialService()),
+        ),
+      ],
+      child: MaterialApp(
+        onGenerateRoute: (settings) {
+          return appRoute.onGenerateRoute(
+              settings: settings,
+              todoData: todoData,
+              userModel: userModel,
+              blocButtonMain: blocButtonMain,
+              blocButtonTask: blocButtonTask);
+        },
+      ),
     );
   }
 }

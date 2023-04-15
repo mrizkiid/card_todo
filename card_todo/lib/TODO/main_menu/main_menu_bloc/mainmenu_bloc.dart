@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/DATA/model/model_user.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'mainmenu_event.dart';
@@ -14,6 +15,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   // String _title = '';
   String _lastKey = '';
   String _username = '';
+  int _sumTask = 0;
   bool isListNull = false;
 
   void changeToNewList(List<TitleList> listTileNew) {
@@ -25,20 +27,24 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     return numberKey;
   }
 
-  MainMenuBloc({required TodoData todoData, required UserModel userModel})
+  MainMenuBloc(
+      {required TodoData todoData,
+      required UserModel userModel,
+      required ButtonAnimationBloc buttonAnimationBloc})
       : super(const MainmenuInitial([])) {
     on<InitialService>((event, emit) async {
-      print('InitialService is proceed');
       emit(MainLoadingState([...state.listTitle]));
       await todoData.init();
       add(InitialListEvent());
     });
 
     on<InitialListEvent>((event, emit) async {
-      print('InitiaListEvent is proceed');
       // emit(MainLoadingState(state.listTitle));
       // get data from hive and put the value to _listTitle
       changeToNewList(await todoData.getTitleList);
+      if (_listTitle.isEmpty) {
+        buttonAnimationBloc.add(ButtonEmptyEvent());
+      }
       _lastKey = await todoData.findLastKey;
       _username = userModel.username;
       todoData.listTitle = _listTitle;
@@ -108,7 +114,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
       changeToNewList(_listTitle);
       if (_listTitle.isEmpty) {
-        isListNull = true;
+        buttonAnimationBloc.add(ButtonEmptyEvent());
       }
 
       emit(SaveState(_listTitle));
@@ -143,7 +149,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       print('bloc ${_listTitle.length} ${event.titleTask} $_keyValue');
 
       if (_listTitle.isNotEmpty) {
-        isListNull = false;
+        buttonAnimationBloc.add(ButtonCancelEvent());
       }
 
       /// save listTitle in to Hive

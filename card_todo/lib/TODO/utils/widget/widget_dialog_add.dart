@@ -9,7 +9,8 @@ class MainDialog extends StatefulWidget {
       this.mainMenuBloc,
       this.taskMenuBloc,
       required this.listData,
-      required this.title})
+      required this.title,
+      this.keyValue})
       : super(key: key);
 
   final BuildContext parentContext;
@@ -17,6 +18,7 @@ class MainDialog extends StatefulWidget {
   final String title;
   final MainMenuBloc? mainMenuBloc;
   final TaskMenuBloc? taskMenuBloc;
+  final String? keyValue;
 
   @override
   State<MainDialog> createState() => _MainDialogState();
@@ -145,10 +147,17 @@ class _MainDialogState extends State<MainDialog> {
                                     mainMenuBloc
                                         .add(MainMenuAddEvent(titleTask: text));
                                   }
-                                  if (taskMenuBloc != null) {
-                                    taskMenuBloc.add(TaskAddEvent(task: text));
+                                  if (taskMenuBloc != null &&
+                                      widget.keyValue != null) {
+                                    taskMenuBloc.add(
+                                      TaskAddEvent(
+                                        task: text,
+                                        keyValue: widget.keyValue!,
+                                      ),
+                                    );
+                                    print(
+                                        'task menu dialog called = $text // ${widget.keyValue}');
                                   }
-                                  print(text);
                                   Navigator.of(widget.parentContext).pop();
                                   // textEditingController.dispose();
                                 }

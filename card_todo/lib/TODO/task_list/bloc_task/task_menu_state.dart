@@ -2,27 +2,23 @@
 part of 'task_menu_bloc.dart';
 
 abstract class TaskMenuState extends Equatable {
-  const TaskMenuState({
-    required this.taskList,
-  });
+  const TaskMenuState({required this.taskList, required this.sumTask});
   final List<TaskList> taskList;
+  final int sumTask;
   @override
-  List<Object?> get props => [taskList];
+  List<Object?> get props => [taskList, sumTask];
 }
 
 class TaskMenuInitial extends TaskMenuState {
-  const TaskMenuInitial({required super.taskList});
-
-  // @override
-  // List<Object> get props => [taskList];
+  const TaskMenuInitial({required super.taskList, required super.sumTask});
 }
 
 class TaskState extends TaskMenuState {
-  const TaskState({required super.taskList});
+  const TaskState({required super.taskList, required super.sumTask});
 }
 
 class TaskSaveState extends TaskMenuState {
-  const TaskSaveState({required super.taskList});
+  const TaskSaveState({required super.sumTask, required super.taskList});
 }
 
 class TaskReorderState extends TaskMenuState {
@@ -30,6 +26,7 @@ class TaskReorderState extends TaskMenuState {
   final bool isOrdered;
   const TaskReorderState(
       {required super.taskList,
+      required super.sumTask,
       required this.taskListFalse,
       required this.isOrdered});
 
@@ -43,6 +40,7 @@ class TaskDeleteState extends TaskMenuState {
 
   const TaskDeleteState(
       {required this.isRedList,
+      required super.sumTask,
       required this.isDelete,
       required super.taskList});
 

@@ -144,35 +144,6 @@ class DoneButton extends StatelessWidget {
 
   final ActionEnum actionEnum;
 
-  // void onPressedDelete(
-  //     {required WhichTodoBloc whichTodoBloc,
-  //     MainMenuBloc? mainMenuBloc,
-  //     TaskMenuBloc? taskMenuBloc}) {
-  //   if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-  //     mainMenuBloc.add(const MainDeleteEvent(false));
-  //     if(mainMenuBloc.isListNull){
-
-  //     }
-  //   }
-  //   if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
-  //     taskMenuBloc.add(const TaskDelete(false));
-  //   }
-  // }
-
-  // void onPressedReorder(
-  //     {required WhichTodoBloc whichTodoBloc,
-  //     MainMenuBloc? mainMenuBloc,
-  //     TaskMenuBloc? taskMenuBloc}) {
-  //   if (whichTodoBloc == WhichTodoBloc.mainMenu && mainMenuBloc != null) {
-  //     mainMenuBloc.add(MainReorderEvent(false));
-  //   }
-  //   if (whichTodoBloc == WhichTodoBloc.taskMenu && taskMenuBloc != null) {
-  //     // if (whichTodoBloc == WhichTodoBloc.taskMenu) {
-  //     taskMenuBloc.add(const TaskReordered(false));
-  //     taskMenuBloc.add(const TaskInitialList());
-  //   }
-  // }
-
   void showDialogMehtod(
     BuildContext context, {
     required String titleHead,

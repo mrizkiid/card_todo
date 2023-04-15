@@ -9,7 +9,6 @@ class TodoData {
   List<TitleList> listTitle = [];
   List<TaskList> listTask = [];
   String lastKey = '';
-  int sumTask = 0;
 
   Future<void> init() async {
     // get the box
@@ -72,8 +71,19 @@ class TodoData {
     await _todoBox.put(HiveKey.listTitle, titleList);
   }
 
-  Future<List<TaskList>> getTaskList(
-      {required String title, required String keyValue}) async {
+  Future<void> addSumTask(int index, int sumTask) async {
+    List listNew = await _todoBox.get(HiveKey.listTitle);
+    List<TitleList> listTitleNew = listNew.cast<TitleList>();
+    TitleList titleList = listTitleNew[index];
+    listTitleNew[index] = TitleList(
+        title: titleList.title,
+        keyValue: titleList.keyValue,
+        sumTask: sumTask,
+        username: titleList.username);
+    await _todoBox.put(HiveKey.listTitle, listTitleNew);
+  }
+
+  Future<List<TaskList>> getTaskList({required String keyValue}) async {
     TodoList todoList;
 
     todoList = await _todoBox.get(keyValue);

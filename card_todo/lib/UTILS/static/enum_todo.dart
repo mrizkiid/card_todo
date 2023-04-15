@@ -6,3 +6,6 @@ enum WhichTodoBloc {
 
 /// Enum for Button Animation Bloc
 enum ActionEnum { reorder, delete, add, action }
+
+// enum for add sum or substract sum
+enum AddSubSumTask { substract, add }
