@@ -18,16 +18,14 @@ const double buttonsize = 80;
 // enum
 
 class LinearFlowWidget extends StatefulWidget {
-  const LinearFlowWidget(
-      {Key? key,
-      required this.isAction,
-      required this.whichTodoBloc,
-      this.keyValue})
-      : super(key: key);
+  const LinearFlowWidget({
+    Key? key,
+    required this.isAction,
+    required this.whichTodoBloc,
+  }) : super(key: key);
 
   final bool isAction;
   final WhichTodoBloc whichTodoBloc;
-  final String? keyValue;
 
   @override
   State<LinearFlowWidget> createState() => _LinearFlowWidgetState();
@@ -78,7 +76,6 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
     if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.taskMenu &&
         taskMenuBloc != null) {
       taskMenuBloc.add(const TaskDelete(true));
-      print('taskdelete is called');
     }
   }
 
@@ -124,7 +121,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
             if (controller.isCompleted) {
               context
                   .read<ButtonAnimationBloc>()
-                  .add(const ButtonActionEvent(isAction: true));
+                  .add(const ButtonActionEvent());
               controller.reverse();
               return;
             }
@@ -134,7 +131,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
             if (controller.isDismissed) {
               context
                   .read<ButtonAnimationBloc>()
-                  .add(const ButtonActionEvent(isAction: true));
+                  .add(const ButtonActionEvent());
               controller.forward();
               return;
             }
@@ -144,7 +141,7 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
           title: 'Add',
           onPressed: () {
             controller.reset();
-            buttonAnimationBloc.add(ButtonActionAdd());
+            context.read<ButtonAnimationBloc>().add(ButtonActionAdd());
             findTitle(widget.whichTodoBloc);
 
             /// show dialog box for add
@@ -165,7 +162,6 @@ class _LinearFlowWidgetState extends State<LinearFlowWidget>
                     title: titleDialog,
                     mainMenuBloc: mainMenuBloc,
                     taskMenuBloc: taskMenuBloc,
-                    keyValue: widget.keyValue,
                   ),
                 );
               },

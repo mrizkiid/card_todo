@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
-import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'task_menu_event.dart';
@@ -14,7 +13,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   int _index = 0;
   int _sumTask = 0;
   String _titleTask = '';
-  // bool isListNull = false;
 
   void settingsKeyAndTitle({required String keyValue, required int index}) {
     _keyValue = keyValue;
@@ -55,19 +53,19 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         keyValue: keyValue, title: titleTask, taskList: taskListNew);
   }
 
-  TaskMenuBloc(
-      {required TodoData todoData,
-      required ButtonAnimationBloc buttonAnimationBloc})
+  TaskMenuBloc({required TodoData todoData})
       : super(const TaskMenuInitial(taskList: [], sumTask: 0)) {
     on<TaskInitialList>((event, emit) async {
       _keyValue = event.keyValue ?? _keyValue;
+      _titleTask = event.title ?? _titleTask;
+      if (event.index != null) {
+        _index = event.index!;
+      }
       _taskList = [...await todoData.getTaskList(keyValue: _keyValue)];
       _taskList = orderList(taskList: _taskList);
       todoData.listTask = [..._taskList];
-      if (_taskList.isEmpty) {
-        buttonAnimationBloc.add(ButtonEmptyEvent());
-      }
       _sumTask = _taskList.length;
+
       emit(TaskState(taskList: _taskList, sumTask: _sumTask));
     });
 
@@ -92,14 +90,12 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _taskList.add(TaskList(isChecked: false, title: event.task));
       _taskList = orderList(taskList: _taskList);
       changedToNewList(_taskList);
-      if (_taskList.isNotEmpty) {
-        buttonAnimationBloc.add(const ButtonDoneEvent(isSave: false));
-      }
       _sumTask = _taskList.length;
       await todoData.addSumTask(_index, _sumTask);
+      print('Key Value = $_keyValue ---- SumTask $_sumTask');
       await saveTask(
           todoData: todoData,
-          keyValue: event.keyValue,
+          keyValue: _keyValue,
           titleTask: event.task,
           taskListNew: _taskList);
       emit(TaskSaveState(taskList: _taskList, sumTask: _sumTask));
@@ -200,9 +196,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         _taskList.removeAt(i);
       }
       changedToNewList(_taskList);
-      if (_taskList.isEmpty) {
-        buttonAnimationBloc.add(ButtonEmptyEvent());
-      }
       _sumTask = _taskList.length;
       await todoData.addSumTask(_index, _sumTask);
       await saveTask(
@@ -213,6 +206,10 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       emit(TaskSaveState(taskList: _taskList, sumTask: _sumTask));
 
       // make isDeleteList 0
+      _isDeleteList = [];
+    });
+
+    on<TaskDeleteCancel>((event, emit) {
       _isDeleteList = [];
     });
   }

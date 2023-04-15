@@ -10,8 +10,7 @@ abstract class ButtonAnimationEvent extends Equatable {
 class ButtonMainmenuInitialEvent extends ButtonAnimationEvent {}
 
 class ButtonActionEvent extends ButtonAnimationEvent {
-  final bool isAction;
-  const ButtonActionEvent({required this.isAction});
+  const ButtonActionEvent();
 }
 
 class ButtonActionDelete extends ButtonAnimationEvent {

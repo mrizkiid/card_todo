@@ -55,4 +55,6 @@ class MainReorderSaveEvent extends MainMenuEvent {}
 
 class MainDeleteSaveEvent extends MainMenuEvent {}
 
+class MainDeleteCancel extends MainMenuEvent {}
+
 class InitialService extends MainMenuEvent {}

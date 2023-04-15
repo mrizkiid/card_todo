@@ -27,11 +27,10 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     return numberKey;
   }
 
-  MainMenuBloc(
-      {required TodoData todoData,
-      required UserModel userModel,
-      required ButtonAnimationBloc buttonAnimationBloc})
-      : super(const MainmenuInitial([])) {
+  MainMenuBloc({
+    required TodoData todoData,
+    required UserModel userModel,
+  }) : super(const MainmenuInitial([])) {
     on<InitialService>((event, emit) async {
       emit(MainLoadingState([...state.listTitle]));
       await todoData.init();
@@ -42,9 +41,6 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       // emit(MainLoadingState(state.listTitle));
       // get data from hive and put the value to _listTitle
       changeToNewList(await todoData.getTitleList);
-      if (_listTitle.isEmpty) {
-        buttonAnimationBloc.add(ButtonEmptyEvent());
-      }
       _lastKey = await todoData.findLastKey;
       _username = userModel.username;
       todoData.listTitle = _listTitle;
@@ -113,13 +109,14 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       await todoData.saveTitleList([..._listTitle]);
 
       changeToNewList(_listTitle);
-      if (_listTitle.isEmpty) {
-        buttonAnimationBloc.add(ButtonEmptyEvent());
-      }
 
       emit(SaveState(_listTitle));
 
       // deleteing list delete
+      _indexDelete = [];
+    });
+
+    on<MainDeleteCancel>((event, emit) {
       _indexDelete = [];
     });
 
@@ -147,10 +144,6 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       changeToNewList(_listTitle);
 
       print('bloc ${_listTitle.length} ${event.titleTask} $_keyValue');
-
-      if (_listTitle.isNotEmpty) {
-        buttonAnimationBloc.add(ButtonCancelEvent());
-      }
 
       /// save listTitle in to Hive
       await todoData.saveTitleList(_listTitle);

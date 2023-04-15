@@ -43,23 +43,26 @@ class MainMenuPageState extends State<MainMenuPage> {
           BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
         builder: (context, state) {
           final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
-          if (state is ButtonEmptyState) {
-            return const SizedBox();
+          if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
+            print('APa yg salah ya ???');
           }
-          if (state.actionEnum == ActionEnum.action &&
-              state is ButtonActionState) {
-            return LinearFlowWidget(
-              isAction: state.isAction,
-              whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-            );
-          }
-          if (state.actionEnum == ActionEnum.action &&
-              state is! ButtonActionState) {
-            return LinearFlowWidget(
-              isAction: false,
-              whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-            );
-          }
+          // if (state is ButtonEmptyState) {
+          //   return const SizedBox();
+          // }
+          // if (state.actionEnum == ActionEnum.action &&
+          //     state is ButtonActionState) {
+          //   return LinearFlowWidget(
+          //     isAction: state.isAction,
+          //     whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+          //   );
+          // }
+          // if (state.actionEnum == ActionEnum.action &&
+          //     state is! ButtonActionState) {
+          //   return LinearFlowWidget(
+          //     isAction: false,
+          //     whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+          //   );
+          // }
           return Padding(
             padding: const EdgeInsets.only(left: 32),
             child: Align(
@@ -95,6 +98,18 @@ class MainMenuPageState extends State<MainMenuPage> {
 
           BlocBuilder<MainMenuBloc, MainMenuState>(
             builder: (context, state) {
+              // if ((state is SaveState || state is MainmenuInitial) &&
+              //     state.listTitle.isEmpty) {
+              //   context.read<ButtonAnimationBloc>().add(ButtonEmptyEvent());
+              // }
+
+              // if ((state is SaveState || state is MainmenuInitial) &&
+              //     state.listTitle.isNotEmpty) {
+              //   context
+              //       .read<ButtonAnimationBloc>()
+              //       .add(const ButtonActionEvent());
+              // }
+
               if (state is MainLoadingState) {
                 return Container(
                   color: Colors.white.withOpacity(0.5),
@@ -176,8 +191,8 @@ class MainMenuPageState extends State<MainMenuPage> {
                     String keyValue = state.listTitle[index].keyValue;
                     int sumTask = state.listTitle[index].sumTask;
                     print('title $title keyValue $keyValue sumTask $sumTask');
-                    ScreenArguments args =
-                        ScreenArguments(title: title, keyValue: keyValue);
+                    ScreenArguments args = ScreenArguments(
+                        title: title, keyValue: keyValue, index: index);
                     return CardWidget(
                       onpressed: () {
                         Navigator.of(context)

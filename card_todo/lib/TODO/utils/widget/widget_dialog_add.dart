@@ -3,22 +3,20 @@ import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:flutter/material.dart';
 
 class MainDialog extends StatefulWidget {
-  const MainDialog(
-      {Key? key,
-      required this.parentContext,
-      this.mainMenuBloc,
-      this.taskMenuBloc,
-      required this.listData,
-      required this.title,
-      this.keyValue})
-      : super(key: key);
+  const MainDialog({
+    Key? key,
+    required this.parentContext,
+    this.mainMenuBloc,
+    this.taskMenuBloc,
+    required this.listData,
+    required this.title,
+  }) : super(key: key);
 
   final BuildContext parentContext;
   final List<String> listData;
   final String title;
   final MainMenuBloc? mainMenuBloc;
   final TaskMenuBloc? taskMenuBloc;
-  final String? keyValue;
 
   @override
   State<MainDialog> createState() => _MainDialogState();
@@ -147,16 +145,12 @@ class _MainDialogState extends State<MainDialog> {
                                     mainMenuBloc
                                         .add(MainMenuAddEvent(titleTask: text));
                                   }
-                                  if (taskMenuBloc != null &&
-                                      widget.keyValue != null) {
+                                  if (taskMenuBloc != null) {
                                     taskMenuBloc.add(
                                       TaskAddEvent(
                                         task: text,
-                                        keyValue: widget.keyValue!,
                                       ),
                                     );
-                                    print(
-                                        'task menu dialog called = $text // ${widget.keyValue}');
                                   }
                                   Navigator.of(widget.parentContext).pop();
                                   // textEditingController.dispose();

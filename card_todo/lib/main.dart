@@ -56,41 +56,32 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   AppRoute appRoute = AppRoute();
-  ButtonAnimationBloc blocButtonMain =
-      ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.mainMenu);
+  // ButtonAnimationBloc blocButtonMain =
+  //     ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.mainMenu);
 
-  ButtonAnimationBloc blocButtonTask =
-      ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.taskMenu);
+  // ButtonAnimationBloc blocButtonTask =
+  //     ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.taskMenu);
 
-  @override
-  void dispose() {
-    blocButtonMain.close();
-    blocButtonTask.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   blocButtonMain.close();
+  //   blocButtonTask.close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     TodoData todoData = RepositoryProvider.of<TodoData>(context);
     UserModel userModel = RepositoryProvider.of<UserModel>(context);
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<MainMenuBloc>(
-          create: (_) => MainMenuBloc(
-              todoData: todoData,
-              userModel: userModel,
-              buttonAnimationBloc: blocButtonMain)
-            ..add(InitialService()),
-        ),
-      ],
+    return BlocProvider<MainMenuBloc>(
+      create: (_) => MainMenuBloc(
+        todoData: todoData,
+        userModel: userModel,
+      )..add(InitialService()),
       child: MaterialApp(
         onGenerateRoute: (settings) {
           return appRoute.onGenerateRoute(
-              settings: settings,
-              todoData: todoData,
-              userModel: userModel,
-              blocButtonMain: blocButtonMain,
-              blocButtonTask: blocButtonTask);
+              settings: settings, todoData: todoData, userModel: userModel);
         },
       ),
     );

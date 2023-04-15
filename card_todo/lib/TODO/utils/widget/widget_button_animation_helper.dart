@@ -153,6 +153,14 @@ class DoneButton extends StatelessWidget {
     MainMenuBloc? mainMenuBloc,
     TaskMenuBloc? taskMenuBloc,
   }) {
+    bool isDelete = false;
+    bool isReorder = false;
+    if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
+      isDelete = true;
+    }
+    if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
+      isReorder = true;
+    }
     showDialog(
       context: context,
       builder: (context) {
@@ -163,6 +171,12 @@ class DoneButton extends StatelessWidget {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
+                if (taskMenuBloc != null && isDelete) {
+                  taskMenuBloc.add(TaskDeleteCancel());
+                }
+                if (mainMenuBloc != null && isDelete) {
+                  mainMenuBloc.add(MainDeleteCancel());
+                }
                 Navigator.of(context).pop();
               },
             ),
@@ -170,22 +184,22 @@ class DoneButton extends StatelessWidget {
               child: Text(button),
               onPressed: () {
                 if (taskMenuBloc != null) {
-                  if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
+                  if (isDelete) {
                     taskMenuBloc.add(TaskDeleteSave());
                   }
-                  if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
+                  if (isReorder) {
                     taskMenuBloc.add(TaskReorderSave());
                   }
                 }
                 if (mainMenuBloc != null) {
                   // mainMenuBloc.add(MainReorderSaveEvent());
-                  if (buttonAnimationBloc.actionEnum == ActionEnum.delete) {
+                  if (isDelete) {
                     if (mainMenuBloc.isListNull) {
                       buttonAnimationBloc.add(ButtonEmptyEvent());
                     }
                     mainMenuBloc.add(MainDeleteSaveEvent());
                   }
-                  if (buttonAnimationBloc.actionEnum == ActionEnum.reorder) {
+                  if (isReorder) {
                     mainMenuBloc.add(MainReorderSaveEvent());
                   }
                 }

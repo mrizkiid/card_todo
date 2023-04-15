@@ -11,9 +11,11 @@ abstract class TaskMenuEvent extends Equatable {
 class TaskInitialList extends TaskMenuEvent {
   final String? title;
   final String? keyValue;
+  final int? index;
   const TaskInitialList({
     this.title,
     this.keyValue,
+    this.index,
   });
 }
 
@@ -66,11 +68,12 @@ class TaskReorderSave extends TaskMenuEvent {}
 
 class TaskDeleteSave extends TaskMenuEvent {}
 
+class TaskDeleteCancel extends TaskMenuEvent {}
+
 class TaskAddEvent extends TaskMenuEvent {
   final String task;
-  final String keyValue;
 
-  const TaskAddEvent({required this.keyValue, required this.task});
+  const TaskAddEvent({required this.task});
 }
 
 // class TaskCh

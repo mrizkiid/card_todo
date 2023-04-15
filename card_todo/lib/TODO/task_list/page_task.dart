@@ -86,9 +86,8 @@ class _TaskPageState extends State<TaskPage> {
             if (state.actionEnum == ActionEnum.action &&
                 state is ButtonActionState) {
               return LinearFlowWidget(
-                isAction: true,
+                isAction: state.isAction,
                 whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-                keyValue: keyValue,
               );
             }
             if (state.actionEnum == ActionEnum.action &&
@@ -96,7 +95,6 @@ class _TaskPageState extends State<TaskPage> {
               return LinearFlowWidget(
                 isAction: false,
                 whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-                keyValue: keyValue,
               );
             }
             return Padding(
@@ -216,11 +214,11 @@ class _TaskPageState extends State<TaskPage> {
                         ),
                       ),
                       content: MainDialog(
-                          taskMenuBloc: taskMenuBloc,
-                          parentContext: context,
-                          listData: listOfFindingTrue,
-                          title: 'Add Task',
-                          keyValue: keyValue),
+                        taskMenuBloc: taskMenuBloc,
+                        parentContext: context,
+                        listData: listOfFindingTrue,
+                        title: 'Add Task',
+                      ),
                     ),
                   );
                 },
