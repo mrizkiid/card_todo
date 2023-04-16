@@ -42,19 +42,19 @@ class MyApp extends StatelessWidget {
           create: (_) => TodoData(),
         )
       ],
-      child: App(),
+      child: Apps(),
     );
   }
 }
 
-class App extends StatefulWidget {
-  const App({super.key});
+class Apps extends StatefulWidget {
+  const Apps({super.key});
 
   @override
-  State<App> createState() => _AppState();
+  State<Apps> createState() => _AppsState();
 }
 
-class _AppState extends State<App> {
+class _AppsState extends State<Apps> {
   AppRoute appRoute = AppRoute();
   // ButtonAnimationBloc blocButtonMain =
   //     ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.mainMenu);
@@ -71,8 +71,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    TodoData todoData = RepositoryProvider.of<TodoData>(context);
-    UserModel userModel = RepositoryProvider.of<UserModel>(context);
+    var todoData = RepositoryProvider.of<TodoData>(context);
+    var userModel = RepositoryProvider.of<UserModel>(context);
     return BlocProvider<MainMenuBloc>(
       create: (_) => MainMenuBloc(
         todoData: todoData,

@@ -172,10 +172,10 @@ class DoneButton extends StatelessWidget {
               child: const Text('Cancel'),
               onPressed: () {
                 if (taskMenuBloc != null && isDelete) {
-                  taskMenuBloc.add(TaskDeleteCancel());
+                  taskMenuBloc.deleteCancel();
                 }
                 if (mainMenuBloc != null && isDelete) {
-                  mainMenuBloc.add(MainDeleteCancel());
+                  mainMenuBloc.deleteCancel();
                 }
                 Navigator.of(context).pop();
               },
@@ -194,9 +194,6 @@ class DoneButton extends StatelessWidget {
                 if (mainMenuBloc != null) {
                   // mainMenuBloc.add(MainReorderSaveEvent());
                   if (isDelete) {
-                    if (mainMenuBloc.isListNull) {
-                      buttonAnimationBloc.add(ButtonEmptyEvent());
-                    }
                     mainMenuBloc.add(MainDeleteSaveEvent());
                   }
                   if (isReorder) {
@@ -291,6 +288,17 @@ class DoneButton extends StatelessWidget {
         //cancel button
         InkWell(
           onTap: () {
+            // canceling delete
+            if (taskMenuBloc != null &&
+                (buttonAnimationBloc.actionEnum == ActionEnum.delete)) {
+              taskMenuBloc.deleteCancel();
+            }
+            if (mainMenuBloc != null &&
+                (buttonAnimationBloc.actionEnum == ActionEnum.delete)) {
+              mainMenuBloc.deleteCancel();
+            }
+
+            // cancel button
             if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu &&
                 mainMenuBloc != null) {
               mainMenuBloc.add(InitialListEvent());

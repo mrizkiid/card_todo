@@ -15,14 +15,16 @@
             "cwd": "card_todo",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            
         },
         {
             "name": "card_todo (release mode)",
             "cwd": "card_todo",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            
         }
     ]
 }

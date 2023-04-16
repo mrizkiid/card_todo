@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
+import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'task_menu_event.dart';
@@ -8,11 +9,34 @@ part 'task_menu_state.dart';
 
 class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   late List<TaskList> _taskList;
-  List<int> _isDeleteList = [];
+  List<int> _indexDelete = [];
   String _keyValue = '';
   int _index = 0;
   int _sumTask = 0;
   String _titleTask = '';
+  late ButtonAnimationBloc _buttonAnimationBloc;
+  bool _isButtonCalled = true;
+
+  void deleteCancel() {
+    _indexDelete = [];
+  }
+
+  void initBloc(ButtonAnimationBloc input) {
+    _buttonAnimationBloc = input;
+  }
+
+  void emptyOrNotEmptyList() {
+    if (_taskList.isEmpty && _isButtonCalled == true) {
+      _isButtonCalled = false;
+      print('listEmptyCalled');
+      _buttonAnimationBloc.add(ButtonEmptyEvent());
+    }
+    if (_taskList.isNotEmpty && _isButtonCalled == false) {
+      _isButtonCalled = true;
+      print('listNotEmptyCalled');
+      _buttonAnimationBloc.add(ButtonActionAdd());
+    }
+  }
 
   void settingsKeyAndTitle({required String keyValue, required int index}) {
     _keyValue = keyValue;
@@ -66,6 +90,9 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       todoData.listTask = [..._taskList];
       _sumTask = _taskList.length;
 
+      // add event buttonAnimation
+      emptyOrNotEmptyList();
+
       emit(TaskState(taskList: _taskList, sumTask: _sumTask));
     });
 
@@ -91,6 +118,10 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _taskList = orderList(taskList: _taskList);
       changedToNewList(_taskList);
       _sumTask = _taskList.length;
+
+      // add event buttonAnimation
+      emptyOrNotEmptyList();
+
       await todoData.addSumTask(_index, _sumTask);
       print('Key Value = $_keyValue ---- SumTask $_sumTask');
       await saveTask(
@@ -98,6 +129,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
           keyValue: _keyValue,
           titleTask: event.task,
           taskListNew: _taskList);
+
       emit(TaskSaveState(taskList: _taskList, sumTask: _sumTask));
     });
 
@@ -177,7 +209,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         isDelete = currentState.isDelete;
       }
 
-      _isDeleteList.add(index);
+      _indexDelete.add(index);
 
       changedToNewList(state.taskList);
       _sumTask = _taskList.length;
@@ -189,10 +221,10 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
     });
 
     on<TaskDeleteSave>((event, emit) async {
-      _isDeleteList.sort(
+      _indexDelete.sort(
         (a, b) => b.compareTo(a),
       );
-      for (int i in _isDeleteList) {
+      for (int i in _indexDelete) {
         _taskList.removeAt(i);
       }
       changedToNewList(_taskList);
@@ -203,14 +235,14 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
           keyValue: _keyValue,
           titleTask: _titleTask,
           taskListNew: [..._taskList]);
+
+      // add event buttonAnimation
+      emptyOrNotEmptyList();
+
       emit(TaskSaveState(taskList: _taskList, sumTask: _sumTask));
 
       // make isDeleteList 0
-      _isDeleteList = [];
-    });
-
-    on<TaskDeleteCancel>((event, emit) {
-      _isDeleteList = [];
+      _indexDelete = [];
     });
   }
 }

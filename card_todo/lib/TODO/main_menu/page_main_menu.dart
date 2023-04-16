@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:card_todo/TODO/bloc_button/button_animation_bloc.dart';
 import 'package:reorderables/reorderables.dart';
+import 'dart:developer' as develop;
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({super.key});
@@ -37,32 +38,30 @@ class MainMenuPageState extends State<MainMenuPage> {
     double fontCard = sizing.widthCalc(percent: 5.2);
     double sizeCard =
         sizing.sizeInCont(sizeParent: (sizing.screenWidth - 90), percent: 47);
-    final mainMenuBloc = context.read<MainMenuBloc>();
+    var mainMenuBloc = context.read<MainMenuBloc>();
+    mainMenuBloc.initBloc(context.read<ButtonAnimationBloc>());
     return Scaffold(
       floatingActionButton:
           BlocBuilder<ButtonAnimationBloc, ButtonAnimationState>(
         builder: (context, state) {
-          final buttonAnimationBloc = context.read<ButtonAnimationBloc>();
-          if (buttonAnimationBloc.whichTodoBloc == WhichTodoBloc.mainMenu) {
-            print('APa yg salah ya ???');
+          var buttonAnimationBloc = context.read<ButtonAnimationBloc>();
+          if (state is ButtonEmptyState) {
+            return const SizedBox();
           }
-          // if (state is ButtonEmptyState) {
-          //   return const SizedBox();
-          // }
-          // if (state.actionEnum == ActionEnum.action &&
-          //     state is ButtonActionState) {
-          //   return LinearFlowWidget(
-          //     isAction: state.isAction,
-          //     whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-          //   );
-          // }
-          // if (state.actionEnum == ActionEnum.action &&
-          //     state is! ButtonActionState) {
-          //   return LinearFlowWidget(
-          //     isAction: false,
-          //     whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
-          //   );
-          // }
+          if (state.actionEnum == ActionEnum.action &&
+              state is ButtonActionState) {
+            return LinearFlowWidget(
+              isAction: state.isAction,
+              whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+            );
+          }
+          if (state.actionEnum == ActionEnum.action &&
+              state is! ButtonActionState) {
+            return LinearFlowWidget(
+              isAction: false,
+              whichTodoBloc: buttonAnimationBloc.whichTodoBloc,
+            );
+          }
           return Padding(
             padding: const EdgeInsets.only(left: 32),
             child: Align(
@@ -98,17 +97,17 @@ class MainMenuPageState extends State<MainMenuPage> {
 
           BlocBuilder<MainMenuBloc, MainMenuState>(
             builder: (context, state) {
-              // if ((state is SaveState || state is MainmenuInitial) &&
-              //     state.listTitle.isEmpty) {
-              //   context.read<ButtonAnimationBloc>().add(ButtonEmptyEvent());
-              // }
+              if (state is MainListIsEmpty) {
+                develop.log("MainState", name: "MainListIsEmpty");
+                context.read<ButtonAnimationBloc>().add(ButtonEmptyEvent());
+              }
 
-              // if ((state is SaveState || state is MainmenuInitial) &&
-              //     state.listTitle.isNotEmpty) {
-              //   context
-              //       .read<ButtonAnimationBloc>()
-              //       .add(const ButtonActionEvent());
-              // }
+              if (state is MainListIsNotEmpty) {
+                develop.log("MainState", name: "MainListIsNotEmpty");
+                context
+                    .read<ButtonAnimationBloc>()
+                    .add(const ButtonActionEvent());
+              }
 
               if (state is MainLoadingState) {
                 return Container(

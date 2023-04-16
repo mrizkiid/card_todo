@@ -32,12 +32,14 @@ class _TaskPageState extends State<TaskPage> {
   Sizing sizing = Sizing();
   @override
   Widget build(BuildContext context) {
-    final keyValue = widget.keyValue;
     sizing.init(context);
     double paddingHorizontal = sizing.widthCalc(percent: 12);
     double heightAppBar = 70;
-    TodoData todoData = RepositoryProvider.of(context);
     final mainMenuBloc = context.read<MainMenuBloc>();
+    context
+        .read<TaskMenuBloc>()
+        .initBloc(RepositoryProvider.of<ButtonAnimationBloc>(context));
+
     return WillPopScope(
       onWillPop: () async {
         mainMenuBloc.add(InitialListEvent());

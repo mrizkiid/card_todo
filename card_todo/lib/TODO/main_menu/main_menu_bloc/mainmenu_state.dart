@@ -53,3 +53,11 @@ class MainDeleteProccessState extends MainMenuState {
 class SaveState extends MainMenuState {
   const SaveState(super.listTitle);
 }
+
+class MainListIsEmpty extends MainMenuState {
+  const MainListIsEmpty(super.listTitle);
+}
+
+class MainListIsNotEmpty extends MainMenuState {
+  const MainListIsNotEmpty(super.listTitle);
+}

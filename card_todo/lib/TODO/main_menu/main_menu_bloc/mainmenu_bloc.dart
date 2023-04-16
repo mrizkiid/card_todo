@@ -16,7 +16,8 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   String _lastKey = '';
   String _username = '';
   int _sumTask = 0;
-  bool isListNull = false;
+  bool isButtonCalled = true;
+  late ButtonAnimationBloc buttonAnimationBloc;
 
   void changeToNewList(List<TitleList> listTileNew) {
     _listTitle = [...listTileNew];
@@ -25,6 +26,27 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   int takeIntFromKey(String keyValue) {
     int numberKey = int.parse(_lastKey.substring(1));
     return numberKey;
+  }
+
+  void initBloc(ButtonAnimationBloc input) {
+    buttonAnimationBloc = input;
+  }
+
+  void deleteCancel() {
+    _indexDelete = [];
+  }
+
+  void emptyOrNotEmptyList() {
+    if (_listTitle.isEmpty && isButtonCalled == true) {
+      isButtonCalled = false;
+      print('listEmptyCalled');
+      buttonAnimationBloc.add(ButtonEmptyEvent());
+    }
+    if (_listTitle.isNotEmpty && isButtonCalled == false) {
+      isButtonCalled = true;
+      print('listNotEmptyCalled');
+      buttonAnimationBloc.add(ButtonActionAdd());
+    }
   }
 
   MainMenuBloc({
@@ -45,6 +67,10 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       _username = userModel.username;
       todoData.listTitle = _listTitle;
       todoData.lastKey = _lastKey;
+
+      //event blocButton
+      emptyOrNotEmptyList();
+
       emit(MainmenuInitial(_listTitle));
     });
 
@@ -110,13 +136,12 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
       changeToNewList(_listTitle);
 
+      //event blocButton
+      emptyOrNotEmptyList();
+
       emit(SaveState(_listTitle));
 
       // deleteing list delete
-      _indexDelete = [];
-    });
-
-    on<MainDeleteCancel>((event, emit) {
       _indexDelete = [];
     });
 
@@ -143,7 +168,8 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       /// cange list to new list
       changeToNewList(_listTitle);
 
-      print('bloc ${_listTitle.length} ${event.titleTask} $_keyValue');
+      //event blocButton
+      emptyOrNotEmptyList();
 
       /// save listTitle in to Hive
       await todoData.saveTitleList(_listTitle);
