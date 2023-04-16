@@ -175,9 +175,7 @@ class _MainDialogState extends State<MainDialog> {
   Widget buttonAddDialog(
       {required String title, bool? isTopHierarcy, void Function()? onTap}) {
     isTopHierarcy ??= false;
-    onTap ??= () {
-      print('ontap dialog add null');
-    };
+    onTap ??= () {};
     return GestureDetector(
       onTap: onTap,
       child: Container(

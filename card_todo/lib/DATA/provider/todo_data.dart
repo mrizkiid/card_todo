@@ -16,7 +16,6 @@ class TodoData {
     // if box has been open before
     if (_todoBox.isOpen) {
       if (_todoBox.isNotEmpty) {
-        print('todoBox is Open and will retrive listtile');
         List<dynamic> list = await _todoBox.get(HiveKey.listTitle);
         listTitle = list.cast<TitleList>();
         return;
@@ -25,7 +24,6 @@ class TodoData {
 
     // if _todobox has not open
     if (_todoBox.isOpen == false) {
-      print('todoBox is not Open');
       Hive.registerAdapter(TitleListAdapter());
       Hive.registerAdapter(TodoListAdapter());
       Hive.registerAdapter(TaskListAdapter());
@@ -35,7 +33,6 @@ class TodoData {
 
     // checking if _todobox open and not fill yet
     if (_todoBox.isOpen && _todoBox.isEmpty) {
-      print('todoBox is Open');
       // _todoBox.put(key, value)
       await _todoBox.put(
         HiveKey.listTitle,

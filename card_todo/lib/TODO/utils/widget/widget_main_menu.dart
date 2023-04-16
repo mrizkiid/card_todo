@@ -20,6 +20,17 @@ class ProfileContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime dateTime = DateTime.now();
+    String textProfile = '';
+    if (dateTime.hour > 4 && dateTime.hour < 9) {
+      textProfile = 'Good Morning  🌄';
+    }
+    if (dateTime.hour > 9 && dateTime.hour < 17) {
+      textProfile = 'Good Afternoon  🌞';
+    }
+    if (dateTime.hour > 17 && dateTime.hour < 3) {
+      textProfile = 'Good Evening  🌛';
+    }
     return AppBar(
       elevation: 0,
       backgroundColor: ColorStatic.maincolor,
@@ -49,7 +60,8 @@ class ProfileContainer extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'You Have $sumTask tasks',
+                          textProfile,
+                          // 'You Have $sumTask tasks',
                           style: TextStyle(
                               fontSize:
                                   sizing.heightCalc(percent: 3.7, max: 15),

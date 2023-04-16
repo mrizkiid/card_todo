@@ -1,5 +1,4 @@
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
-import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:flutter/material.dart';
 
 class TileTaskCard extends StatelessWidget {
@@ -21,9 +20,6 @@ class TileTaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (color == null) {
-      print(color);
-    }
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: GestureDetector(

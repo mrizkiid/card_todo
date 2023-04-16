@@ -1,7 +1,5 @@
 import 'package:card_todo/DATA/model/model_arguments.dart';
-import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
-import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
 import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
 import 'package:card_todo/TODO/utils/widget/widget_dialog_add.dart';
@@ -97,18 +95,6 @@ class MainMenuPageState extends State<MainMenuPage> {
 
           BlocBuilder<MainMenuBloc, MainMenuState>(
             builder: (context, state) {
-              if (state is MainListIsEmpty) {
-                develop.log("MainState", name: "MainListIsEmpty");
-                context.read<ButtonAnimationBloc>().add(ButtonEmptyEvent());
-              }
-
-              if (state is MainListIsNotEmpty) {
-                develop.log("MainState", name: "MainListIsNotEmpty");
-                context
-                    .read<ButtonAnimationBloc>()
-                    .add(const ButtonActionEvent());
-              }
-
               if (state is MainLoadingState) {
                 return Container(
                   color: Colors.white.withOpacity(0.5),
@@ -120,7 +106,6 @@ class MainMenuPageState extends State<MainMenuPage> {
               /// if the state is in mainorederebuttonstate or in processs mean
               /// that reordere not finished yet untill user press save
               if (state is MainReorderState) {
-                print('reordere');
                 return ReorderableWrap(
                   padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
                       .copyWith(bottom: 40),
@@ -174,8 +159,6 @@ class MainMenuPageState extends State<MainMenuPage> {
               }
 
               if (state.listTitle.isNotEmpty) {
-                print('i am rendered');
-
                 ///Grid for default
                 return GridView.builder(
                   padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
@@ -189,7 +172,6 @@ class MainMenuPageState extends State<MainMenuPage> {
                     String title = state.listTitle[index].title;
                     String keyValue = state.listTitle[index].keyValue;
                     int sumTask = state.listTitle[index].sumTask;
-                    print('title $title keyValue $keyValue sumTask $sumTask');
                     ScreenArguments args = ScreenArguments(
                         title: title, keyValue: keyValue, index: index);
                     return CardWidget(

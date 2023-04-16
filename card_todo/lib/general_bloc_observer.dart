@@ -1,16 +1,17 @@
 import 'package:bloc/bloc.dart';
+import 'dart:developer' as developer;
 
 class MyBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    print('Event $bloc ==> $event');
+    // developer.log('Event $bloc ==> $event');
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    print('Error $error');
+    developer.log(name: "Error ", ' $error');
   }
 
   @override
@@ -21,6 +22,6 @@ class MyBlocObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    // print('$bloc ==> $transition');
+    developer.log(name: '$bloc', '$transition');
   }
 }

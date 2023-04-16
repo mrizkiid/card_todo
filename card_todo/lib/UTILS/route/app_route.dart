@@ -56,7 +56,6 @@ class AppRoute {
           ),
         );
       default:
-        print('default trigerr');
         return MaterialPageRoute(
           builder: (context) => const MainMenuPage(),
         );

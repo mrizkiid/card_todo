@@ -28,12 +28,10 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
   void emptyOrNotEmptyList() {
     if (_taskList.isEmpty && _isButtonCalled == true) {
       _isButtonCalled = false;
-      print('listEmptyCalled');
       _buttonAnimationBloc.add(ButtonEmptyEvent());
     }
     if (_taskList.isNotEmpty && _isButtonCalled == false) {
       _isButtonCalled = true;
-      print('listNotEmptyCalled');
       _buttonAnimationBloc.add(ButtonActionAdd());
     }
   }
@@ -88,7 +86,8 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _taskList = [...await todoData.getTaskList(keyValue: _keyValue)];
       _taskList = orderList(taskList: _taskList);
       todoData.listTask = [..._taskList];
-      _sumTask = _taskList.length;
+      final listFalse = findTaskListFalse(taskList: [..._taskList]);
+      _sumTask = listFalse.length;
 
       // add event buttonAnimation
       emptyOrNotEmptyList();
@@ -102,7 +101,9 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _taskList[event.index] =
           TaskList(isChecked: isChecked, title: event.title);
       _taskList = orderList(taskList: _taskList);
-      _sumTask = _taskList.length;
+      final listFalse = findTaskListFalse(taskList: _taskList);
+      _sumTask = listFalse.length;
+      await todoData.addSumTask(_index, _sumTask);
       await saveTask(
           todoData: todoData,
           keyValue: _keyValue,
@@ -117,13 +118,13 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _taskList.add(TaskList(isChecked: false, title: event.task));
       _taskList = orderList(taskList: _taskList);
       changedToNewList(_taskList);
-      _sumTask = _taskList.length;
+      final listFalse = findTaskListFalse(taskList: _taskList);
+      _sumTask = listFalse.length;
 
       // add event buttonAnimation
       emptyOrNotEmptyList();
 
       await todoData.addSumTask(_index, _sumTask);
-      print('Key Value = $_keyValue ---- SumTask $_sumTask');
       await saveTask(
           todoData: todoData,
           keyValue: _keyValue,
@@ -139,7 +140,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _taskList = [...state.taskList];
       List<TaskList> taskListFalse =
           findTaskListFalse(taskList: state.taskList);
-      _sumTask = _taskList.length;
       emit(TaskReorderState(
           taskList: _taskList,
           taskListFalse: taskListFalse,
@@ -160,7 +160,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       final TaskList tile = taskListFalse.removeAt(event.oldIndex);
       // place the tile in new position
       taskListFalse.insert(newIndex, tile);
-      _sumTask = _taskList.length;
+      // _sumTask = _taskList.length;
       emit(TaskReorderState(
           taskList: _taskList,
           taskListFalse: taskListFalse,
@@ -182,7 +182,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
             taskListNew: [..._taskList]);
       }
       changedToNewList(_taskList);
-      _sumTask = _taskList.length;
       emit(TaskSaveState(taskList: _taskList, sumTask: _sumTask));
     });
 
@@ -190,7 +189,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
     on<TaskDelete>((event, emit) {
       bool isDelete = event.isDelete;
       _taskList = [...state.taskList];
-      _sumTask = _taskList.length;
       emit(TaskDeleteState(
           isRedList: List.filled(_taskList.length, false),
           isDelete: isDelete,
@@ -212,7 +210,6 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _indexDelete.add(index);
 
       changedToNewList(state.taskList);
-      _sumTask = _taskList.length;
       emit(TaskDeleteState(
           isRedList: isRedList,
           isDelete: isDelete,
@@ -228,7 +225,8 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         _taskList.removeAt(i);
       }
       changedToNewList(_taskList);
-      _sumTask = _taskList.length;
+      final listFalse = findTaskListFalse(taskList: _taskList);
+      _sumTask = listFalse.length;
       await todoData.addSumTask(_index, _sumTask);
       await saveTask(
           todoData: todoData,

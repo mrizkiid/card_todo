@@ -130,7 +130,6 @@ class _InputCardPasswordState extends State<InputCardPassword> {
             child: BlocBuilder<PasswordCubit, PasswordState>(
               bloc: widget.passwordCubit,
               builder: (context, state) {
-                print(state);
                 return TextField(
                   controller: widget.controller,
                   style: TextStyle(fontSize: 16, color: Colors.black),

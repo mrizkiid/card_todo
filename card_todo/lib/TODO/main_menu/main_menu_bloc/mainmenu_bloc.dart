@@ -15,7 +15,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   // String _title = '';
   String _lastKey = '';
   String _username = '';
-  int _sumTask = 0;
+  // int _sumTask = 0;
   bool isButtonCalled = true;
   late ButtonAnimationBloc buttonAnimationBloc;
 
@@ -39,12 +39,10 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
   void emptyOrNotEmptyList() {
     if (_listTitle.isEmpty && isButtonCalled == true) {
       isButtonCalled = false;
-      print('listEmptyCalled');
       buttonAnimationBloc.add(ButtonEmptyEvent());
     }
     if (_listTitle.isNotEmpty && isButtonCalled == false) {
       isButtonCalled = true;
-      print('listNotEmptyCalled');
       buttonAnimationBloc.add(ButtonActionAdd());
     }
   }

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors,prefer_const_literals_to_create_immutables
 
 import 'package:card_todo/DATA/model/modelTodo.dart';
-import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/TODO/utils/widget/widget_app_bar.dart';
@@ -175,7 +174,6 @@ class _TaskPageState extends State<TaskPage> {
 
             /// it will build if not reordered
             if (state.taskList.isNotEmpty) {
-              print('task not empty');
               return ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: paddingHorizontal)
                     .copyWith(top: 30),
@@ -188,7 +186,6 @@ class _TaskPageState extends State<TaskPage> {
                     title: title,
                     isDelete: false,
                     onchanged: () {
-                      print('checked is pressed');
                       taskMenuBloc.add(TaskEvent(
                           isChecked: isChecked, title: title, index: index));
                     },
@@ -197,7 +194,6 @@ class _TaskPageState extends State<TaskPage> {
               );
             }
             // For addin if list null
-            print('tasklist empty');
             return Align(
               alignment: Alignment.center,
               child: IconButton(

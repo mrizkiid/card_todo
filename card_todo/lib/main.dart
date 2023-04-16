@@ -5,13 +5,11 @@ import 'package:card_todo/DATA/model/model_user.dart';
 import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/UTILS/route/app_route.dart';
-import 'package:card_todo/UTILS/static/enum_todo.dart';
 import 'package:card_todo/general_bloc_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'UTILS/static/hive_const.dart';
-import 'TODO/bloc_button/button_animation_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
