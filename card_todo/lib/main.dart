@@ -54,18 +54,6 @@ class Apps extends StatefulWidget {
 
 class _AppsState extends State<Apps> {
   AppRoute appRoute = AppRoute();
-  // ButtonAnimationBloc blocButtonMain =
-  //     ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.mainMenu);
-
-  // ButtonAnimationBloc blocButtonTask =
-  //     ButtonAnimationBloc(whichTodoBloc: WhichTodoBloc.taskMenu);
-
-  // @override
-  // void dispose() {
-  //   blocButtonMain.close();
-  //   blocButtonTask.close();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
