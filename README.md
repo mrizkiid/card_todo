@@ -1,6 +1,6 @@
 # card_todo
 
-[Uploading Card_Todo.webm…]()
+[CardTodo](https://i.imgur.com/j59VrMi.png)(https://www.youtube.com/watch?v=zzlrJ9ulMkg)
 
 
 How to run 
