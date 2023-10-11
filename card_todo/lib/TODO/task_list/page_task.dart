@@ -3,11 +3,11 @@
 import 'package:card_todo/DATA/model/modelTodo.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
-import 'package:card_todo/TODO/utils/widget/widget_app_bar.dart';
-import 'package:card_todo/TODO/utils/widget/widget_button_animation.dart';
-import 'package:card_todo/TODO/utils/widget/widget_button_animation_helper.dart';
-import 'package:card_todo/TODO/utils/widget/widget_dialog_add.dart';
-import 'package:card_todo/TODO/utils/widget/widget_task_page.dart';
+import 'package:card_todo/UTILS/widget/widget_app_bar.dart';
+import 'package:card_todo/UTILS/widget/widget_button_animation.dart';
+import 'package:card_todo/UTILS/widget/widget_button_animation_helper.dart';
+import 'package:card_todo/UTILS/widget/widget_dialog_add.dart';
+import 'package:card_todo/UTILS/widget/widget_task_page.dart';
 import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
 import 'package:card_todo/UTILS/static/color_class.dart';
 import 'package:card_todo/UTILS/static/enum_todo.dart';

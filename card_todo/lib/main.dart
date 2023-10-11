@@ -6,6 +6,7 @@ import 'package:card_todo/DATA/provider/todo_data.dart';
 import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/UTILS/route/app_route.dart';
 import 'package:card_todo/general_bloc_observer.dart';
+import 'package:card_todo/repository_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -30,18 +31,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(
-          create: (_) => UserModel(),
-        ),
-        RepositoryProvider(
-          /// it will open the box
-          create: (_) => TodoData(),
-        )
-      ],
-      child: Apps(),
-    );
+    return RepoProvide().init(Apps());
   }
 }
 
