@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:card_todo/app/auth/cubit/password_cubit.dart';
-import 'package:card_todo/UTILS/static/color_class.dart';
-import 'package:card_todo/UTILS/static/size_class.dart';
-import 'package:card_todo/UTILS/widget/button.dart';
-import 'package:card_todo/UTILS/widget/input_card.dart';
+import 'package:card_todo/utils/static/color_class.dart';
+import 'package:card_todo/utils/static/size_class.dart';
+import 'package:card_todo/utils/widget/button.dart';
+import 'package:card_todo/utils/widget/input_card.dart';
 import 'package:flutter/material.dart';
 
 class PageSignUp extends StatefulWidget {

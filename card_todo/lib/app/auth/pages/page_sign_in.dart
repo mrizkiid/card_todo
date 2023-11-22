@@ -4,10 +4,10 @@ import 'package:card_todo/app/auth/cubit/password_cubit.dart';
 import 'package:card_todo/app/auth/pages/page_sign_up.dart';
 import 'package:card_todo/app/auth/pages/size/size_auth.dart';
 import 'package:card_todo/app/todo/main_menu/page_main_menu.dart';
-import 'package:card_todo/UTILS/static/color_class.dart';
-import 'package:card_todo/UTILS/static/size_class.dart';
-import 'package:card_todo/UTILS/widget/button.dart';
-import 'package:card_todo/UTILS/widget/input_card.dart';
+import 'package:card_todo/utils/static/color_class.dart';
+import 'package:card_todo/utils/static/size_class.dart';
+import 'package:card_todo/utils/widget/button.dart';
+import 'package:card_todo/utils/widget/input_card.dart';
 import 'package:flutter/material.dart';
 
 class SingInPage extends StatefulWidget {

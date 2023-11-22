@@ -1,27 +1,5 @@
 import 'package:flutter/material.dart';
 
-// class InitSizing {
-//   InitSizing._internal();
-
-//   double? _screenHeight;
-//   double? _screenWidth;
-
-//   static InitSizing? _instance;
-
-//   get screenHeight => _screenHeight!;
-//   get screenWidth => _screenWidth!;
-
-//   void init(BuildContext context) {
-//     _screenHeight = MediaQuery.of(context).size.height;
-//     _screenWidth = MediaQuery.of(context).size.width;
-//   }
-
-//   factory InitSizing() {
-//     _instance ??= InitSizing._internal();
-//     return _instance!;
-//   }
-// }
-
 enum Screentype { potrait, landscape }
 
 class Sizing {

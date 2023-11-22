@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:card_todo/utils/widget/button_floating_action/bloc_button/button_animation_bloc.dart';
 import 'package:card_todo/core/error/failures.dart';
 import 'package:card_todo/core/responses/data_state.dart';
 import 'package:card_todo/data/model/modelTodo.dart';
-import 'package:card_todo/data/repositories/todo_data.dart';
-import 'package:card_todo/app/todo/bloc_button/button_animation_bloc.dart';
-import 'package:card_todo/data/repositories/todo_repo_impl.dart';
 import 'package:card_todo/domain/repositories/todo_repo.dart';
 import 'package:equatable/equatable.dart';
 

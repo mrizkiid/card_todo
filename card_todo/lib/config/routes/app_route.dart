@@ -1,12 +1,11 @@
+import 'package:card_todo/utils/widget/button_floating_action/bloc_button/button_animation_bloc.dart';
 import 'package:card_todo/app/auth/pages/page_sign_in.dart';
 import 'package:card_todo/data/model/model_arguments.dart';
 import 'package:card_todo/data/model/model_user.dart';
-import 'package:card_todo/data/repositories/todo_data.dart';
-import 'package:card_todo/app/todo/bloc_button/button_animation_bloc.dart';
 import 'package:card_todo/app/todo/main_menu/page_main_menu.dart';
 import 'package:card_todo/app/todo/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:card_todo/app/todo/task_list/page_task.dart';
-import 'package:card_todo/UTILS/static/app_route_const.dart';
+import 'package:card_todo/utils/static/app_route_const.dart';
 import 'package:card_todo/core/enums/enum_todo.dart';
 import 'package:card_todo/domain/repositories/todo_repo.dart';
 import 'package:flutter/material.dart';

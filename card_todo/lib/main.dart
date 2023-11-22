@@ -2,7 +2,6 @@
 
 import 'package:card_todo/data/model/modelTodo.dart';
 import 'package:card_todo/data/model/model_user.dart';
-import 'package:card_todo/data/repositories/todo_data.dart';
 import 'package:card_todo/app/todo/main_menu/main_menu_bloc/mainmenu_bloc.dart';
 import 'package:card_todo/config/routes/app_route.dart';
 import 'package:card_todo/data/repositories/todo_repo_impl.dart';
@@ -11,7 +10,7 @@ import 'package:card_todo/repository_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'UTILS/static/hive_const.dart';
+import 'utils/static/hive_const.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

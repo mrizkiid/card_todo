@@ -1,4 +1,4 @@
-import 'package:card_todo/UTILS/static/hive_const.dart';
+import 'package:card_todo/utils/static/hive_const.dart';
 import 'package:card_todo/core/error/failures.dart';
 import 'package:card_todo/core/responses/data_state.dart';
 import 'package:card_todo/data/model/modelTodo.dart';

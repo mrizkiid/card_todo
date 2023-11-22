@@ -1,6 +1,5 @@
 import 'package:card_todo/data/data_sources/local/todo_data_local_source.dart';
 import 'package:card_todo/data/model/model_user.dart';
-import 'package:card_todo/data/repositories/todo_data.dart';
 import 'package:card_todo/data/repositories/todo_repo_impl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

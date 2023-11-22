@@ -1,4 +1,4 @@
-import 'package:card_todo/UTILS/static/color_class.dart';
+import 'package:card_todo/utils/static/color_class.dart';
 import 'package:flutter/material.dart';
 
 // class CustomAppBar extends PreferredSize {

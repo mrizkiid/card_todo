@@ -1,4 +1,4 @@
-import 'package:card_todo/UTILS/static/size_class.dart';
+import 'package:card_todo/utils/static/size_class.dart';
 
 class SizeAuth {
   Sizing? sizing;

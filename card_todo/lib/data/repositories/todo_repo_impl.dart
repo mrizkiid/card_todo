@@ -5,7 +5,7 @@ import 'package:card_todo/data/model/modelTodo.dart';
 import 'package:card_todo/domain/repositories/todo_repo.dart';
 
 class TodoRepoImpl extends TodoRepository {
-  TodoDataLocalSource _todoDataLocalSource;
+  final TodoDataLocalSource _todoDataLocalSource;
   TodoRepoImpl(this._todoDataLocalSource);
 
   @override

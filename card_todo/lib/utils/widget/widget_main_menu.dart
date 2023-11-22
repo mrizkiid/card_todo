@@ -1,5 +1,5 @@
-import 'package:card_todo/UTILS/static/color_class.dart';
-import 'package:card_todo/UTILS/static/size_class.dart';
+import 'package:card_todo/utils/static/color_class.dart';
+import 'package:card_todo/utils/static/size_class.dart';
 import 'package:flutter/material.dart';
 import 'package:card_todo/config/icon/todo_app_icon_icons.dart';
 
