@@ -1,5 +1,5 @@
-import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
-import 'package:card_todo/TODO/task_list/bloc_task/task_menu_bloc.dart';
+import 'package:card_todo/app/todo/main_menu/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/app/todo/task_list/bloc_task/task_menu_bloc.dart';
 import 'package:flutter/material.dart';
 
 class MainDialog extends StatefulWidget {

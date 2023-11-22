@@ -1,4 +1,4 @@
-import 'package:card_todo/UTILS/icon/todo_app_icon_icons.dart';
+import 'package:card_todo/config/icon/todo_app_icon_icons.dart';
 import 'package:flutter/material.dart';
 
 class TileTaskCard extends StatelessWidget {

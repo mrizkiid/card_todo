@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:card_todo/DATA/model/modelTodo.dart';
-import 'package:card_todo/DATA/model/model_user.dart';
-import 'package:card_todo/DATA/provider/todo_data.dart';
-import 'package:card_todo/TODO/main_menu/main_menu_bloc/mainmenu_bloc.dart';
-import 'package:card_todo/UTILS/route/app_route.dart';
+import 'package:card_todo/data/model/modelTodo.dart';
+import 'package:card_todo/data/model/model_user.dart';
+import 'package:card_todo/data/repositories/todo_data.dart';
+import 'package:card_todo/app/todo/main_menu/main_menu_bloc/mainmenu_bloc.dart';
+import 'package:card_todo/config/routes/app_route.dart';
+import 'package:card_todo/data/repositories/todo_repo_impl.dart';
 import 'package:card_todo/general_bloc_observer.dart';
 import 'package:card_todo/repository_provider.dart';
 import 'package:flutter/material.dart';
@@ -47,17 +48,17 @@ class _AppsState extends State<Apps> {
 
   @override
   Widget build(BuildContext context) {
-    var todoData = RepositoryProvider.of<TodoData>(context);
+    var todoRepoImpl = RepositoryProvider.of<TodoRepoImpl>(context);
     var userModel = RepositoryProvider.of<UserModel>(context);
     return BlocProvider<MainMenuBloc>(
       create: (_) => MainMenuBloc(
-        todoData: todoData,
+        todoRepo: todoRepoImpl,
         userModel: userModel,
       )..add(InitialService()),
       child: MaterialApp(
         onGenerateRoute: (settings) {
           return appRoute.onGenerateRoute(
-              settings: settings, todoData: todoData, userModel: userModel);
+              settings: settings, todoRepo: todoRepoImpl, userModel: userModel);
         },
       ),
     );
