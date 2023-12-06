@@ -1,3 +1,4 @@
+import 'package:card_todo/core/error/cache_failure.dart';
 import 'package:card_todo/utils/static/hive_const.dart';
 import 'package:card_todo/core/error/failures.dart';
 import 'package:card_todo/core/responses/data_state.dart';

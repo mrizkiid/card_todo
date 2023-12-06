@@ -5,12 +5,12 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(const AuthInitial()) {
+  AuthBloc() : super(const AuthLoadingState()) {
     on<PasswordEvent>((event, emit) {
-      var newstate = state as PasswordState;
-      bool isvisible = newstate.isvisible;
-      isvisible = !isvisible;
-      emit(PasswordState(isvisible));
+      if (state is AuthDataState) {
+        final newState = state as AuthDataState;
+        emit(newState.copyWith(isPasswordvisible: !newState.isPasswordvisible));
+      }
     });
   }
 }

@@ -54,7 +54,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     on<InitialService>((event, emit) async {
       emit(MainLoadingState([...state.listTitle]));
       final dataState = await todoRepo.init();
-      dataState.run(
+      dataState.when(
         success: (data) => add(InitialListEvent()),
         error: (failure) => emit(MainFailedState(state.listTitle)),
       );
@@ -64,13 +64,13 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
       // get data from hive and put the value to _listTitle
 
       final dataState = await todoRepo.getTitleList();
-      dataState.run(
+      dataState.when(
         success: (data) => changeToNewList(data ?? state.listTitle),
         error: (failure) => emit(MainFailedState(state.listTitle)),
       );
 
       final dataStateFindLastKey = await todoRepo.findLastKey();
-      dataStateFindLastKey.run(
+      dataStateFindLastKey.when(
         success: (data) => {
           if (data != null) {_lastKey = data}
         },
@@ -139,7 +139,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
         for (int i in _indexDelete) {
           final dataState =
               await todoRepo.deleteTaskList(keyValue: _listTitle[i].keyValue);
-          dataState.run(
+          dataState.when(
             success: (data) => {},
             error: (failure) {
               emit(MainFailedState(state.listTitle));
@@ -152,7 +152,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
       //move list to todoData
       final dataState = await todoRepo.saveTitleList([..._listTitle]);
-      dataState.run(
+      dataState.when(
         success: (data) => {},
         error: ((failure) {
           emit(MainFailedState(state.listTitle));
@@ -176,7 +176,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
       /// create keyValue
       final dataState = await todoRepo.findLastKey();
-      dataState.run(
+      dataState.when(
         success: (data) => {
           if (data != null) {_lastKey = data}
         },
@@ -191,7 +191,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
       /// save lastKey in to hive
       final dataStateSaveLastKey = await todoRepo.saveLastKey(_keyValue);
-      dataStateSaveLastKey.run(
+      dataStateSaveLastKey.when(
         success: (data) => {},
         error: (failure) {
           emit(MainFailedState(state.listTitle));
@@ -215,7 +215,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
       /// save listTitle in to Hive
       final dataStateSaveTitleList = await todoRepo.saveTitleList(_listTitle);
-      dataStateSaveTitleList.run(
+      dataStateSaveTitleList.when(
         success: (data) => {},
         error: (failure) {
           emit(MainFailedState(state.listTitle));
@@ -225,7 +225,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
 
       final dataStateSaveTaskList = await todoRepo.saveTaskList(
           keyValue: _keyValue, title: event.titleTask, taskList: <TaskList>[]);
-      dataStateSaveTaskList.run(
+      dataStateSaveTaskList.when(
         success: (data) => emit(SaveState(_listTitle)),
         error: (failure) {
           emit(MainFailedState(state.listTitle));
@@ -237,7 +237,7 @@ class MainMenuBloc extends Bloc<MainMenuEvent, MainMenuState> {
     on<MainReorderSaveEvent>((event, emit) async {
       ///saving to list
       final dataState = await todoRepo.saveTitleList([..._listTitle]);
-      dataState.run(
+      dataState.when(
         success: (data) => {
           //emitting listTile to new List
           changeToNewList(state.listTitle),

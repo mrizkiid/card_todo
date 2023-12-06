@@ -3,7 +3,7 @@ class DataState<Fail, Success> {
   Fail? failure;
   DataState({this.data, this.failure});
 
-  void run(
+  void when(
       {required Function(Success? data) success,
       required Function(Fail? failure) error}) {
     if (this is DataFailed) {

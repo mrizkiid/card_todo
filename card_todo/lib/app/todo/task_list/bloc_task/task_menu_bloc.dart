@@ -91,7 +91,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
         _index = event.index!;
       }
       final dataState = await _todoRepo.getTaskList(keyValue: _keyValue);
-      dataState.run(
+      dataState.when(
         success: (data) => {
           if (data != null) {_taskList = data}
         },
@@ -122,7 +122,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       _sumTask = listFalse.length;
       // add sumtask
       final dataState = await _todoRepo.addSumTask(_index, _sumTask);
-      dataState.run(
+      dataState.when(
         success: (data) => {},
         error: (failure) {
           emit(TaskFailedState(
@@ -136,7 +136,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
           titleTask: _titleTask,
           taskListNew: [..._taskList]);
 
-      dataStateSaveTask.run(
+      dataStateSaveTask.when(
         success: (data) =>
             emit(TaskState(taskList: _taskList, sumTask: _sumTask)),
         error: (failure) {
@@ -160,7 +160,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       emptyOrNotEmptyList();
 
       final dataState = await _todoRepo.addSumTask(_index, _sumTask);
-      dataState.run(
+      dataState.when(
         success: (data) => {},
         error: (failure) {
           emit(TaskFailedState(
@@ -173,7 +173,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
           keyValue: _keyValue,
           titleTask: event.task,
           taskListNew: _taskList);
-      datatStateSaveTask.run(
+      datatStateSaveTask.when(
         success: (data) =>
             emit(TaskSaveState(taskList: _taskList, sumTask: _sumTask)),
         error: (failure) {
@@ -278,7 +278,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
       final listFalse = findTaskListFalse(taskList: _taskList);
       _sumTask = listFalse.length;
       final dataState = await _todoRepo.addSumTask(_index, _sumTask);
-      dataState.run(
+      dataState.when(
         success: (data) => {},
         error: (failure) {
           emit(TaskFailedState(
@@ -291,7 +291,7 @@ class TaskMenuBloc extends Bloc<TaskMenuEvent, TaskMenuState> {
           keyValue: _keyValue,
           titleTask: _titleTask,
           taskListNew: [..._taskList]);
-      dataStateSaveTask.run(
+      dataStateSaveTask.when(
         success: (data) => {},
         error: (failure) {
           emit(TaskFailedState(
